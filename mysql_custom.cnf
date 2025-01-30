@@ -1,0 +1,4 @@
+﻿[mysqld]
+wait_timeout = 28800
+max_allowed_packet = 64M
+innodb_buffer_pool_size = 1G
