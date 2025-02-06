@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
 </head>
 <body class="antialiased">
 <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -28,7 +27,6 @@
             @endauth
         </div>
     @endif
-
 
     <div class="flex flex-col items-center justify-center min-h-screen px-4">
         <div class="text-center max-w-4xl mx-auto">
@@ -75,7 +73,6 @@
             </div>
         </div>
     </div>
-
 
     <footer class="absolute bottom-0 w-full py-4 text-center text-sm text-gray-500 bg-white/50 backdrop-blur-sm">
         &copy; {{ date('Y') }} Bazaar. All rights reserved.
