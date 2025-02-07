@@ -3,8 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Backpack\CRUD\Tests\Config\Models\Role;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,18 +13,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'owner']);
-        Role::create(['name' => 'private_advertiser']);
-        Role::create(['name' => 'business_advertiser']);
+        // Role creation
+        $roles = [
+            'admin',
+            'user',
+            'private_advertiser',
+            'business_advertiser'
+        ];
 
-
+        foreach ($roles as $role) {
+            Role::create(['name' => $role]);
+        }
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Koray Yilmaz',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
+        ]);
+        User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'user@example.com',
+            'role' => 'user',
+        ]);
+        User::factory()->create([
+            'name' => 'Maarten Pal',
+            'email' => 'private_advertiser@example.com',
+            'role' => 'private_advertiser',
+        ]);
+        User::factory()->create([
+            'name' => 'Bas Pruim',
+            'email' => 'business_advertiser@example.com',
+            'role' => 'business_advertiser',
         ]);
     }
 }

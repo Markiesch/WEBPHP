@@ -36,10 +36,11 @@ new #[Layout('layouts.guest')] class extends Component
 
         $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
-}; ?>
+};
+?>
 
 <div>
-    <form wire:submit="register">
+    <form wire:submit.prevent="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -72,6 +73,7 @@ new #[Layout('layouts.guest')] class extends Component
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
             <select wire:model="role" id="role" name="role" class="block mt-1 w-full" required>
+                <option value="" disabled selected>Select a role</option>
                 <option value="user">User</option>
                 <option value="private_advertiser">Private Advertiser</option>
                 <option value="business_advertiser">Business Advertiser</option>
