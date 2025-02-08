@@ -10,19 +10,19 @@
                         @auth
                             <li class="flex justify-center">
                                 <a class="flex justify-center w-full text-center align-middle p-3 text-gray-900 hover:text-blue-800" href="{{ url('/dashboard') }}">
-                                    Dashboard
+                                    {{ __('dashboard') }}
                                 </a>
                             </li>
                         @else
                             <li class="flex justify-center">
                                 <a class="flex justify-center w-full text-center align-middle p-3 text-gray-900 hover:text-blue-800" href="{{ route('login') }}">
-                                    Login
+                                    {{ __('login') }}
                                 </a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="flex justify-center">
                                     <a class="flex justify-center w-full text-center align-middle p-3 text-gray-900 hover:text-blue-800" href="{{ route('register') }}">
-                                        Register
+                                        {{ __('register') }}
                                     </a>
                                 </li>
                             @endif
@@ -38,14 +38,16 @@
                                     </svg>
                                 </button>
                                 <ul class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded shadow-lg hidden">
-                                    @foreach(config('app.available_locales') as $locale => $name)
-                                        <li>
-                                            <a href="{{ route('change-locale', $locale) }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 {{ app()->getLocale() === $locale ? 'font-bold' : '' }}">
-                                                <img class="inline w-4 h-4 mr-2" src="{{ asset('images/'.$locale.'.png') }}" alt="{{ $name }}">
-                                                {{ $name }}
-                                            </a>
-                                        </li>
-                                    @endforeach
+                                    <li>
+                                        <a href="{{ route('change-locale', 'en') }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 {{ app()->getLocale() === 'en' ? 'font-bold' : '' }}">
+                                            EN
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('change-locale', 'nl') }}" class="block px-4 py-2 text-gray-900 hover:bg-gray-100 {{ app()->getLocale() === 'nl' ? 'font-bold' : '' }}">
+                                            NL
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>

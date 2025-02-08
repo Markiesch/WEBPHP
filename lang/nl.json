@@ -1,4 +1,20 @@
 {
-    "welcome": "Welkom app in het Nederlands",
-    "description": "beschrijving"
+    "title": "Bazaar - Online Marktplaats & Veilingen",
+    "dashboard": "Dashboard",
+    "login": "Inloggen",
+    "register": "Registreren",
+    "welcome": "Welkom bij",
+    "bazaar": "Bazaar",
+    "description": "Uw online marktplaats voor kopen, verkopen, veilen en huren. Ontdek duizenden producten of plaats uw eigen advertentie.",
+    "buy": "Kopen",
+    "sell": "Verkopen",
+    "auction": "Veilen",
+    "rent": "Huren",
+    "all_rights_reserved": "Alle rechten voorbehouden.",
+    "header": {
+        "dashboard": "Dashboard",
+        "login": "Inloggen",
+        "register": "Registreren",
+        "language": "Taal"
+    }
 }
