@@ -1,9 +1,11 @@
 <?php
 
+use App\View\Components\Header;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')
+    ->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -13,9 +15,8 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('change-locale/{locale}', function ($locale) {
-    Session::put('locale', $locale);
-    return redirect()->back();
-})->name('change-locale');
+Route::group(['middleware' => 'web'], function () {
+    Route::get('change-locale/{locale}', [Header::class, 'changeLocale'])->name('change-locale');
+});
 
 require __DIR__ . '/auth.php';
