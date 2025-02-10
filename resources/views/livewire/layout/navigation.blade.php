@@ -1,6 +1,7 @@
 <?php
 
-use App\Livewire\Actions\Logout;
+namespace App\Livewire\Actions;
+
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -14,7 +15,8 @@ new class extends Component
 
         $this->redirect('/', navigate: true);
     }
-}; ?>
+};
+?>
 
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
@@ -32,6 +34,12 @@ new class extends Component
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('contracts.showUploadForm')" :active="request()->routeIs('contracts.showUploadForm')" wire:navigate>
+                        {{ __('Upload Contract') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('advertisements.create')" :active="request()->routeIs('advertisements.create')" wire:navigate>
+                        {{ __('Create Advertisement') }}
                     </x-nav-link>
                 </div>
             </div>
