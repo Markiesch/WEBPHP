@@ -33,7 +33,7 @@ class AuthController extends Controller
         return response()->json(compact('user', 'token'), 201);
     }
 
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $credentials = $request->only('email', 'password');
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
         return response()->json(compact('token'));
     }
 
-    public function logout()
+    public function logout(): \Illuminate\Http\JsonResponse
     {
         JWTAuth::invalidate(JWTAuth::getToken());
 
