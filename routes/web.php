@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LandingPageController;
 use App\View\Components\Header;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdvertisementController;
@@ -31,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
 Route::post('contracts/upload', [ContractController::class, 'upload'])
     ->middleware(['auth'])
     ->name('contracts.upload');
+
+Route::get('/landing-page/{url}', [LandingPageController::class, 'show']);
 
 Route::group(['middleware' => 'web'], function () {
     Route::get('change-locale/{locale}', [Header::class, 'changeLocale'])->name('change-locale');
