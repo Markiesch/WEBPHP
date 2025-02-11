@@ -16,5 +16,22 @@
         "login": "Login",
         "register": "Register",
         "language": "Language"
-    }
+    },
+    "profile": "Profile",
+    "recent_activities": "Recent Activities",
+    "what_can_you_do": "What can you do?",
+    "quick_links": "Quick Links",
+    "upload_contract": "Upload Contract",
+    "create_advertisement": "Create Advertisement",
+    "contract_file": "Contract File",
+    "upload": "Upload",
+    "title_label": "Title",
+    "description_label": "Description",
+    "price_label": "Price",
+    "create_rental_advertisement": "Create Rental Advertisement",
+    "no_advertisements_available": "No advertisements available.",
+    "you're_logged_in": "You're logged in!",
+    "activity_1": "Activity 1",
+    "activity_2": "Activity 2",
+    "activity_3": "Activity 3"
 }

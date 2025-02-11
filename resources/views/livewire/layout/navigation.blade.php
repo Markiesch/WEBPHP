@@ -38,8 +38,8 @@ new class extends Component
                     <x-nav-link :href="route('contracts.showUploadForm')" :active="request()->routeIs('contracts.showUploadForm')" wire:navigate>
                         {{ __('Upload Contract') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('advertisements.create')" :active="request()->routeIs('advertisements.create')" wire:navigate>
-                        {{ __('Create Advertisement') }}
+                    <x-nav-link :href="route('advertisements.index')" :active="request()->routeIs('advertisements.index')" wire:navigate>
+                        {{ __('Advertisements') }}
                     </x-nav-link>
                 </div>
             </div>

@@ -7,35 +7,35 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ContractController;
 use Illuminate\Support\Facades\App;
 
-Route::view('/', 'welcome')
-    ->name('home');
+// Public routes
+Route::view('/', 'welcome')->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-Route::get('dashboard/contract', [ContractController::class, 'showUploadForm'])
-    ->middleware(['auth'])
-    ->name('contracts.showUploadForm');
-
+// Authenticated routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
-    Route::post('/advertisements', [AdvertisementController::class, 'store'])->name('advertisements.store');
-    Route::get('/advertisements/calendar', [AdvertisementController::class, 'calendar'])->name('advertisements.calendar');
-    Route::get('/advertisements/expiry-calendar', [AdvertisementController::class, 'expiryCalendar'])->name('advertisements.expiryCalendar');
+    Route::view('dashboard', 'dashboard')->middleware('verified')->name('dashboard');
+    Route::view('profile', 'profile')->name('profile');
+
+    // Contract routes
+    Route::prefix('contracts')->group(function () {
+        Route::get('dashboard', [ContractController::class, 'showUploadForm'])->name('contracts.showUploadForm');
+        Route::post('upload', [ContractController::class, 'upload'])->name('contracts.upload');
+    });
+
+    // Advertisement routes
+    Route::prefix('advertisements')->group(function () {
+        Route::get('/', [AdvertisementController::class, 'index'])->name('advertisements.index');
+        Route::get('create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+        Route::post('/', [AdvertisementController::class, 'store'])->name('advertisements.store');
+        Route::get('calendar', [AdvertisementController::class, 'calendar'])->name('advertisements.calendar');
+        Route::get('expiry-calendar', [AdvertisementController::class, 'expiryCalendar'])->name('advertisements.expiryCalendar');
+    });
 });
 
-Route::post('contracts/upload', [ContractController::class, 'upload'])
-    ->middleware(['auth'])
-    ->name('contracts.upload');
-
+// Landing page route
 Route::get('/landing-page/{url}', [LandingPageController::class, 'show']);
 
-Route::group(['middleware' => 'web'], function () {
+// Locale change route
+Route::middleware('web')->group(function () {
     Route::get('change-locale/{locale}', [Header::class, 'changeLocale'])->name('change-locale');
 });
 

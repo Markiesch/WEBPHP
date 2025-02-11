@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Advertisement;
+use Illuminate\Http\Request;
 
 class AdvertisementController extends Controller
 {
+    public function index()
+    {
+        $advertisements = Advertisement::all();
+        return view('advertisements.index', compact('advertisements'));
+    }
+
     public function create()
     {
         return view('advertisements.create');
@@ -22,31 +28,6 @@ class AdvertisementController extends Controller
 
         Advertisement::create($request->all());
 
-        return redirect()->route('advertisements.create')->with('status', 'Advertisement created successfully!');
-    }
-
-    public function calendar()
-    {
-        $events = Advertisement::all()->map(function ($advertisement) {
-            return [
-                'title' => $advertisement->title,
-                'start' => $advertisement->rental_start_date,
-                'end' => $advertisement->rental_end_date,
-            ];
-        });
-
-        return view('advertisements.calendar', ['events' => $events]);
-    }
-
-    public function expiryCalendar()
-    {
-        $expiryEvents = Advertisement::all()->map(function ($advertisement) {
-            return [
-                'title' => $advertisement->title,
-                'start' => $advertisement->expiry_date,
-            ];
-        });
-
-        return view('advertisements.expiry-calendar', ['expiryEvents' => $expiryEvents]);
+        return redirect()->route('advertisements.index')->with('success', 'Advertisement created successfully.');
     }
 }
