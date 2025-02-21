@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\LandingPageController;
-use App\View\Components\Header;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\LandingPageController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ContractController;
-use Illuminate\Support\Facades\App;
+use App\Http\Controllers\Admin\AdvertisementCrudController;
+use App\View\Components\Header;
+use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::view('/', 'welcome')->name('home');
@@ -26,8 +26,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [AdvertisementController::class, 'index'])->name('advertisements.index');
         Route::get('create', [AdvertisementController::class, 'create'])->name('advertisements.create');
         Route::post('/', [AdvertisementController::class, 'store'])->name('advertisements.store');
-        Route::get('calendar', [AdvertisementController::class, 'calendar'])->name('advertisements.calendar');
-        Route::get('expiry-calendar', [AdvertisementController::class, 'expiryCalendar'])->name('advertisements.expiryCalendar');
+    });
+
+    // Advertisement CSV upload routes
+    Route::prefix('advertisement')->group(function () {
+        Route::get('upload-csv', [AdvertisementCrudController::class, 'showUploadForm'])->name('crud.advertisement.uploadCsvForm');
+        Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');
     });
 });
 

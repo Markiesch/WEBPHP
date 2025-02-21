@@ -30,4 +30,5 @@ class AdvertisementController extends Controller
 
         return redirect()->route('advertisements.index')->with('success', 'Advertisement created successfully.');
     }
+
 }

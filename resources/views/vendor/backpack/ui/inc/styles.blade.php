@@ -1,3 +1,5 @@
+<!-- resources/views/vendor/backpack/ui/inc/styles.blade.php -->
+
 @basset('https://unpkg.com/animate.css@4.1.1/animate.compat.css')
 @basset('https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.css')
 
@@ -33,3 +35,5 @@
 @if (backpack_theme_config('vite_styles') && count(backpack_theme_config('vite_styles')))
     @vite(backpack_theme_config('vite_styles'))
 @endif
+
+

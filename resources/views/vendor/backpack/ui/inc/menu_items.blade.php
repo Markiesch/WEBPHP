@@ -4,3 +4,8 @@
 <x-backpack::menu-item title="Users" icon="la la-question" :link="backpack_url('user')" />
 <x-backpack::menu-item title="Roles" icon="la la-question" :link="backpack_url('role')" />
 <x-backpack::menu-item title="Landing pages" icon="la la-question" :link="backpack_url('landing-page')" />
+<x-backpack::menu-item title="Advertisements" icon="la la-question" :link="backpack_url('advertisement')" />
+
+
+<!-- Include your custom CSS file to override colors -->
+@basset('public/css/custom-styles.css')
