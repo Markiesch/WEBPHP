@@ -18,12 +18,14 @@
                     @if($advertisements->isEmpty())
                         <p>{{ __('No advertisements found.') }}</p>
                     @else
-                        <ul>
+                        <ul class="flex flex-wrap -mx-2">
                             @foreach($advertisements as $advertisement)
-                                <li class="mb-4">
-                                    <h3 class="text-lg font-medium text-gray-900">{{ $advertisement->title }}</h3>
-                                    <p>{{ $advertisement->description }}</p>
-                                    <p class="text-gray-600">{{ __('Price:') }} {{ $advertisement->price }}</p>
+                                <li class="bg-gray-100 p-4 rounded-lg shadow-md w-1/3 mx-2 mb-4">
+                                    <a href="{{ route('advertisements.show', $advertisement->id) }}" class="block h-full">
+                                        <h3 class="text-lg font-medium text-gray-900">{{ $advertisement->title }}</h3>
+                                        <p class="text-gray-700">{{ $advertisement->description }}</p>
+                                        <p class="text-gray-600">{{ __('Price:') }} {{ $advertisement->price }}</p>
+                                    </a>
                                 </li>
                             @endforeach
                         </ul>

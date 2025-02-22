@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [AdvertisementController::class, 'index'])->name('advertisements.index');
         Route::get('create', [AdvertisementController::class, 'create'])->name('advertisements.create');
         Route::post('/', [AdvertisementController::class, 'store'])->name('advertisements.store');
+        Route::get('{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
+
     });
 
     // Advertisement CSV upload routes
