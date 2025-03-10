@@ -27,4 +27,10 @@ class RentalController extends Controller
     {
         return view('calendar');
     }
+
+    public function getAdvertisements(Request $request)
+    {
+        $advertisements = Rental::all();
+        return response()->json($advertisements);
+    }
 }
