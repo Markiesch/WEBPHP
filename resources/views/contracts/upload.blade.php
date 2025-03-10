@@ -35,21 +35,18 @@
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-6">
                         {{ __('Uploaded Contracts') }}
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <ul>
                         @foreach($contracts as $contract)
-                            <div class="bg-white p-4 rounded-lg shadow-md">
-                                <p><strong>{{ __('Name') }}:</strong> {{ $contract->name }}</p>
-                                <p><strong>{{ __('Email') }}:</strong> {{ $contract->email }}</p>
-                                <p><strong>{{ __('Description') }}:</strong> {{ $contract->description }}</p>
+                            <li>
                                 <form action="{{ route('export-pdf', $contract->id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md">
-                                        {{ __('Export to PDF') }}
+                                    <button type="submit" class="text-blue-600">
+                                        {{ __('Download PDF') }}: {{ $contract->file_path }}
                                     </button>
                                 </form>
-                            </div>
+                            </li>
                         @endforeach
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>

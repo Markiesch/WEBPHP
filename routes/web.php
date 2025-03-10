@@ -19,6 +19,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('contracts')->group(function () {
         Route::get('dashboard', [ContractController::class, 'showUploadForm'])->name('contracts.showUploadForm');
         Route::post('upload', [ContractController::class, 'upload'])->name('contracts.upload');
+        Route::post('/contracts/export-pdf/{id}', [ContractController::class, 'exportPdf'])->name('export-pdf');
     });
 
     // Advertisement routes
