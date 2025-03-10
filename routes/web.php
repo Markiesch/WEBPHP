@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('calendar', function () {
         return view('calendar');
     })->name('calendar');
-    Route::get('/api/rentals', [RentalController::class, 'getRentals']);
+//    Route::get('/api/rentals', [RentalController::class, 'getRentals']);
 
     // Advertisement CSV upload routes
     Route::prefix('advertisement')->group(function () {
