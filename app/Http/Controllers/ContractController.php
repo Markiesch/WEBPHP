@@ -10,6 +10,12 @@ use Spatie\Browsershot\Browsershot;
 
 class ContractController extends Controller
 {
+
+    public function index()
+    {
+        $contracts = Contract::all();
+        return view('contracts.index', compact('contracts'));
+    }
     public function showUploadForm()
     {
         $contracts = Contract::all();
@@ -19,6 +25,9 @@ class ContractController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'description' => 'string',
             'contract' => 'required|file|mimes:pdf,doc,docx',
         ]);
 
@@ -26,28 +35,30 @@ class ContractController extends Controller
         $path = $file->store('contracts');
 
         $contract = new Contract();
+        $contract->name = $request->input('name');
+        $contract->email = $request->input('email');
+        $contract->description = $request->input('description');
         $contract->file_path = $path;
         $contract->save();
 
-        return redirect()->route('contracts.showUploadForm')->with('success', 'Contract uploaded successfully.');
+        return redirect()->route('contracts.index')->with('success', 'Contract uploaded successfully.');
     }
 
     public function exportPdf($id)
     {
         $contract = Contract::findOrFail($id);
         $data = [
-            'name' => 'Example Name', // Replace with actual data
-            'email' => 'example@example.com', // Replace with actual data
-            'business_name' => 'Example Business', // Replace with actual data
-            'registration_date' => now()->toDateString(),
+            'name' => $contract->name,
+            'email' => $contract->email,
+            'description' => $contract->description,
         ];
 
-        $html = view('pdf.contract', $data)->render();
+        $html = view('pdf.pdf', $data)->render();
         $pdf = Browsershot::html($html)->pdf();
 
         return response()->streamDownload(
             fn () => print($pdf),
-            'business_registration_contract.pdf'
+            'contract_' . $contract->id . '.pdf'
         );
     }
 }
