@@ -13,16 +13,6 @@
                     </div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900">{{ __('Recent Activities') }}</h3>
-                        <ul class="mt-4 space-y-2">
-                            <li class="text-gray-700">Activity 1</li>
-                            <li class="text-gray-700">Activity 2</li>
-                            <li class="text-gray-700">Activity 3</li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">

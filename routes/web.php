@@ -10,17 +10,21 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::view('/', 'welcome')->name('home');
 
+
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')->middleware('verified')->name('dashboard');
     Route::view('profile', 'profile')->name('profile');
 
+
     // Contract routes
     Route::prefix('contracts')->group(function () {
-        Route::get('dashboard', [ContractController::class, 'showUploadForm'])->name('contracts.showUploadForm');
+        Route::get('/', [ContractController::class, 'index'])->name('contracts.index');
+        Route::get('upload', [ContractController::class, 'showUploadForm'])->name('contracts.showUploadForm');
         Route::post('upload', [ContractController::class, 'upload'])->name('contracts.upload');
-        Route::post('/contracts/export-pdf/{id}', [ContractController::class, 'exportPdf'])->name('export-pdf');
+        Route::post('export-pdf/{id}', [ContractController::class, 'exportPdf'])->name('export-pdf');
     });
+
 
     // Advertisement routes
     Route::prefix('advertisements')->group(function () {
@@ -31,11 +35,13 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+
     // Rental routes
     Route::get('calendar', function () {
         return view('calendar');
     })->name('calendar');
-//    Route::get('/api/rentals', [RentalController::class, 'getRentals']);
+
+
 
     // Advertisement CSV upload routes
     Route::prefix('advertisement')->group(function () {
@@ -44,8 +50,10 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+
 // Landing page route
 Route::get('/landing-page/{url}', [LandingPageController::class, 'show']);
+
 
 // Locale change route
 Route::middleware('web')->group(function () {

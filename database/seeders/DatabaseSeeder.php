@@ -5,59 +5,32 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
+        // Create roles if they don't exist
+        $roles = ['user', 'admin', 'owner', 'private_advertiser', 'business_advertiser'];
+        foreach ($roles as $roleName) {
+            Role::firstOrCreate(['name' => $roleName]);
+        }
 
-        Role::create(['name' => 'user']);
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'owner']);
-        Role::create(['name' => 'private_advertiser']);
-        Role::create(['name' => 'business_advertiser']);
+        // Create admin user
+        $admin = new User();
+        $admin->name = 'Admin';
+        $admin->email = 'admin@bazaar.nl';
+        $admin->password = '$2y$12$RRFILOFFad.VuxS44qX7I.mUJxb1cqlO8exnjs9oqXRGpZi0XIqJW';
+        $admin->save();
+        $admin->assignRole('admin');
 
-
+        // Create regular user
         $user = new User();
-        $user->name = 'Admin';
-        $user->email = 'admin@bazaar.nl';
-        $user->password = '$2y$12$RRFILOFFad.VuxS44qX7I.mUJxb1cqlO8exnjs9oqXRGpZi0XIqJW';
+        $user->name = 'Koray';
+        $user->email = 'user@bazaar.nl';
+        $user->password = Hash::make('plasplas');
         $user->save();
-        $user->assignRole('admin');
-//        // Role creation
-//        $roles = [
-//            'admin',
-//            'user',
-//            'private_advertiser',
-//            'business_advertiser'
-//        ];
-//
-//        foreach ($roles as $role) {
-//            Role::create(['name' => $role]);
-//        }
-
-//        User::factory()->create([
-//            'name' => 'Koray Yilmaz',
-//            'email' => 'admin@example.com',
-//            'role' => 'admin',
-//        ]);
-//        User::factory()->create([
-//            'name' => 'John Doe',
-//            'email' => 'user@example.com',
-//            'role' => 'user',
-//        ]);
-//        User::factory()->create([
-//            'name' => 'Maarten Pal',
-//            'email' => 'private_advertiser@example.com',
-//            'role' => 'private_advertiser',
-//        ]);
-//        User::factory()->create([
-//            'name' => 'Bas Pruim',
-//            'email' => 'business_advertiser@example.com',
-//            'role' => 'business_advertiser',
-//        ]);
+        $user->assignRole('user');
     }
 }

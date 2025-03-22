@@ -32,21 +32,6 @@
                             </button>
                         </div>
                     </form>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-6">
-                        {{ __('Uploaded Contracts') }}
-                    </h2>
-                    <ul>
-                        @foreach($contracts as $contract)
-                            <li>
-                                <form action="{{ route('export-pdf', $contract->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="text-blue-600">
-                                        {{ __('Download PDF') }}: {{ $contract->file_path }}
-                                    </button>
-                                </form>
-                            </li>
-                        @endforeach
-                    </ul>
                 </div>
             </div>
         </div>

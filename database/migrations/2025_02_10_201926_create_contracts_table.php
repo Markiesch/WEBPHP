@@ -10,6 +10,9 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->text('description');
             $table->string('file_path');
             $table->string('status');
             $table->timestamps();
