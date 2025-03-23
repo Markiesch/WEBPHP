@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title', 'Bazaar - Home')
 
 @section('content')
     {{ app()->getLocale()}}

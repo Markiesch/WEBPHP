@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title', 'Bazaar')</title>
+    <title>{{ __('title') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @vite('node_modules/franken-ui/dist/js/icon.iife.js')

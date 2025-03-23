@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title', 'Bazaar - Signup')
 
 @section('content')
     <div class="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
