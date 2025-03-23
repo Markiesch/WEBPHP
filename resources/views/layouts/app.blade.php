@@ -13,7 +13,8 @@
                         'dashboard' => ['label' => 'Dashboard', 'icon' => 'layout-dashboard'],
                         'contracts.index' => ['label' => 'Contracts', 'icon' => 'file-text'],
                         'advertisements.index' => ['label' => 'Advertisements', 'icon' => 'megaphone'],
-                        'calendar' => ['label' => 'Calendar', 'icon' => 'calendar']
+                        'calendar' => ['label' => 'Calendar', 'icon' => 'calendar'],
+                        'profile' => ['label' => 'Profile', 'icon' => 'user']
                     ];
                     ?>
                     @foreach (links as $route => $data)
@@ -35,8 +36,8 @@
             </ul>
             <div></div>
         </div>
-        <div class="flex-grow bg-white m-2 ml-0 rounded-lg shadow border">
-            <div class="border-b h-12 flex items-center px-4 lg:px-6">
+        <div class="flex-grow bg-white m-2 ml-0 rounded-lg shadow border overflow-auto">
+            <div class="border-b h-12 flex items-center px-4 lg:px-6 sticky top-0">
                 <h2 class="text-base font-medium">
                     @yield('heading')
                 </h2>
