@@ -1,30 +1,27 @@
 ﻿@extends('layouts.app')
 
+@section("heading")
+    {{ __('Rental Calendar') }}
+@endsection
+
 @section('content')
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-6">
-                {{ __('Rental Calendar') }}
-            </h2>
-            <table id="rental-calendar" class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product
-                        Name
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start
-                        Date
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End
-                        Date
-                    </th>
-                </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="rental-calendar" class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product
+                Name
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start
+                Date
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End
+                Date
+            </th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        </tbody>
+    </table>
 @endsection
 
 
