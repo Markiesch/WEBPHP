@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.home')
 
 @section('content')
     <div class="py-12">
@@ -19,11 +19,13 @@
                             <input type="email" name="email" id="email" class="mt-1 block w-full" required>
                         </div>
                         <div class="mb-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Description') }}</label>
+                            <label for="description"
+                                   class="block text-sm font-medium text-gray-700">{{ __('Description') }}</label>
                             <textarea name="description" id="description" class="mt-1 block w-full" required></textarea>
                         </div>
                         <div class="mb-4">
-                            <label for="contract" class="block text-sm font-medium text-gray-700">{{ __('Contract File') }}</label>
+                            <label for="contract"
+                                   class="block text-sm font-medium text-gray-700">{{ __('Contract File') }}</label>
                             <input type="file" name="contract" id="contract" class="mt-1 block w-full" required>
                         </div>
                         <div class="mb-4">

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.home')
 
 @section('content')
     <div class="py-12">
@@ -10,22 +10,27 @@
                         @csrf
                         <div class="mb-4">
                             <label for="title" class="block text-gray-700">{{ __('Title') }}</label>
-                            <input type="text" name="title" id="title" class="w-full border-gray-300 rounded-md" required>
+                            <input type="text" name="title" id="title" class="w-full border-gray-300 rounded-md"
+                                   required>
                         </div>
                         <div class="mb-4">
                             <label for="description" class="block text-gray-700">{{ __('Description') }}</label>
-                            <textarea name="description" id="description" class="w-full border-gray-300 rounded-md" required></textarea>
+                            <textarea name="description" id="description" class="w-full border-gray-300 rounded-md"
+                                      required></textarea>
                         </div>
                         <div class="mb-4">
                             <label for="price" class="block text-gray-700">{{ __('Price') }}</label>
-                            <input type="number" name="price" id="price" class="w-full border-gray-300 rounded-md" required>
+                            <input type="number" name="price" id="price" class="w-full border-gray-300 rounded-md"
+                                   required>
                         </div>
                         <div class="mb-4">
                             <label for="image" class="block text-gray-700">{{ __('Image') }}</label>
-                            <input type="file" name="image" id="image" class="w-full border-gray-300 rounded-md" required>
+                            <input type="file" name="image" id="image" class="w-full border-gray-300 rounded-md"
+                                   required>
                         </div>
                         <div class="mt-4">
-                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">{{ __('Create Advertisement') }}</button>
+                            <button type="submit"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-md">{{ __('Create Advertisement') }}</button>
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('content')
     <div class="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
@@ -37,7 +37,7 @@
                                 <div class="grid gap-1">
                                     <div class="flex items-center">
                                         <label class="font-medium" for="password">{{ __('password') }}</label>
-{{--                                            href="{{ route('password.request') }}"--}}
+                                        {{--                                            href="{{ route('password.request') }}"--}}
                                         <a
                                             href="#"
                                             class="ml-auto text-sm underline-offset-2 hover:underline"
@@ -57,8 +57,9 @@
 
                                 <div class="text-center text-sm">
                                     {{ __('no_account') }}
-                                    <a href="{{ route('signup') }}" class="underline underline-offset-4">{{ __('register') }}</a>
-{{--                                    <a href="{{ route('register') }}" class="underline underline-offset-4">Registreren</a>--}}
+                                    <a href="{{ route('signup') }}"
+                                       class="underline underline-offset-4">{{ __('register') }}</a>
+                                    {{--                                    <a href="{{ route('register') }}" class="underline underline-offset-4">Registreren</a>--}}
                                 </div>
                             </div>
                         </form>

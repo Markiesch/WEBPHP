@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.home')
 
 @section('content')
     <div class="py-12">
@@ -9,11 +9,12 @@
                     <p class="mb-4">{{ $advertisement->description }}</p>
                     <p class="text-gray-600">{{ __('Price:') }} {{ $advertisement->price }}</p>
                     <div>
-                        <img src = "{{ $qrTest }}" alt = "QR Code" />
+                        <img src="{{ $qrTest }}" alt="QR Code"/>
                     </div
 
                     <div class="mt-4">
-                        <a href="{{ route('advertisements.index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+                        <a href="{{ route('advertisements.index') }}"
+                           class="px-4 py-2 bg-blue-600 text-white rounded-md">
                             {{ __('Back to Advertisements') }}
                         </a>
                     </div>

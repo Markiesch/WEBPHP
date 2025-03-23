@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.home')
 
 @section('content')
     <div class="py-12">
@@ -17,7 +17,7 @@
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('expiry-calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',

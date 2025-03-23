@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('content')
     <div class="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
@@ -28,23 +28,23 @@
                                 <div class="grid gap-1">
                                     <label class="font-medium" for="name">{{ __('name') }}</label>
                                     <input
-                                        class="uk-input"
-                                        id="name"
-                                        type="text"
-                                        name="name"
-                                        value="{{ old('name') }}"
-                                        required
+                                            class="uk-input"
+                                            id="name"
+                                            type="text"
+                                            name="name"
+                                            value="{{ old('name') }}"
+                                            required
                                     />
                                 </div>
                                 <div class="grid gap-1">
                                     <label class="font-medium" for="email">{{ __('email') }}</label>
                                     <input
-                                        class="uk-input"
-                                        id="email"
-                                        type="email"
-                                        name="email"
-                                        value="{{ old('email') }}"
-                                        required
+                                            class="uk-input"
+                                            id="email"
+                                            type="email"
+                                            name="email"
+                                            value="{{ old('email') }}"
+                                            required
                                     />
                                 </div>
                                 <div class="grid gap-1">
@@ -54,7 +54,8 @@
 
                                 <!-- Account Type Toggle -->
                                 <div class="flex flex-col gap-3">
-                                    <input type="hidden" name="account_type" value="{{ $accountType ?? 'buyer' }}" id="account_type">
+                                    <input type="hidden" name="account_type" value="{{ $accountType ?? 'buyer' }}"
+                                           id="account_type">
 
                                     <!-- Seller-specific fields -->
                                     <div id="seller_fields"
@@ -63,20 +64,20 @@
                                             <div class="flex gap-4">
                                                 <label class="flex items-center gap-2">
                                                     <input
-                                                        type="radio"
-                                                        name="seller_type"
-                                                        value="particulier"
-                                                        class="uk-radio"
-                                                        checked
+                                                            type="radio"
+                                                            name="seller_type"
+                                                            value="particulier"
+                                                            class="uk-radio"
+                                                            checked
                                                     >
                                                     {{ __('private') }}
                                                 </label>
                                                 <label class="flex items-center gap-2">
                                                     <input
-                                                        type="radio"
-                                                        name="seller_type"
-                                                        value="zakelijk"
-                                                        class="uk-radio"
+                                                            type="radio"
+                                                            name="seller_type"
+                                                            value="zakelijk"
+                                                            class="uk-radio"
                                                     >
                                                     {{ __('business') }}
                                                 </label>
@@ -86,7 +87,8 @@
                                 </div>
 
                                 <div>
-                                    <button type="submit" class="w-full uk-btn uk-btn-primary">{{ __('signup') }}</button>
+                                    <button type="submit"
+                                            class="w-full uk-btn uk-btn-primary">{{ __('signup') }}</button>
 
                                     <!-- Account Type Switch Button -->
                                     <div class="pt-2">
@@ -106,21 +108,22 @@
 
                                 <div class="text-center text-sm">
                                     {{ __('have_account') }}
-                                    <a href="{{ route('login') }}" class="underline underline-offset-4">{{ __('login') }}</a>
+                                    <a href="{{ route('login') }}"
+                                       class="underline underline-offset-4">{{ __('login') }}</a>
                                 </div>
                             </div>
                         </form>
                         <div class="relative hidden bg-muted md:block">
                             <img
-                                src="/assets/placeholder.svg"
-                                alt="{{ __('image_alt') }}"
-                                class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                                    src="/assets/placeholder.svg"
+                                    alt="{{ __('image_alt') }}"
+                                    class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                             />
                         </div>
                     </div>
                 </div>
                 <div
-                    class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+                        class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
                     {{ __('terms_agreement') }} <a href="#">{{ __('terms_of_service') }}</a>
                     {{ __('and') }} <a href="#">{{ __('privacy_policy') }}</a>.
                 </div>

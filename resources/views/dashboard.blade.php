@@ -32,9 +32,12 @@
                     <div class="p-6">
                         <h3 class="text-lg font-medium text-gray-900">{{ __('Quick Links') }}</h3>
                         <div class="mt-4 flex space-x-4">
-                            <a href="{{ route('profile') }}" class="text-blue-600 hover:text-blue-800">{{ __('Profile') }}</a>
-                            <a href="{{ route('contracts.showUploadForm') }}" class="text-blue-600 hover:text-blue-800">{{ __('Upload Contract') }}</a>
-                            <a href="{{ route('advertisements.create') }}" class="text-blue-600 hover:text-blue-800">{{ __('Create Advertisement') }}</a>
+                            <a href="{{ route('profile') }}"
+                               class="text-blue-600 hover:text-blue-800">{{ __('Profile') }}</a>
+                            <a href="{{ route('contracts.showUploadForm') }}"
+                               class="text-blue-600 hover:text-blue-800">{{ __('Upload Contract') }}</a>
+                            <a href="{{ route('advertisements.create') }}"
+                               class="text-blue-600 hover:text-blue-800">{{ __('Create Advertisement') }}</a>
                         </div>
                     </div>
                 </div>

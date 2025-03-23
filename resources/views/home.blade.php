@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('content')
-    <x-header />
+    <x-header/>
 
     <div class="card-header">{{ __('title') }}</div>
     <a href="{{ url('dashboard') }}">Go to Dashboard</a>

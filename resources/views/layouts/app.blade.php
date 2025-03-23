@@ -1,17 +1,36 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="uk-theme-zinc">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.root')
 
-    <title>{{ __('title') }}</title>
+@section('root')
+    <div class="flex h-svh bg-muted">
+        <div style="width: 15rem" class="p-2 flex h-full flex-col">
+            <div class="flex flex-col gap-2 p-2">
+                <p class="uk-text-xl font-bold">Bazaar</p>
+            </div>
+            <div class="flex flex-col gap-2 flex-1">
+                <ul class="uk-nav uk-nav-primary">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @vite('node_modules/franken-ui/dist/js/icon.iife.js')
-</head>
-<body class="font-sans antialiased">
-<livewire:layout.navigation />
-
-@yield('content')
-</body>
-</html>
+                    <?php
+                    const links = [
+                        'dashboard' => 'Dashboard',
+                        'contracts.index' => 'Contracts',
+                        'advertisements.index' => 'Advertisements',
+                        'calendar' => 'Calendar'
+                    ];
+                    ?>
+                    @foreach (links as $route => $label)
+                        <li class="{{ request()->routeIs($route) ? 'uk-active' : '' }}">
+                            <a href="{{ route($route) }}">{{ __($label) }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="flex flex-col gap-2 p-2">
+                uitloggen
+            </div>
+            <div></div>
+        </div>
+        <div class="flex-grow bg-white m-2 ml-0 rounded-lg shadow-md">
+            @yield('content')
+        </div>
+    </div>
+@endsection
