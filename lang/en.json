@@ -33,5 +33,27 @@
     "you're_logged_in": "You're logged in!",
     "activity_1": "Activity 1",
     "activity_2": "Activity 2",
-    "activity_3": "Activity 3"
+    "activity_3": "Activity 3",
+
+    "welcome_back": "Welcome back",
+    "login_with_account": "Login with your Bazaar account",
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "no_account": "Don't have an account?",
+    "image_alt": "Image",
+    "terms_agreement": "By clicking continue, you agree to our",
+    "terms_of_service": "Terms of Service",
+    "and": "and",
+    "privacy_policy": "Privacy Policy",
+
+    "create_account": "Create an Account",
+    "signup_with_account": "Sign up with your Bazaar account",
+    "name": "Name",
+    "signup": "Sign Up",
+    "private": "Private",
+    "business": "Business",
+    "continue_as_buyer": "Continue as Buyer",
+    "continue_as_seller": "Continue as Seller",
+    "have_account": "Already have an account?"
 }

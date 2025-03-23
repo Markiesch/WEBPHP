@@ -33,5 +33,27 @@
     "you're_logged_in": "U bent ingelogd!",
     "activity_1": "Activiteit 1",
     "activity_2": "Activiteit 2",
-    "activity_3": "Activiteit 3"
+    "activity_3": "Activiteit 3",
+
+    "welcome_back": "Welkom terug",
+    "login_with_account": "Login met uw Bazaar account",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "forgot_password": "Wachtwoord vergeten?",
+    "no_account": "Heeft u nog geen account?",
+    "image_alt": "Afbeelding",
+    "terms_agreement": "Door op doorgaan te klikken, gaat u akkoord met onze",
+    "terms_of_service": "Servicevoorwaarden",
+    "and": "en",
+    "privacy_policy": "Privacybeleid",
+
+    "create_account": "Maak een Account",
+    "signup_with_account": "Registreer met uw Bazaar account",
+    "name": "Naam",
+    "signup": "Registreren",
+    "private": "Particulier",
+    "business": "Zakelijk",
+    "continue_as_buyer": "Doorgaan als Koper",
+    "continue_as_seller": "Doorgaan als Verkoper",
+    "have_account": "Heeft u al een account?"
 }
