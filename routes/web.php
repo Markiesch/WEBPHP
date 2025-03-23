@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
@@ -8,7 +9,11 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/login', function () {
+Route::get('/login/{locale?}', function ($locale = null) {
+    if ($locale && in_array($locale, ['en', 'nl'])) {
+        App::setLocale($locale);
+        session(['locale' => $locale]);
+    }
     return view('login');
 })->name('login');
 

@@ -5,4 +5,6 @@
     <x-header />
 
     <h1>Bazaar</h1>
+    <div class="card-header">{{ __('auth.failed') }}</div>
+
 @endsection
