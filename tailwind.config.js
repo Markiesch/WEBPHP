@@ -1,21 +1,17 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
-import forms from '@tailwindcss/forms';
+import franken from "franken-ui/shadcn-ui/preset-quick";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
+    presets: [franken()],
+    content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
+    safelist: [
+        { pattern: /^uk-/ },
+        "ProseMirror",
+        "ProseMirror-focused",
+        "tiptap",
     ],
-
     theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
-        },
+        extend: {},
     },
-
-    plugins: [forms],
+    plugins: [],
 };
