@@ -15,8 +15,8 @@
 
             <!-- Auth Buttons -->
             <div class="flex items-center space-x-2">
-                <a href="/login" class="uk-btn uk-btn-sm uk-btn-default">Login</a>
-                <a href="/register" class="uk-btn uk-btn-sm uk-btn-primary">Register</a>
+                <a href="{{ route("login") }}" class="uk-btn uk-btn-sm uk-btn-default">Login</a>
+                <a href="{{ route("signup") }}" class="uk-btn uk-btn-sm uk-btn-primary">Register</a>
             </div>
         </div>
     </div>
