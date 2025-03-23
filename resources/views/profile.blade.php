@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.app')
 
 @section('content')
     <x-slot name="header">
