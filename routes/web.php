@@ -16,6 +16,10 @@ Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
 Route::get('/signup', [SignupController::class, 'index'])->name('signup');
 Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit');
 
+Route::middleware('auth')->group(function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+});
+
 // Locale switcher route
 Route::get('/language/{locale}', function ($locale) {
     if (in_array($locale, config('languages.available'))) {
