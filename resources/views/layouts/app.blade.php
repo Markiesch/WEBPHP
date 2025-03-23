@@ -10,6 +10,8 @@
     @vite('node_modules/franken-ui/dist/js/icon.iife.js')
 </head>
 <body class="font-sans antialiased">
+<livewire:layout.navigation />
+
 @yield('content')
 </body>
 </html>
