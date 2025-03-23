@@ -25,6 +25,7 @@
                                         </ul>
                                     </div>
                                 @endif
+
                                 <div class="grid gap-1">
                                     <label class="font-medium" for="name">Name</label>
                                     <input
@@ -32,6 +33,7 @@
                                         id="name"
                                         type="text"
                                         name="name"
+                                        value="{{ old('name') }}"
                                         required
                                     />
                                 </div>
@@ -42,6 +44,7 @@
                                         id="email"
                                         type="email"
                                         name="email"
+                                        value="{{ old('email') }}"
                                         required
                                     />
                                 </div>
@@ -49,9 +52,59 @@
                                     <label class="font-medium" for="password">Password</label>
                                     <input class="uk-input" id="password" type="password" name="password" required/>
                                 </div>
-                                <button type="submit" class="w-full uk-btn uk-btn-primary">
-                                    Sign Up
-                                </button>
+
+                                <!-- Account Type Toggle -->
+                                <div class="flex flex-col gap-3">
+                                    <input type="hidden" name="account_type" value="{{ $accountType ?? 'buyer' }}" id="account_type">
+
+                                    <!-- Seller-specific fields -->
+                                    <div id="seller_fields"
+                                         class="{{ (isset($accountType) && $accountType == 'seller') ? '' : 'hidden' }} grid gap-3">
+                                        <div class="grid gap-1">
+                                            <div class="flex gap-4">
+                                                <label class="flex items-center gap-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="seller_type"
+                                                        value="particulier"
+                                                        class="uk-radio"
+                                                        checked
+                                                    >
+                                                    Particulier
+                                                </label>
+                                                <label class="flex items-center gap-2">
+                                                    <input
+                                                        type="radio"
+                                                        name="seller_type"
+                                                        value="zakelijk"
+                                                        class="uk-radio"
+                                                    >
+                                                    Zakelijk
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button type="submit" class="w-full uk-btn uk-btn-primary">Sign Up</button>
+
+                                    <!-- Account Type Switch Button -->
+                                    <div class="pt-2">
+                                        @if(isset($accountType) && $accountType == 'seller')
+                                            <a href="{{ route('signup', ['type' => 'buyer']) }}"
+                                               class="uk-btn uk-btn-secondary w-full">
+                                                Continue as Buyer
+                                            </a>
+                                        @else
+                                            <a href="{{ route('signup', ['type' => 'seller']) }}"
+                                               class="uk-btn uk-btn-secondary w-full">
+                                                Continue as Seller
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+
                                 <div class="text-center text-sm">
                                     Already have an account?
                                     <a href="{{ route('login') }}" class="underline underline-offset-4">Login</a>

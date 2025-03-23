@@ -14,9 +14,9 @@ Route::get('/login', function () {
 
 Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
 
-Route::get('/signup', function () {
-    return view('signup');
-})->name('signup');
+// Add the route for displaying the signup form with account type parameter
+Route::get('/signup', [SignupController::class, 'index'])->name('signup');
 
+// Keep the existing submit route
 Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit');
 
