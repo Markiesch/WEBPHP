@@ -5,23 +5,22 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 
-Route::get('/', function () {
-    return view('home');
-});
+// Home route
+Route::view('/', 'home');
 
-Route::get('/login/{locale?}', function ($locale = null) {
-    if ($locale && in_array($locale, ['en', 'nl'])) {
-        App::setLocale($locale);
-        session(['locale' => $locale]);
-    }
-    return view('login');
-})->name('login');
-
+// Login routes
+Route::view('/login', 'login')->name('login');
 Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
 
-// Add the route for displaying the signup form with account type parameter
+// Signup routes
 Route::get('/signup', [SignupController::class, 'index'])->name('signup');
-
-// Keep the existing submit route
 Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit');
 
+// Locale switcher route
+Route::get('/language/{locale}', function ($locale) {
+    if (in_array($locale, config('languages.available'))) {
+        App::setLocale($locale);
+        session()->put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('language.switch');
