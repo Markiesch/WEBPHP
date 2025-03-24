@@ -2,18 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    use HasFactory;
+    use CrudTrait;
 
-    /**
-     * The users that belong to the role.
-     */
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 }
