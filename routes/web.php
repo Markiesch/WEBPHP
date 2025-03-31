@@ -12,7 +12,7 @@ use App\Http\Controllers\SignupController;
 Route::view('/', 'home');
 
 // Login routes
-Route::view('/login', 'login')->name('login');
+Route::view('/login', 'auth/login')->name('login');
 Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
 
 // Signup routes
