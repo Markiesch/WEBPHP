@@ -14,7 +14,7 @@ class SignupController extends Controller
     public function index(Request $request): View
     {
         $accountType = $request->query('type', 'buyer');
-        return view('signup', ['accountType' => $accountType]);
+        return view('auth/signup', ['accountType' => $accountType]);
     }
 
     public function submit(Request $request): RedirectResponse
