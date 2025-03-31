@@ -37,10 +37,19 @@ class AdvertisementController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $this->validateAdvertisement($request);
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp,svg,bmp|max:5120',
+            ]);
 
+            // Handle image upload
             if ($request->hasFile('image')) {
-                $validated['image_url'] = $this->storeImage($request->file('image'));
+                $image = $request->file('image');
+                $filename = time().'_'.Str::slug($image->getClientOriginalName());
+                $path = $image->storeAs('public/images', $filename);
+                $validated['image_url'] = 'storage/images/'.$filename; // Correct path for web access
             }
 
             $advertisement = Advertisement::create($validated);
@@ -49,7 +58,13 @@ class AdvertisementController extends Controller
             return redirect()
                 ->route('advertisements.index')
                 ->with('success', 'Advertisement created successfully.');
+
         } catch (Exception $e) {
+            // Delete the uploaded image if something went wrong
+            if (isset($path)) {
+                Storage::delete($path);
+            }
+
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'Failed to create advertisement: ' . $e->getMessage()]);
@@ -59,20 +74,9 @@ class AdvertisementController extends Controller
     public function show($id)
     {
         $advertisement = Advertisement::findOrFail($id);
-
         return view('advertisements.show', [
             'advertisement' => $advertisement,
             'qrTest' => $this->generateQrCodeData($id)
-        ]);
-    }
-
-    private function validateAdvertisement(Request $request)
-    {
-        return $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     }
 

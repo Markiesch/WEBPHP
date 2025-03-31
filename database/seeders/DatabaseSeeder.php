@@ -11,6 +11,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+
+        $this->call([
+            AdvertisementSeeder::class
+        ]);
         // Create roles if they don't exist
         $roles = ['user', 'admin', 'owner', 'private_advertiser', 'business_advertiser'];
         foreach ($roles as $roleName) {
@@ -32,5 +36,7 @@ class DatabaseSeeder extends Seeder
         $user->password = Hash::make('plasplas');
         $user->save();
         $user->assignRole('user');
+
+
     }
 }

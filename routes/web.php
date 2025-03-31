@@ -12,21 +12,16 @@ use App\Http\Controllers\SignupController;
 Route::view('/', 'home');
 
 // Login routes
-Route::view('/login', 'login')->name('login');
+Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
 
 // Signup routes
-Route::get('/signup', [SignupController::class, 'index'])->name('signup');
+Route::view('/signup', 'auth.register')->name('signup');
 Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit');
-
-//Route::middleware('auth')->group(function () {
-//    Route::view('/dashboard', 'dashboard')->name('dashboard');
-//});
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')->middleware('verified')->name('dashboard');
-
 
     // Contract routes
     Route::prefix('contracts')->group(function () {
@@ -36,23 +31,18 @@ Route::middleware(['auth'])->group(function () {
         Route::post('export-pdf/{id}', [ContractController::class, 'exportPdf'])->name('export-pdf');
     });
 
-
     // Advertisement routes
     Route::prefix('advertisements')->group(function () {
         Route::get('/', [AdvertisementController::class, 'index'])->name('advertisements.index');
         Route::get('create', [AdvertisementController::class, 'create'])->name('advertisements.create');
         Route::post('/', [AdvertisementController::class, 'store'])->name('advertisements.store');
         Route::get('{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
-
     });
-
 
     // Rental routes
     Route::get('calendar', function () {
         return view('calendar');
     })->name('calendar');
-
-
 
     // Advertisement CSV upload routes
     Route::prefix('advertisement')->group(function () {
@@ -60,7 +50,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');
     });
 });
-
 
 // Locale switcher route
 Route::get('/language/{locale}', function ($locale) {
