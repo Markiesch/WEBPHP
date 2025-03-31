@@ -26,7 +26,6 @@ Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')->middleware('verified')->name('dashboard');
-    Route::view('profile', 'profile')->name('profile');
 
 
     // Contract routes
