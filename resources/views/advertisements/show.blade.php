@@ -34,7 +34,7 @@
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ __('QR Code') }}</h2>
                         <div class="flex justify-center bg-gray-50 rounded-lg p-6">
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <img src="{{ $qrTest }}"
+                                <img src="{{ $advertisement->getQrCodeDataUri() }}"
                                      alt="QR Code"
                                      class="w-48 h-48 object-contain"/>
                             </div>

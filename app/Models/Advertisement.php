@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Endroid\QrCode\Builder\Builder as QrBuilder;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Advertisement extends Model
 {
@@ -18,6 +21,18 @@ class Advertisement extends Model
     ];
 
     protected $sortable = ['price', 'created_at'];
+
+    public function getQrCodeDataUri()
+    {
+        return QrBuilder::create()
+            ->writer(new PngWriter())
+            ->data(route('advertisements.show', $this->id))
+            ->encoding(new Encoding('UTF-8'))
+            ->size(300)
+            ->margin(10)
+            ->build()
+            ->getDataUri();
+    }
 
     public function scopeSortable(Builder $query, $request)
     {

@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\Contract;
-use Spatie\Browsershot\Browsershot;
+use Illuminate\Http\Request;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class ContractController extends Controller
 {
-
     public function index()
     {
         $contracts = Contract::all();
         return view('contracts.index', compact('contracts'));
     }
+
     public function showUploadForm()
     {
         $contracts = Contract::all();
@@ -41,24 +39,19 @@ class ContractController extends Controller
         $contract->file_path = $path;
         $contract->save();
 
-        return redirect()->route('contracts.index')->with('success', 'Contract uploaded successfully.');
+        return redirect()->route('contracts.index')
+            ->with('success', 'Contract uploaded successfully.');
     }
 
     public function exportPdf($id)
     {
         $contract = Contract::findOrFail($id);
-        $data = [
+
+        return Pdf::view('pdf.pdf', [
             'name' => $contract->name,
             'email' => $contract->email,
             'description' => $contract->description,
-        ];
-
-        $html = view('pdf.pdf', $data)->render();
-        $pdf = Browsershot::html($html)->pdf();
-
-        return response()->streamDownload(
-            fn () => print($pdf),
-            'contract_' . $contract->id . '.pdf'
-        );
+            'contract' => $contract,
+        ])->format('a4')->download("contract_{$contract->id}.pdf");
     }
 }
