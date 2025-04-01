@@ -3,13 +3,14 @@
 use App\Http\Controllers\Admin\AdvertisementCrudController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 
 // Home route
-Route::view('/', 'home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Login routes
 Route::view('/login', 'auth/login')->name('login');
