@@ -18,7 +18,7 @@ class AdvertisementController extends Controller
             ->when($request->filled('price_range'), function ($query) use ($request) {
                 $this->applyPriceFilter($query, $request->input('price_range'));
             })
-            ->get();
+            ->paginate(6);
 
         return view('advertisements.index', compact('advertisements'));
     }

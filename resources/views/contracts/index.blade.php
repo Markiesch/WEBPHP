@@ -18,6 +18,7 @@
             'name' => ['label' => __('Name')],
             'email' => ['label' => __('Email')],
             'description' => ['label' => __('Description')],
+            'created_at' => ['label' => __('Upload Date'), 'sortable' => true],
             'actions' => ['label' => __('Actions')]
         ]"
         :sort-by="request('sort_by')"
@@ -28,6 +29,7 @@
                 <td class="px-6 py-6 border-b border-gray-100">{{ $contract->name }}</td>
                 <td class="px-6 py-6 border-b border-gray-100">{{ $contract->email }}</td>
                 <td class="px-6 py-6 border-b border-gray-100">{{ $contract->description }}</td>
+                <td class="px-6 py-6 border-b border-gray-100">{{ $contract->created_at->format('d/m/Y H:i') }}</td>
                 <td class="px-6 py-6 border-b border-gray-100">
                     <form action="{{ route('export-pdf', $contract->id) }}" method="POST" class="inline">
                         @csrf
@@ -40,4 +42,8 @@
             </tr>
         @endforeach
     </x-table>
+
+    <div class="mt-4">
+        <x-pagination :paginator="$contracts" />
+    </div>
 @endsection

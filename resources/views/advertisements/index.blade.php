@@ -39,4 +39,8 @@
             </tr>
         @endforeach
     </x-table>
+
+    <div class="mt-4">
+        <x-pagination :paginator="$advertisements" />
+    </div>
 @endsection

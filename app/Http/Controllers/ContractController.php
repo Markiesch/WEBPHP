@@ -8,9 +8,9 @@ use Spatie\LaravelPdf\Facades\Pdf;
 
 class ContractController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $contracts = Contract::all();
+        $contracts = Contract::sortable($request)->paginate(6);
         return view('contracts.index', compact('contracts'));
     }
 
