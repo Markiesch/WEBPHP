@@ -68,5 +68,10 @@
                 </div>
             @endforelse
         </div>
+
+        {{-- PAGINATION --}}
+        <div class="mt-8 flex justify-center">
+            {{ $advertisements->links() }}
+        </div>
     </div>
 @endsection

@@ -41,7 +41,7 @@ class HomeController extends Controller
         }
 
         return view('home', [
-            'advertisements' => $advertisements->get(),
+            'advertisements' => $advertisements->paginate(9)->withQueryString(),
             'min_price' => $min_price,
             'max_price' => $max_price,
             'current_min' => ($request->price_range ? $request->price_range[0] : Advertisement::min('price')) ?: 0,

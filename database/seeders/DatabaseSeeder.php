@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Advertisement;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,6 +39,15 @@ class DatabaseSeeder extends Seeder
         $user->save();
         $user->assignRole('user');
 
-
+        // create 20 products using for loop and faker
+        $faker = Faker::create();
+        for ($i = 0; $i < 20; $i++) {
+            Advertisement::create([
+                'title' => $faker->title,
+                'description' => $faker->sentence,
+                'price' => $faker->randomFloat(2, 1, 100),
+                'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
+            ]);
+        }
     }
 }
