@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Endroid\QrCode\Builder\BuilderInterface;
-use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
-use Illuminate\Database\Eloquent\Model;
+use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
 
 class Advertisement extends Model
 {
@@ -27,7 +27,7 @@ class Advertisement extends Model
 
     public function getQrCodeDataUri()
     {
-        $builder = \Endroid\QrCode\Builder\Builder::create()
+        $builder = Builder::create()
             ->writer(new PngWriter())
             ->writerOptions([])
             ->data(route('advertisements.show', $this->id))

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdvertisementCrudController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\Api\AdvertisementApiController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\App;
@@ -52,6 +53,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');
     });
 });
+
+Route::get('/api/advertisements', [AdvertisementApiController::class, 'index']);
+Route::get('/api/advertisements/{id}', [AdvertisementApiController::class, 'show']);
+
 
 // Locale switcher route
 Route::get('/language/{locale}', function ($locale) {

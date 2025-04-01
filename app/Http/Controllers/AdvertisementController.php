@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use Exception;
-use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class AdvertisementController extends Controller
 {
-    private const IMAGE_PATH = 'public/images';
-
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $advertisements = Advertisement::sortable($request)
             ->when($request->filled('price_range'), function ($query) use ($request) {
@@ -23,12 +22,12 @@ class AdvertisementController extends Controller
         return view('advertisements.index', compact('advertisements'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('advertisements.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         try {
             $validated = $this->validateAdvertisement($request);
@@ -45,13 +44,13 @@ class AdvertisementController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $advertisement = Advertisement::findOrFail($id);
         return view('advertisements.show', compact('advertisement'));
     }
 
-    private function validateAdvertisement(Request $request)
+    private function validateAdvertisement(Request $request): array
     {
         return $request->validate([
             'title' => 'required|string|max:255',
@@ -61,7 +60,7 @@ class AdvertisementController extends Controller
         ]);
     }
 
-    private function handleImageUpload(Request $request)
+    private function handleImageUpload(Request $request): ?string
     {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -72,7 +71,7 @@ class AdvertisementController extends Controller
         return null;
     }
 
-    private function handleError(Exception $e)
+    private function handleError(Exception $e): RedirectResponse
     {
         return back()
             ->withInput()
