@@ -31,5 +31,13 @@ class LoginController extends Controller
             'auth' => 'You must be logged in to access the dashboard.',
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('home');
+    }
 }
 

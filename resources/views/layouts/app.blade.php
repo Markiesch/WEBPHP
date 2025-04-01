@@ -27,10 +27,13 @@
             </div>
             <ul class="p-2 uk-nav uk-nav-primary">
                 <li>
-                    <a href="" class="flex gap-2">
-                        <uk-icon width="20" height="20" icon="log-out"></uk-icon>
-                        uitloggen
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="flex gap-2">
+                            <uk-icon width="20" height="20" icon="log-out"></uk-icon>
+                            uitloggen
+                        </a>
+                    </form>
                 </li>
             </ul>
             <div></div>

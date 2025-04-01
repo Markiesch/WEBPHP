@@ -15,6 +15,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Login routes
 Route::view('/login', 'auth.login')->name('login');
 Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Signup routes
 Route::view('/signup', 'auth.register')->name('signup');
