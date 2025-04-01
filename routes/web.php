@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignupController;
 
-// Home route
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Public routes
+Route::prefix('/')->group(function () {
+    Route::get('/', [HomeController::class, 'advertisements'])->name('home');
+    Route::get('advertisements/{id}', [HomeController::class, 'advertisement'])->name('advertisement');
+});
+
 
 // Login routes
 Route::view('/login', 'auth.login')->name('login');
@@ -42,6 +46,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
     });
 
+    // Advertisement review route
+    Route::post('/advertisements/{id}/review', [App\Http\Controllers\AdvertisementReviewController::class, 'store'])
+        ->middleware(['auth'])
+        ->name('advertisement.review');
+
     // Rental routes
     Route::get('calendar', function () {
         return view('calendar');
@@ -66,3 +75,4 @@ Route::get('/language/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('language.switch');
+

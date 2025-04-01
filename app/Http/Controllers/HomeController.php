@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index(Request $request)
+    public function advertisements(Request $request): View
     {
         $advertisements = Advertisement::query();
 
@@ -40,7 +36,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('home', [
+        return view('public/advertisements', [
             'advertisements' => $advertisements->paginate(9)->withQueryString(),
             'min_price' => $min_price,
             'max_price' => $max_price,
@@ -49,4 +45,23 @@ class HomeController extends Controller
 //            'current_max' => $request->price_range[1] ?: Advertisement::max('price') ?: 1000,
         ]);
     }
+
+    public function advertisement($id): View {
+        // Find the advertisement with related data
+        $advertisement = Advertisement::with(['user', 'reviews.user'])
+            ->findOrFail($id);
+
+        // Get other ads from the same seller (excluding the current one)
+        $sellerOtherAds = Advertisement::where('user_id', $advertisement->user_id)
+            ->where('id', '!=', $advertisement->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('public/advertisement', [
+            'advertisement' => $advertisement,
+            'sellerOtherAds' => $sellerOtherAds,
+        ]);
+    }
 }
+

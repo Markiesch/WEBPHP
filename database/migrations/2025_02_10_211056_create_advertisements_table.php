@@ -6,15 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAdvertisementsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->decimal('price', 8, 2);
@@ -26,12 +22,7 @@ class CreateAdvertisementsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('advertisements');
     }
