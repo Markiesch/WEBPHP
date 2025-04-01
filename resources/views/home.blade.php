@@ -42,7 +42,9 @@
                     <div class="min-w-[10rem]">
                         <label class="uk-form-label">Price range:</label>
                         <div class="uk-input">
-                            <uk-input-range multiple min="{{ $min_price }}" max="{{ $max_price }}" value="{{$current_min}},{{$current_max}}" name="price_range" label></uk-input-range>
+                            <uk-input-range multiple min="{{ $min_price }}" max="{{ $max_price }}"
+                                            value="{{$current_min}},{{$current_max}}" name="price_range"
+                                            label></uk-input-range>
                         </div>
                     </div>
 
@@ -55,11 +57,9 @@
         </div>
 
         {{-- PRODUCT LIST --}}
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3" data-uk-grid="masonry: true">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
             @forelse($advertisements as $ad)
-                <div>
-                    <x-home.advertisement-card :advertisement="$ad"/>
-                </div>
+                <x-home.advertisement-card :advertisement="$ad"/>
             @empty
                 <div class="uk-width-1-1">
                     <div class="uk-alert uk-alert-warning">
