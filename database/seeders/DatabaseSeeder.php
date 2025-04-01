@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $admin = new User();
         $admin->name = 'Admin';
         $admin->email = 'admin@bazaar.nl';
-        $admin->password = '$2y$12$RRFILOFFad.VuxS44qX7I.mUJxb1cqlO8exnjs9oqXRGpZi0XIqJW';
+        $admin->password = Hash::make('password');
         $admin->save();
         $admin->assignRole('admin');
 
