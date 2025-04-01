@@ -1,7 +1,7 @@
 @props(['advertisement'])
 
 <div class="uk-card w-full overflow-hidden">
-    <div class="aspect-video">
+    <div class="aspect-video bg-gray-400">
         @if($advertisement->image_url)
             <img src="{{ $advertisement->image_url }}" alt="{{ $advertisement->title }}" class="h-full w-full object-cover">
         @else
