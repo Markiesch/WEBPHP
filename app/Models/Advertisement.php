@@ -7,6 +7,7 @@ use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Advertisement extends Model
 {
@@ -14,7 +15,10 @@ class Advertisement extends Model
         'title',
         'description',
         'price',
-        'image_url'
+        'image_url',
+        'rental_start_date',
+        'rental_end_date',
+        'expiry_date'
     ];
 
     protected $sortable = [
@@ -24,6 +28,11 @@ class Advertisement extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(AdvertisementReview::class);
+    }
 
     public function getQrCodeDataUri()
     {
@@ -53,3 +62,4 @@ class Advertisement extends Model
         return $query;
     }
 }
+

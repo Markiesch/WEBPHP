@@ -3,12 +3,23 @@
 namespace Database\Seeders;
 
 use App\Models\Advertisement;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class AdvertisementSeeder extends Seeder
 {
     public function run(): void
     {
+        $faker = Faker::create();
+        for ($i = 0; $i < 20; $i++) {
+            Advertisement::create([
+                'title' => $faker->words(3, true),
+                'description' => $faker->sentence,
+                'price' => $faker->randomFloat(0, 200, 2000),
+                'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
+            ]);
+        }
+
         Advertisement::create([
             'title' => 'Modern Office Space',
             'description' => 'Bright and spacious office space in the city center. Perfect for small businesses.',
