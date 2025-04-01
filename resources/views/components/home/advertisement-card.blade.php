@@ -1,6 +1,6 @@
 @props(['advertisement'])
 
-<div class="uk-card uk-card-default uk-card-hover">
+<div class="uk-card uk-card-default uk-card-hover" >
     <div class="uk-card-media-top">
         @if($advertisement->image_url)
             <img src="{{ $advertisement->image_url }}" alt="{{ $advertisement->title }}">

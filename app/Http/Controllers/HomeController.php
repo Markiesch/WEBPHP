@@ -21,11 +21,16 @@ class HomeController extends Controller
             $advertisements->where('title', 'like', '%' . $request->search . '%');
         }
 
+        $min_price = Advertisement::min('price') ?: 0;
+        $max_price = Advertisement::max('price') ?: 1000;
+
         // Filter by price range
-        if ($request->filled('min_price') && $request->filled('max_price')) {
-            $advertisements->whereBetween('price', [$request->min_price, $request->max_price]);
+        if ($request->filled('price_range')) {
+            $advertisements->whereBetween('price', [$request->price_range[0], $request->price_range[1]]);
         }
 
+        // Default sorting
+        $advertisements->orderBy('created_at', 'desc');
         // Sort results
         if ($request->filled('sort')) {
             $sort = explode('_', $request->sort);
@@ -33,17 +38,15 @@ class HomeController extends Controller
                 $column = $sort[0] === 'date' ? 'created_at' : 'price';
                 $advertisements->orderBy($column, $sort[1]);
             }
-        } else {
-            // Default sorting
-            $advertisements->orderBy('created_at', 'desc');
         }
 
         return view('home', [
             'advertisements' => $advertisements->get(),
-            'min_price' => Advertisement::min('price') ?: 0,
-            'max_price' => Advertisement::max('price') ?: 1000,
-            'current_min' => $request->min_price ?: Advertisement::min('price') ?: 0,
-            'current_max' => $request->max_price ?: Advertisement::max('price') ?: 1000,
+            'min_price' => $min_price,
+            'max_price' => $max_price,
+            'current_min' => ($request->price_range ? $request->price_range[0] : Advertisement::min('price')) ?: 0,
+            'current_max' => ($request->price_range ? $request->price_range[1] : Advertisement::max('price')) ?: 0,
+//            'current_max' => $request->price_range[1] ?: Advertisement::max('price') ?: 1000,
         ]);
     }
 }
