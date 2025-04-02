@@ -59,7 +59,7 @@
         {{-- PRODUCT LIST --}}
         <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
             @forelse($advertisements as $ad)
-                <x-home.advertisement-card :advertisement="$ad"/>
+                <x-public.advertisement-card :advertisement="$ad"/>
             @empty
                 <div class="uk-width-1-1">
                     <div class="uk-alert uk-alert-warning">

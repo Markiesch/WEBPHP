@@ -21,7 +21,7 @@ class Header extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.header');
+        return view('components.public.header');
     }
 
     public function changeLocale(string $locale): \Illuminate\Http\RedirectResponse
