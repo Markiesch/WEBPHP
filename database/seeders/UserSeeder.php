@@ -37,11 +37,11 @@ class UserSeeder extends Seeder
         $businessAdvertiser->assignRole('business_advertiser');
 
         // Create super admin user
-        $superAadmin = new User();
-        $superAadmin->name = 'Super Admin';
-        $superAadmin->email = 'admin@bazaar.com';
-        $superAadmin->password = $password;
-        $superAadmin->save();
-        $superAadmin->assignRole('super_admin');
+        $superAdmin = new User();
+        $superAdmin->name = 'Super Admin';
+        $superAdmin->email = 'admin@bazaar.com';
+        $superAdmin->password = $password;
+        $superAdmin->save();
+        $superAdmin->assignRole('super_admin');
     }
 }
