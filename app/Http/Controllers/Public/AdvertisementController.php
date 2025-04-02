@@ -47,10 +47,33 @@ class AdvertisementController extends Controller
         ]);
     }
 
-    public function advertisement($id): View {
+    public function advertisement(Request $request, $id): View {
         // Find the advertisement with related data
-        $advertisement = Advertisement::with(['user', 'reviews.user'])
+        $advertisement = Advertisement::with(['user'])
             ->findOrFail($id);
+
+        // Get reviews with sorting
+        $reviewsQuery = $advertisement->reviews()->with('user');
+
+        // Apply sorting based on request
+        $sort = $request->get('sort', 'date_desc');
+        switch ($sort) {
+            case 'date_asc':
+                $reviewsQuery->orderBy('created_at', 'asc');
+                break;
+            case 'rating_asc':
+                $reviewsQuery->orderBy('rating', 'asc');
+                break;
+            case 'rating_desc':
+                $reviewsQuery->orderBy('rating', 'desc');
+                break;
+            case 'date_desc':
+            default:
+                $reviewsQuery->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $reviews = $reviewsQuery->get();
 
         // Get other ads from the same seller (excluding the current one)
         $sellerOtherAds = Advertisement::where('user_id', $advertisement->user_id)
@@ -62,6 +85,8 @@ class AdvertisementController extends Controller
         return view('public/advertisement', [
             'advertisement' => $advertisement,
             'sellerOtherAds' => $sellerOtherAds,
+            'reviews' => $reviews,
+            'currentSort' => $sort
         ]);
     }
 }

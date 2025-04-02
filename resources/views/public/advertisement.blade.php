@@ -9,7 +9,7 @@
                  class="w-full object-cover rounded-lg shadow-lg"/>
         </div>
 
-        <div class="p-12 pr-0">
+        <div class="pl-12 pt-6">
             <p>Listed by: <a href="/" class="text-blue-700 underline">{{ $advertisement->user->name }}</a></p>
             <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
             <p class="pt-2">{{ $advertisement->description }}</p>
@@ -29,12 +29,11 @@
     </div>
 
     <div class="uk-container py-6">
-        <div class="uk-card uk-card-body p-6 grid grid-cols-3 gap-8">
+        <div class="uk-card uk-card-body p-6 grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-8">
             <div>
                 <div class="flex gap-3 items-end">
-
                     <?php
-                    $mean = number_format($advertisement->reviews->avg('rating'), 1)
+                    $mean = number_format($reviews->avg('rating'), 1)
                     ?>
                     <h2 class="text-6xl font-medium">{{ $mean }}</h2>
                     <div>
@@ -45,7 +44,7 @@
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="text-yellow-500">
                                     <path
-                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
                                 </svg>
                             @endfor
                         </div>
@@ -81,52 +80,50 @@
                         <a href="{{ route('login') }}">Log in</a> to write a review.
                     </div>
                 @endauth
-
-
             </div>
             <div class="col-span-2">
-                <div class="flex justify-between pb-4 items-end">
+                <div class="flex justify-between items-end">
                     <h2 class="text-2xl font-bold">Reviews</h2>
-                    <div class="uk-form-controls">
-                        <select class="uk-select" id="sort" name="sort">
-                            <option value="date_desc" {{ request('sort') === 'date_desc' ? 'selected' : '' }}>
-                                Newest first
-                            </option>
-                            <option value="date_asc" {{ request('sort') === 'date_asc' ? 'selected' : '' }}>
-                                Oldest first
-                            </option>
-                            <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>
-                                Price: Low to High
-                            </option>
-                            <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>
-                                Price: High to Low
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                @if($advertisement->reviews->count() > 0)
-                    @foreach($advertisement->reviews as $review)
-                        <div>
-                            <div class="flex justify-between">
-                                <div>
-                                    <h2 class="font-bold pb-1">{{ $review->user->name }}</h2>
-                                    <div class="flex">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 viewBox="0 0 24 24"
-                                                 fill="{{ $i <= $review->rating ? '#eab308' : 'transparent' }}"
-                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                 stroke-linejoin="round" class="text-yellow-500">
-                                                <path
-                                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
-                                            </svg>
-                                        @endfor
-                                    </div>
-                                </div>
-                                <p class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</p>
-                            </div>
-                            <p class="pt-2">{{ $review->comment }}</p>
+                    <form id="sortForm" action="{{ route('advertisement', $advertisement->id) }}" method="GET">
+                        <div class="uk-form-controls">
+                            <select class="uk-select" id="sort" name="sort" onchange="document.getElementById('sortForm').submit()">
+                                <option value="date_desc" {{ $currentSort === 'date_desc' ? 'selected' : '' }}>
+                                    Newest first
+                                </option>
+                                <option value="date_asc" {{ $currentSort === 'date_asc' ? 'selected' : '' }}>
+                                    Oldest first
+                                </option>
+                                <option value="rating_asc" {{ $currentSort === 'rating_asc' ? 'selected' : '' }}>
+                                    Rating: Low to High
+                                </option>
+                                <option value="rating_desc" {{ $currentSort === 'rating_desc' ? 'selected' : '' }}>
+                                    Rating: High to Low
+                                </option>
+                            </select>
                         </div>
+                    </form>
+                </div>
+                @if($reviews->count() > 0)
+                    @foreach($reviews as $review)
+                        <div class="flex justify-between pt-6">
+                            <div>
+                                <h2 class="font-bold pb-1">{{ $review->user->name }}</h2>
+                                <div class="flex">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24"
+                                             fill="{{ $i <= $review->rating ? '#eab308' : 'transparent' }}"
+                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round" class="text-yellow-500">
+                                            <path
+                                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                        </svg>
+                                    @endfor
+                                </div>
+                            </div>
+                            <p class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</p>
+                        </div>
+                        <p class="pt-2">{{ $review->comment }}</p>
                     @endforeach
                 @else
                     <p class="text-muted">No reviews yet.</p>
