@@ -44,6 +44,11 @@ class Advertisement extends Model
         return $this->hasMany(AdvertisementReview::class);
     }
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(AdvertisementFavorite::class);
+    }
+
     public function getQrCodeDataUri()
     {
         $builder = Builder::create()
