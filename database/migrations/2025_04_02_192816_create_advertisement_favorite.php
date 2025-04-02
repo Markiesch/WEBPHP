@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('advertisement_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            // Unique constraint to prevent duplicate favorites
+            $table->unique(['user_id', 'advertisement_id'], 'user_advertisement_unique');
         });
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Public\AdvertisementController;
+use App\Http\Controllers\Public\AdvertisementFavoriteController;
 use App\Http\Controllers\Public\AdvertisementReviewController;
 use App\Http\Controllers\Public\LoginController;
 use App\Http\Controllers\Public\SignupController;
@@ -14,6 +15,9 @@ Route::prefix('/')->group(function () {
     Route::post('advertisements/{id}/reviews', [AdvertisementReviewController::class, 'store'])
         ->middleware(['auth'])
         ->name('reviews.submit');
+    Route::post('advertisements/{id}/favorite', [AdvertisementFavoriteController::class, 'store'])
+        ->middleware(['auth'])
+        ->name('advertisement.favorite');
 
     // Login routes
     Route::view('/login', 'auth.login')->name('login');

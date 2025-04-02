@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
+use App\Models\AdvertisementFavorite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class AdvertisementController extends Controller
@@ -12,6 +15,7 @@ class AdvertisementController extends Controller
     public function advertisements(Request $request): View
     {
         $advertisements = Advertisement::query();
+        $userId = Auth::id();
 
         // Search by name (title)
         if ($request->filled('search')) {
@@ -37,20 +41,43 @@ class AdvertisementController extends Controller
             }
         }
 
+        $paginatedAds = $advertisements->paginate(9)->withQueryString();
+
+        // Add favorited status to each advertisement
+        if ($userId) {
+            $favorites = AdvertisementFavorite::where('user_id', $userId)
+                ->whereIn('advertisement_id', $paginatedAds->pluck('id'))
+                ->pluck('advertisement_id')
+                ->toArray();
+
+            foreach ($paginatedAds as $ad) {
+                $ad->is_favorited = in_array($ad->id, $favorites);
+            }
+        } else {
+            foreach ($paginatedAds as $ad) {
+                $ad->is_favorited = false;
+            }
+        }
+
         return view('public/advertisements', [
-            'advertisements' => $advertisements->paginate(9)->withQueryString(),
+            'advertisements' => $paginatedAds,
             'min_price' => $min_price,
             'max_price' => $max_price,
             'current_min' => ($request->price_range ? $request->price_range[0] : Advertisement::min('price')) ?: 0,
             'current_max' => ($request->price_range ? $request->price_range[1] : Advertisement::max('price')) ?: 0,
-//            'current_max' => $request->price_range[1] ?: Advertisement::max('price') ?: 1000,
         ]);
     }
 
     public function advertisement(Request $request, $id): View {
-        // Find the advertisement with related data
         $advertisement = Advertisement::with(['user'])
             ->findOrFail($id);
+
+        $userId = Auth::id();
+        $advertisement->is_favorited = $userId ?
+            AdvertisementFavorite::where('user_id', $userId)
+                ->where('advertisement_id', $advertisement->id)
+                ->exists() :
+            false;
 
         // Get reviews with sorting
         $reviewsQuery = $advertisement->reviews()->with('user');

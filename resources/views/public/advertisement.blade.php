@@ -6,7 +6,7 @@
         <div>
             <img src="{{ asset($advertisement->image_url) }}"
                  alt="{{ $advertisement->title }}"
-                 class="w-full object-cover rounded-lg shadow-lg"/>
+                 class="w-full object-cover rounded-lg shadow-lg aspect-video bg-gray-500"/>
         </div>
 
         <div class="pl-12 pt-6">
@@ -20,10 +20,23 @@
                     <uk-icon icon="shopping-cart"></uk-icon>
                     Kopen
                 </button>
-                <button class="uk-btn uk-btn-md uk-btn-ghost w-full gap-1 border">
-                    <uk-icon icon="crown"></uk-icon>
-                    Favorite
-                </button>
+                <form action="{{ route('advertisement.favorite', $advertisement->id) }}" method="POST">
+                    @csrf
+                    <input id="value" name="value" type="hidden" value="{{!$advertisement->is_favorited}}">
+                    <button
+                        type="submit"
+                        class="uk-btn uk-btn-md w-full gap-1 border {{ $advertisement->is_favorited ? "uk-btn-destructive" : "uk-btn-ghost" }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                             fill="{{ $advertisement->is_favorited ? "currentColor" : "transparent" }}"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-crown-icon lucide-crown">
+                            <path
+                                d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/>
+                            <path d="M5 21h14"/>
+                        </svg>
+                        {{ $advertisement->is_favorited ? "Favorited" : "Favorite" }}
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -44,7 +57,7 @@
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="text-yellow-500">
                                     <path
-                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
                                 </svg>
                             @endfor
                         </div>
@@ -86,7 +99,8 @@
                     <h2 class="text-2xl font-bold">Reviews</h2>
                     <form id="sortForm" action="{{ route('advertisement', $advertisement->id) }}" method="GET">
                         <div class="uk-form-controls">
-                            <select class="uk-select" id="sort" name="sort" onchange="document.getElementById('sortForm').submit()">
+                            <select class="uk-select" id="sort" name="sort"
+                                    onchange="document.getElementById('sortForm').submit()">
                                 <option value="date_desc" {{ $currentSort === 'date_desc' ? 'selected' : '' }}>
                                     Newest first
                                 </option>
@@ -116,7 +130,7 @@
                                              stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                              stroke-linejoin="round" class="text-yellow-500">
                                             <path
-                                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
                                         </svg>
                                     @endfor
                                 </div>
