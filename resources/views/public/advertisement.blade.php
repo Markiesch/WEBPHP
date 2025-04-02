@@ -2,89 +2,136 @@
 
 @section('content')
     <x-header/>
+    <div class="uk-container grid grid-cols-2 pt-6">
+        <div>
+            <img src="{{ asset($advertisement->image_url) }}"
+                 alt="{{ $advertisement->title }}"
+                 class="w-full object-cover rounded-lg shadow-lg"/>
+        </div>
 
-    <div class="uk-container py-5">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="uk-card mb-4">
-                    <div class="uk-card-header bg-primary">
-                        <h1 class="text-2xl font-bold">{{ $advertisement->title }}</h1>
-                    </div>
-                    <div class="uk-card-body">
-                        <h5 class="card-title">Price: ${{ number_format($advertisement->price, 2) }}</h5>
+        <div class="p-12 pr-0">
+            <p>Listed by: <a href="/" class="text-blue-700 underline">{{ $advertisement->user->name }}</a></p>
+            <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
+            <p class="pt-2">{{ $advertisement->description }}</p>
+            <p class="pt-2 text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</p>
 
-                        <div class="mb-3">
-                            <h6>Description:</h6>
-                            <p class="card-text">{{ $advertisement->description }}</p>
-                        </div>
-
-                        <div class="mb-3">
-                            <h6>Posted on:</h6>
-                            <p class="card-text">{{ $advertisement->created_at->format('F j, Y') }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reviews Section -->
-                <div class="uk-card mb-4">
-                    <div class="uk-card-header">
-                        <h2 class="mb-0 h5">Reviews ({{ $advertisement->reviews->count() }})</h2>
-                    </div>
-                    <div class="uk-card-body">
-                        @if($advertisement->reviews->count() > 0)
-                            @foreach($advertisement->reviews as $review)
-                                <div class="border-bottom mb-3 pb-3">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
-                                            <strong>{{ $review->user->name }}</strong>
-                                            <small
-                                                class="text-muted ms-2">{{ $review->created_at->format('M d, Y') }}</small>
-                                        </div>
-                                        <div>
-                                            @for($i = 1; $i <= 5; $i++)
-                                                <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }} text-warning"></i>
-                                            @endfor
-                                        </div>
-                                    </div>
-                                    <p class="mb-0">{{ $review->comment }}</p>
-                                </div>
-                            @endforeach
-                        @else
-                            <p class="text-muted">No reviews yet.</p>
-                        @endif
-
-                        @auth
-                            <div class="mt-4">
-                                <h5>Write a Review</h5>
-                                <form action="{{ route('advertisement.review', $advertisement->id) }}" method="POST">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="rating" class="form-label">Rating</label>
-                                        <select class="form-select" id="rating" name="rating" required>
-                                            <option value="">Select rating</option>
-                                            <option value="5">5 - Excellent</option>
-                                            <option value="4">4 - Very Good</option>
-                                            <option value="3">3 - Good</option>
-                                            <option value="2">2 - Fair</option>
-                                            <option value="1">1 - Poor</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="comment" class="form-label">Comment</label>
-                                        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                                </form>
-                            </div>
-                        @else
-                            <div class="alert alert-info mt-3">
-                                <a href="{{ route('login') }}">Log in</a> to write a review.
-                            </div>
-                        @endauth
-                    </div>
-                </div>
+            <div class="pt-4 grid gap-2">
+                <button class="uk-btn uk-btn-md uk-btn-primary w-full gap-1">
+                    <uk-icon icon="shopping-cart"></uk-icon>
+                    Kopen
+                </button>
+                <button class="uk-btn uk-btn-md uk-btn-ghost w-full gap-1 border">
+                    <uk-icon icon="crown"></uk-icon>
+                    Favorite
+                </button>
             </div>
+        </div>
+    </div>
 
+    <div class="uk-container py-6">
+        <div class="uk-card uk-card-body p-6 grid grid-cols-3 gap-8">
+            <div>
+                <div class="flex gap-3 items-end">
+
+                    <?php
+                    $mean = number_format($advertisement->reviews->avg('rating'), 1)
+                    ?>
+                    <h2 class="text-6xl font-medium">{{ $mean }}</h2>
+                    <div>
+                        <div class="flex">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                     fill="{{ $i <= $mean ? '#eab308' : 'transparent' }}" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="text-yellow-500">
+                                    <path
+                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                </svg>
+                            @endfor
+                        </div>
+                        <p>Gemiddelde van {{ $advertisement->reviews->count() }} reviews</p>
+                    </div>
+                </div>
+
+                @auth
+                    <div class="mt-6 pt-4 border-t">
+                        <h5 class="font-bold">Write a Review</h5>
+                        <form action="{{ route('advertisement.review', $advertisement->id) }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating</label>
+                                <select class="uk-select" id="rating" name="rating" required>
+                                    <option value="">Select rating</option>
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea class="uk-textarea" id="comment" name="comment" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="uk-btn uk-btn-secondary border w-full">Submit Review</button>
+                        </form>
+                    </div>
+                @else
+                    <div class="alert alert-info mt-3">
+                        <a href="{{ route('login') }}">Log in</a> to write a review.
+                    </div>
+                @endauth
+
+
+            </div>
+            <div class="col-span-2">
+                <div class="flex justify-between pb-4 items-end">
+                    <h2 class="text-2xl font-bold">Reviews</h2>
+                    <div class="uk-form-controls">
+                        <select class="uk-select" id="sort" name="sort">
+                            <option value="date_desc" {{ request('sort') === 'date_desc' ? 'selected' : '' }}>
+                                Newest first
+                            </option>
+                            <option value="date_asc" {{ request('sort') === 'date_asc' ? 'selected' : '' }}>
+                                Oldest first
+                            </option>
+                            <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>
+                                Price: Low to High
+                            </option>
+                            <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>
+                                Price: High to Low
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                @if($advertisement->reviews->count() > 0)
+                    @foreach($advertisement->reviews as $review)
+                        <div>
+                            <div class="flex justify-between">
+                                <div>
+                                    <h2 class="font-bold pb-1">{{ $review->user->name }}</h2>
+                                    <div class="flex">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 viewBox="0 0 24 24"
+                                                 fill="{{ $i <= $review->rating ? '#eab308' : 'transparent' }}"
+                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round" class="text-yellow-500">
+                                                <path
+                                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <p class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</p>
+                            </div>
+                            <p class="pt-2">{{ $review->comment }}</p>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-muted">No reviews yet.</p>
+                @endif
+            </div>
         </div>
     </div>
 @endsection
