@@ -73,7 +73,7 @@ class AdvertisementController extends Controller
                 break;
         }
 
-        $reviews = $reviewsQuery->get();
+        $reviews = $reviewsQuery->paginate(3)->withQueryString();
 
         // Get other ads from the same seller (excluding the current one)
         $sellerOtherAds = Advertisement::where('user_id', $advertisement->user_id)

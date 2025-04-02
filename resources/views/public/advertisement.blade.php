@@ -125,6 +125,11 @@
                         </div>
                         <p class="pt-2">{{ $review->comment }}</p>
                     @endforeach
+
+                    <!-- Pagination Links -->
+                    <div class="mt-6 pt-4">
+                        {{ $reviews->links() }}
+                    </div>
                 @else
                     <p class="text-muted">No reviews yet.</p>
                 @endif
