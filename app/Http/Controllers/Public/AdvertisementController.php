@@ -7,7 +7,6 @@ use App\Models\Advertisement;
 use App\Models\AdvertisementFavorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class AdvertisementController extends Controller
@@ -30,6 +29,13 @@ class AdvertisementController extends Controller
             $advertisements->whereBetween('price', [$request->price_range[0], $request->price_range[1]]);
         }
 
+        // Filter favorites only
+        if ($request->has('favorite') && $userId) {
+            $advertisements->whereHas('favorites', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            });
+        }
+
         // Default sorting
         $advertisements->orderBy('created_at', 'desc');
         // Sort results
@@ -43,7 +49,6 @@ class AdvertisementController extends Controller
 
         $paginatedAds = $advertisements->paginate(9)->withQueryString();
 
-        // Add favorited status to each advertisement
         if ($userId) {
             $favorites = AdvertisementFavorite::where('user_id', $userId)
                 ->whereIn('advertisement_id', $paginatedAds->pluck('id'))

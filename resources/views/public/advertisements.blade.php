@@ -48,6 +48,13 @@
                         </div>
                     </div>
 
+                    @if(auth()->check())
+                        <div>
+                            <input id="favorite" name="favorite" type="checkbox" class="uk-checkbox" {{ request('favorite') ? 'checked' : ''  }}>
+                            <label class="uk-form-label" for="favorite">Favorites only</label>
+                        </div>
+                    @endif
+
                     <div class="uk-width-1-1 uk-margin-small-top uk-text-right border-s pl-4">
                         <button type="submit" class="uk-btn uk-btn-primary">Search</button>
                         <a href="{{ route('home') }}" class="uk-btn uk-btn-default">Reset</a>

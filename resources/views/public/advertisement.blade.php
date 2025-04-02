@@ -2,14 +2,14 @@
 
 @section('content')
     <x-header/>
-    <div class="uk-container grid grid-cols-2 pt-6">
-        <div>
+    <div class="uk-container grid grid-cols-3 pt-6 gap-8">
+        <div class="col-span-2">
             <img src="{{ asset($advertisement->image_url) }}"
                  alt="{{ $advertisement->title }}"
                  class="w-full object-cover rounded-lg shadow-lg aspect-video bg-gray-500"/>
         </div>
 
-        <div class="pl-12 pt-6">
+        <div class="pt-6">
             <p>Listed by: <a href="/" class="text-blue-700 underline">{{ $advertisement->user->name }}</a></p>
             <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
             <p class="pt-2">{{ $advertisement->description }}</p>
