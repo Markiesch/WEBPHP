@@ -44,13 +44,14 @@
     <div class="uk-container py-6">
         <div class="uk-card uk-card-body p-6 grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-8">
             <div>
-                <div class="flex gap-3 items-end">
+                <div class="flex gap-3 items-end pb-4">
                     <h2 class="text-6xl font-medium">{{ $mean_rating }}</h2>
                     <div>
                         <div class="flex">
                             @for($i = 1; $i <= 5; $i++)
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                                     fill="{{ $i <= $mean_rating ? '#eab308' : 'transparent' }}" stroke="currentColor"
+                                     fill="{{ $i <= $mean_rating ? '#eab308' : 'transparent' }}"
+                                     stroke="currentColor"
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="text-yellow-500">
                                     <path
@@ -63,33 +64,37 @@
                 </div>
 
                 @for($i = 5; $i > 0; $i--)
-                    <a href="{{ route('advertisement', ['id' => $advertisement->id, 'rating' => $i]) }}"
-                       class="flex gap-4 items-center">
-                        <div class="flex justify-end flex-grow-0 w-[8rem]">
-                            @for($y = 1; $y <= $i; $y++)
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                     fill="currentColor" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="text-yellow-500">
-                                    <path
-                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
-                                </svg>
-                            @endfor
-                        </div>
-
-                            <?php
-                            $count = $reviews->where('rating', $i)->count();
-                            $percentage = $total_reviews_count == 0 ? 0 : $reviews_count[$i] / $total_reviews_count * 100;
-                            ?>
-
-                        <div class="flex-grow-1 w-full">
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
+                    <form action="{{ route('advertisement', $advertisement->id) }}" method="GET">
+                        <input type="hidden" name="rating" value="{{ $i }}">
+                        <input type="hidden" name="sort" value="{{ request('sort') }}">
+                        <button type="submit" class="w-full flex gap-4 items-center">
+                            <div class="flex justify-end flex-grow-0 w-[8rem]">
+                                @for($y = 1; $y <= $i; $y++)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                         fill="currentColor" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                         class="text-yellow-500">
+                                        <path
+                                                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                    </svg>
+                                @endfor
                             </div>
-                        </div>
 
-                        <p>{{$reviews_count[$i]}}</p>
-                    </a>
+                                <?php
+                                $count = $reviews->where('rating', $i)->count();
+                                $percentage = $total_reviews_count == 0 ? 0 : $reviews_count[$i] / $total_reviews_count * 100;
+                                ?>
+
+                            <div class="flex-grow-1 w-full">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-yellow-500 h-full rounded-full"
+                                         style="width: {{ $percentage }}%"></div>
+                                </div>
+                            </div>
+
+                            <p>{{$reviews_count[$i]}}</p>
+                        </button>
+                    </form>
                 @endfor
 
                 @auth
@@ -110,7 +115,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="comment" class="form-label">Comment</label>
-                                <textarea class="uk-textarea" id="comment" name="comment" rows="3" required></textarea>
+                                <textarea class="uk-textarea" id="comment" name="comment" rows="3"
+                                          required></textarea>
                             </div>
                             <button type="submit" class="uk-btn uk-btn-secondary border w-full">Submit Review</button>
                         </form>
@@ -124,8 +130,10 @@
             <div class="col-span-2">
                 <div class="flex justify-between items-end">
                     <h2 class="text-2xl font-bold">Reviews</h2>
-                    <form id="sortForm" action="{{ route('advertisement', $advertisement->id) }}" method="GET">
-                        <div class="uk-form-controls">
+                    <div class="uk-form-controls">
+                        <form id="sortForm" action="{{ route('advertisement', $advertisement->id) }}" method="GET">
+                            <input type="hidden" name="rating" value="{{ request('rating') }}">
+
                             <select class="uk-select" id="sort" name="sort"
                                     onchange="document.getElementById('sortForm').submit()">
                                 <option value="date_desc" {{ $currentSort === 'date_desc' ? 'selected' : '' }}>
@@ -141,8 +149,8 @@
                                     Rating: High to Low
                                 </option>
                             </select>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
                 @if($reviews->count() > 0)
                     @foreach($reviews as $review)
