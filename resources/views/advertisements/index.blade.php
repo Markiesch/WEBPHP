@@ -25,14 +25,13 @@
         :direction="request('direction')"
     >
         @foreach($advertisements as $advertisement)
-            <tr class="hover:bg-gray-50 transition-colors duration-200">
-                <td class="px-6 py-6 border-b border-gray-100">{{ $advertisement->title }}</td>
-                <td class="px-6 py-6 border-b border-gray-100">{{ Str::limit($advertisement->description, 50) }}</td>
-                <td class="px-6 py-6 border-b border-gray-100">€{{ number_format($advertisement->price, 2) }}</td>
-                <td class="px-6 py-6 border-b border-gray-100">{{ $advertisement->created_at->format('Y-m-d H:i') }}</td>
-                <td class="px-6 py-6 border-b border-gray-100">
-                    <a href="{{ route('advertisements.show', $advertisement->id) }}"
-                       class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors duration-200">
+            <tr>
+                <td>{{ $advertisement->title }}</td>
+                <td>{{ Str::limit($advertisement->description, 50) }}</td>
+                <td>€{{ number_format($advertisement->price, 2) }}</td>
+                <td>{{ $advertisement->created_at->format('Y-m-d H:i') }}</td>
+                <td>
+                    <a href="{{ route('advertisements.show', $advertisement->id) }}">
                         {{ __('View QR') }}
                     </a>
                 </td>
