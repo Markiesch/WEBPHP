@@ -65,6 +65,38 @@
                     </div>
                 </div>
 
+                @for($i = 5; $i > 0; $i--)
+                    <a href="" class="flex gap-4 items-center">
+                        <div class="flex justify-end flex-grow-0 w-[8rem]">
+                            @for($y = 1; $y <= $i; $y++)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                     fill="currentColor" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="text-yellow-500">
+                                    <path
+                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                </svg>
+                            @endfor
+                        </div>
+
+                            <?php
+                                $count = $reviews->where('rating', $i)->count();
+                            $percentage = $count / $reviews->count() * 100;
+                            ?>
+
+                        <div class="flex-grow-1 w-full">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                <div class="bg-yellow-500 h-2.5 rounded-full" style="width: {{ $percentage }}%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p>{{$count}}</p>
+
+                        </div>
+                    </a>
+                @endfor
+
                 @auth
                     <div class="mt-6 pt-4 border-t">
                         <h5 class="font-bold">Write a Review</h5>
@@ -139,7 +171,8 @@
                             </div>
                             <div class="flex gap-2">
                                 @if(auth()->id() === $review->user->id)
-                                    <form action="{{ route('reviews.delete', [$advertisement->id, $review->id]) }}" method="POST">
+                                    <form action="{{ route('reviews.delete', [$advertisement->id, $review->id]) }}"
+                                          method="POST">
                                         @csrf
                                         <button class="uk-btn uk-btn-icon uk-btn-destructive uk-btn-xs">
                                             <uk-icon icon="trash"></uk-icon>
