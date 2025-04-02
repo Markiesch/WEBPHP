@@ -31,7 +31,7 @@
                 <td>€{{ number_format($advertisement->price, 2) }}</td>
                 <td>{{ $advertisement->created_at->format('Y-m-d H:i') }}</td>
                 <td>
-                    <a href="{{ route('advertisements.show', $advertisement->id) }}">
+                    <a href="{{ route('advertisements.show', $advertisement->id) }}" class="uk-btn uk-btn-secondary">
                         {{ __('View QR') }}
                     </a>
                 </td>

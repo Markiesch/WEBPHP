@@ -63,7 +63,7 @@
 
                 <div class="flex justify-end">
                     <button type="submit"
-                            class="px-6 py-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200">
+                            class="uk-btn uk-btn-primary">
                         {{ __('Create Advertisement') }}
                     </button>
                 </div>

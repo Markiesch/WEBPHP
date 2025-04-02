@@ -29,7 +29,7 @@ class AdvertisementSeeder extends Seeder
             'rental_start_date' => '2024-04-01',
             'rental_end_date' => '2024-09-30',
             'expiry_date' => '2024-03-31',
-            'user_id' => 1,
+            'user_id' => 3,
         ]);
 
         Advertisement::create([
@@ -40,7 +40,7 @@ class AdvertisementSeeder extends Seeder
             'rental_start_date' => '2024-05-01',
             'rental_end_date' => '2025-04-30',
             'expiry_date' => '2024-04-15',
-            'user_id' => 1,
+            'user_id' => 3,
         ]);
 
         Advertisement::create([
@@ -51,7 +51,7 @@ class AdvertisementSeeder extends Seeder
             'rental_start_date' => '2024-04-15',
             'rental_end_date' => '2024-07-15',
             'expiry_date' => '2024-04-10',
-            'user_id' => 1,
+            'user_id' => 2,
         ]);
     }
 }

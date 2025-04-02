@@ -7,7 +7,7 @@
 @section('content')
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
         <div class="p-6 text-gray-900">
-            <a href="{{ route('contracts.showUploadForm') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+            <a href="{{ route('contracts.showUploadForm') }}" class="uk-btn uk-btn-primary">
                 Upload Contract
             </a>
         </div>
@@ -34,7 +34,7 @@
                     <form action="{{ route('export-pdf', $contract->id) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"
-                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors duration-200">
+                                class="uk-btn uk-btn-secondary">
                             Export to PDF
                         </button>
                     </form>

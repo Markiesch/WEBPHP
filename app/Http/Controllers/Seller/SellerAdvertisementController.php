@@ -7,6 +7,7 @@ use App\Models\Advertisement;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -14,7 +15,8 @@ class SellerAdvertisementController extends Controller
 {
     public function index(Request $request): View
     {
-        $advertisements = Advertisement::sortable($request)
+        $advertisements = Advertisement::where('user_id', Auth::id())
+            ->sortable($request)
             ->when($request->filled('price_range'), function ($query) use ($request) {
                 $this->applyPriceFilter($query, $request->input('price_range'));
             })
@@ -33,6 +35,7 @@ class SellerAdvertisementController extends Controller
         try {
             $validated = $this->validateAdvertisement($request);
             $validated['image_url'] = $this->handleImageUpload($request);
+            $validated['user_id'] = Auth::id();
 
             Advertisement::create($validated);
 

@@ -15,12 +15,18 @@ class CreateContractsTable extends Migration
             $table->text('description');
             $table->string('file_path');
             $table->string('status');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
     public function down()
     {
+        Schema::table('contracts', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
         Schema::dropIfExists('contracts');
     }
 }
