@@ -121,7 +121,9 @@
                     @foreach($reviews as $review)
                         <div class="flex justify-between pt-6">
                             <div>
-                                <h2 class="font-bold pb-1">{{ $review->user->name }} @if(auth()->id() === $review->user->id)(you)@endif</h2>
+                                <h2 class="font-bold pb-1">{{ $review->user->name }} @if(auth()->id() === $review->user->id)
+                                        (you)
+                                    @endif</h2>
                                 <div class="flex">
                                     @for($i = 1; $i <= 5; $i++)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -135,7 +137,17 @@
                                     @endfor
                                 </div>
                             </div>
-                            <p class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</p>
+                            <div class="flex gap-2">
+                                @if(auth()->id() === $review->user->id)
+                                    <form action="{{ route('reviews.delete', [$advertisement->id, $review->id]) }}" method="POST">
+                                        @csrf
+                                        <button class="uk-btn uk-btn-icon uk-btn-destructive uk-btn-xs">
+                                            <uk-icon icon="trash"></uk-icon>
+                                        </button>
+                                    </form>
+                                @endif
+                                <p class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</p>
+                            </div>
                         </div>
                         <p class="pt-2">{{ $review->comment }}</p>
                     @endforeach

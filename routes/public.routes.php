@@ -15,6 +15,9 @@ Route::prefix('/')->group(function () {
     Route::post('advertisements/{id}/reviews', [AdvertisementReviewController::class, 'store'])
         ->middleware(['auth'])
         ->name('reviews.submit');
+    Route::post('advertisements/{advertisementId}/reviews/{id}', [AdvertisementReviewController::class, 'delete'])
+        ->middleware(['auth'])
+        ->name('reviews.delete');
     Route::post('advertisements/{id}/favorite', [AdvertisementFavoriteController::class, 'store'])
         ->middleware(['auth'])
         ->name('advertisement.favorite');

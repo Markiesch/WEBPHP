@@ -28,4 +28,16 @@ class AdvertisementReviewController extends Controller
 
         return redirect()->back()->with('success', 'Review submitted successfully!');
     }
+
+    public function delete($advertisementId, $id): RedirectResponse
+    {
+        $review = AdvertisementReview::where('id', $id)
+            ->where('advertisement_id', $advertisementId)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $review->delete();
+
+        return redirect()->back()->with('success', 'Review deleted successfully!');
+    }
 }
