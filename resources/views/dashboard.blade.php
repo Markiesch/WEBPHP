@@ -11,7 +11,6 @@
             </div>
         </div>
 
-
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <h3 class="text-lg font-medium text-gray-900">{{ __('What can you do?') }}</h3>
@@ -34,6 +33,8 @@
                        class="text-blue-600 hover:text-blue-800">{{ __('Upload Contract') }}</a>
                     <a href="{{ route('advertisements.create') }}"
                        class="text-blue-600 hover:text-blue-800">{{ __('Create Advertisement') }}</a>
+                    <a href="{{ route('advertisements.list') }}"
+                       class="text-blue-600 hover:text-blue-800">{{ __('View Advertisements') }}</a>
                 </div>
             </div>
         </div>

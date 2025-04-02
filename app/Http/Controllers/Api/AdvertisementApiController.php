@@ -6,15 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdvertisementApiController extends Controller
 {
     /**
      * Return a listing of advertisements.
      */
+
     public function index(Request $request): JsonResponse
     {
-        $advertisements = Advertisement::query()
+        $userId = Auth::id();
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated'
+            ], 401);
+        }
+
+        $advertisements = Advertisement::where('user_id', $userId)
             ->when($request->filled('price_range'), function ($query) use ($request) {
                 $this->applyPriceFilter($query, $request->input('price_range'));
             })
@@ -31,8 +42,8 @@ class AdvertisementApiController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $advertisement = Advertisement::findOrFail($id);
-        
+        $advertisement = Advertisement::where('user_id', Auth::id())->findOrFail($id);
+
         return response()->json([
             'success' => true,
             'data' => $advertisement
