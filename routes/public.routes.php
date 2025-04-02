@@ -1,15 +1,16 @@
 <?php
+
 use App\Http\Controllers\Admin\AdvertisementCrudController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Public\AdvertisementController;
+use App\Http\Controllers\Public\LoginController;
+use App\Http\Controllers\Public\SignupController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\SignupController;
 
 // Public routes
 Route::prefix('/')->group(function () {
-    Route::get('/', [HomeController::class, 'advertisements'])->name('home');
-    Route::get('advertisements/{id}', [HomeController::class, 'advertisement'])->name('advertisement');
+    Route::get('/', [AdvertisementController::class, 'advertisements'])->name('home');
+    Route::get('advertisements/{id}', [AdvertisementController::class, 'advertisement'])->name('advertisement');
 
     // Advertisement review route
     Route::post('/advertisements/{id}/review', [App\Http\Controllers\AdvertisementReviewController::class, 'store'])

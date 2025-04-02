@@ -17,7 +17,7 @@
             <p class="uk-text-truncate">{{ $advertisement->description }}</p>
         </div>
         <div>
-            <a href="{{ route('advertisements.show', $advertisement->id) }}" class="uk-button uk-button-text">Read
+            <a href="{{ route('advertisement', $advertisement->id) }}" class="uk-button uk-button-text">Read
                 more</a>
         </div>
     </div>

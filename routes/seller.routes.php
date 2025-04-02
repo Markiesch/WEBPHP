@@ -1,7 +1,8 @@
 <?php
+
 use App\Http\Controllers\Admin\AdvertisementCrudController;
-use App\Http\Controllers\AdvertisementController;
-use App\Http\Controllers\ContractController;
+use App\Http\Controllers\Seller\SellerAdvertisementController;
+use App\Http\Controllers\Seller\ContractController;
 use Illuminate\Support\Facades\Route;
 
 // Authenticated routes
@@ -19,10 +20,10 @@ Route::middleware(['auth'])->group(function () {
 
         // Advertisement routes
         Route::prefix('advertisements')->group(function () {
-            Route::get('/', [AdvertisementController::class, 'index'])->name('advertisements.index');
-            Route::get('create', [AdvertisementController::class, 'create'])->name('advertisements.create');
-            Route::post('/', [AdvertisementController::class, 'store'])->name('advertisements.store');
-            Route::get('{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
+            Route::get('/', [SellerAdvertisementController::class, 'index'])->name('advertisements.index');
+            Route::get('create', [SellerAdvertisementController::class, 'create'])->name('advertisements.create');
+            Route::post('/', [SellerAdvertisementController::class, 'store'])->name('advertisements.store');
+            Route::get('{advertisement}', [SellerAdvertisementController::class, 'show'])->name('advertisements.show');
             // Advertisement CSV upload routes
             Route::get('upload-csv', [AdvertisementCrudController::class, 'showUploadForm'])->name('crud.advertisement.uploadCsvForm');
             Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');
