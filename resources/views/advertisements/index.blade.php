@@ -7,7 +7,7 @@
 @section('content')
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
         <div class="p-6 text-gray-900">
-            <a href="{{ route('advertisements.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+            <a href="{{ route('advertisements.create') }}" class="uk-btn uk-btn-primary">
                 {{ __('Create Advertisement') }}
             </a>
         </div>
@@ -31,7 +31,7 @@
                 <td>€{{ number_format($advertisement->price, 2) }}</td>
                 <td>{{ $advertisement->created_at->format('Y-m-d H:i') }}</td>
                 <td>
-                    <a href="{{ route('advertisements.show', $advertisement->id) }}">
+                    <a href="{{ route('advertisements.show', $advertisement->id) }}" class="uk-btn uk-btn-secondary">
                         {{ __('View QR') }}
                     </a>
                 </td>
