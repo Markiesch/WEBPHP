@@ -74,6 +74,11 @@ class AdvertisementService
         // Get reviews with sorting
         $reviewsQuery = $advertisement->reviews()->with('user');
 
+        // Apply rating filter if present
+        if ($request->has('rating')) {
+            $reviewsQuery->where('rating', $request->get('rating'));
+        }
+
         // Apply sorting based on request
         $sort = $request->get('sort', 'date_desc');
         $this->applySortingToReviews($reviewsQuery, $sort);
@@ -87,6 +92,15 @@ class AdvertisementService
             'advertisement' => $advertisement,
             'sellerOtherAds' => $sellerOtherAds,
             'reviews' => $reviews,
+            'mean_rating' => number_format($advertisement->reviews()->avg('rating'), 1),
+            'total_reviews_count' => $advertisement->reviews()->count(),
+            'reviews_count' => [
+                '1' => $advertisement->reviews()->where('rating', 1)->count(),
+                '2' => $advertisement->reviews()->where('rating', 2)->count(),
+                '3' => $advertisement->reviews()->where('rating', 3)->count(),
+                '4' => $advertisement->reviews()->where('rating', 4)->count(),
+                '5' => $advertisement->reviews()->where('rating', 5)->count(),
+            ],
             'currentSort' => $sort
         ];
     }
