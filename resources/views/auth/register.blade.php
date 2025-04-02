@@ -10,9 +10,9 @@
                             @csrf
                             <div class="flex flex-col gap-6">
                                 <div class="flex flex-col items-center text-center">
-                                    <h1 class="text-2xl font-bold">{{ __('create_account') }}</h1>
+                                    <h1 class="text-2xl font-bold">Create Account</h1>
                                     <p class="text-balance text-muted-foreground">
-                                        {{ __('signup_with_account') }}
+                                        Sign up to get started
                                     </p>
                                 </div>
                                 @if ($errors->any())
@@ -26,29 +26,29 @@
                                 @endif
 
                                 <div class="grid gap-1">
-                                    <label class="font-medium" for="name">{{ __('name') }}</label>
+                                    <label class="font-medium" for="name">Name</label>
                                     <input
-                                            class="uk-input"
-                                            id="name"
-                                            type="text"
-                                            name="name"
-                                            value="{{ old('name') }}"
-                                            required
+                                        class="uk-input"
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        value="{{ old('name') }}"
+                                        required
                                     />
                                 </div>
                                 <div class="grid gap-1">
-                                    <label class="font-medium" for="email">{{ __('email') }}</label>
+                                    <label class="font-medium" for="email">Email</label>
                                     <input
-                                            class="uk-input"
-                                            id="email"
-                                            type="email"
-                                            name="email"
-                                            value="{{ old('email') }}"
-                                            required
+                                        class="uk-input"
+                                        id="email"
+                                        type="email"
+                                        name="email"
+                                        value="{{ old('email') }}"
+                                        required
                                     />
                                 </div>
                                 <div class="grid gap-1">
-                                    <label class="font-medium" for="password">{{ __('password') }}</label>
+                                    <label class="font-medium" for="password">Password</label>
                                     <input class="uk-input" id="password" type="password" name="password" required/>
                                 </div>
 
@@ -64,22 +64,22 @@
                                             <div class="flex gap-4">
                                                 <label class="flex items-center gap-2">
                                                     <input
-                                                            type="radio"
-                                                            name="seller_type"
-                                                            value="particulier"
-                                                            class="uk-radio"
-                                                            checked
+                                                        type="radio"
+                                                        name="seller_type"
+                                                        value="particulier"
+                                                        class="uk-radio"
+                                                        checked
                                                     >
-                                                    {{ __('private') }}
+                                                    Private
                                                 </label>
                                                 <label class="flex items-center gap-2">
                                                     <input
-                                                            type="radio"
-                                                            name="seller_type"
-                                                            value="zakelijk"
-                                                            class="uk-radio"
+                                                        type="radio"
+                                                        name="seller_type"
+                                                        value="zakelijk"
+                                                        class="uk-radio"
                                                     >
-                                                    {{ __('business') }}
+                                                    Business
                                                 </label>
                                             </div>
                                         </div>
@@ -88,44 +88,44 @@
 
                                 <div>
                                     <button type="submit"
-                                            class="w-full uk-btn uk-btn-primary">{{ __('signup') }}</button>
+                                            class="w-full uk-btn uk-btn-primary">Sign Up</button>
 
                                     <!-- Account Type Switch Button -->
                                     <div class="pt-2">
                                         @if(isset($accountType) && $accountType == 'seller')
                                             <a href="{{ route('signup', ['type' => 'buyer']) }}"
                                                class="uk-btn uk-btn-secondary w-full">
-                                                {{ __('continue_as_buyer') }}
+                                                Continue as Buyer
                                             </a>
                                         @else
                                             <a href="{{ route('signup', ['type' => 'seller']) }}"
                                                class="uk-btn uk-btn-secondary w-full">
-                                                {{ __('continue_as_seller') }}
+                                                Continue as Seller
                                             </a>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="text-center text-sm">
-                                    {{ __('have_account') }}
+                                    Already have an account?
                                     <a href="{{ route('login') }}"
-                                       class="underline underline-offset-4">{{ __('login') }}</a>
+                                       class="underline underline-offset-4">Login</a>
                                 </div>
                             </div>
                         </form>
                         <div class="relative hidden bg-muted md:block">
                             <img
-                                    src="/assets/placeholder.svg"
-                                    alt="{{ __('image_alt') }}"
-                                    class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                                src="/assets/placeholder.svg"
+                                alt="Registration illustration"
+                                class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                             />
                         </div>
                     </div>
                 </div>
                 <div
-                        class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    {{ __('terms_agreement') }} <a href="#">{{ __('terms_of_service') }}</a>
-                    {{ __('and') }} <a href="#">{{ __('privacy_policy') }}</a>.
+                    class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+                    By signing up, you agree to our <a href="#">Terms of Service</a>
+                    and <a href="#">Privacy Policy</a>.
                 </div>
             </div>
         </div>

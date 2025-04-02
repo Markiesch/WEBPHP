@@ -10,9 +10,9 @@
                             @csrf
                             <div class="flex flex-col gap-6">
                                 <div class="flex flex-col items-center text-center">
-                                    <h1 class="text-2xl font-bold">{{ __('welcome_back') }}</h1>
+                                    <h1 class="text-2xl font-bold">Welcome Back</h1>
                                     <p class="text-balance text-muted-foreground">
-                                        {{ __('login_with_account') }}
+                                        Login with your account
                                     </p>
                                 </div>
                                 @if ($errors->any())
@@ -25,7 +25,7 @@
                                     </div>
                                 @endif
                                 <div class="grid gap-1">
-                                    <label class="font-medium" for="email">{{ __('email') }}</label>
+                                    <label class="font-medium" for="email">Email</label>
                                     <input
                                         class="uk-input"
                                         id="email"
@@ -36,37 +36,34 @@
                                 </div>
                                 <div class="grid gap-1">
                                     <div class="flex items-center">
-                                        <label class="font-medium" for="password">{{ __('password') }}</label>
-                                        {{--                                            href="{{ route('password.request') }}"--}}
+                                        <label class="font-medium" for="password">Password</label>
                                         <a
                                             href="#"
                                             class="ml-auto text-sm underline-offset-2 hover:underline"
                                         >
-                                            {{ __('forgot_password') }}
+                                            Forgot Password?
                                         </a>
                                     </div>
                                     <input class="uk-input" id="password" type="password" name="password" required/>
                                 </div>
                                 <button type="submit" class="w-full uk-btn uk-btn-primary">
-                                    {{ __('login') }}
+                                    Login
                                 </button>
                                 <div
                                     class="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-                                    <!-- Optional: Add some text or elements here -->
                                 </div>
 
                                 <div class="text-center text-sm">
-                                    {{ __('no_account') }}
+                                    Don't have an account?
                                     <a href="{{ route('signup') }}"
-                                       class="underline underline-offset-4">{{ __('register') }}</a>
-                                    {{--                                    <a href="{{ route('register') }}" class="underline underline-offset-4">Registreren</a>--}}
+                                       class="underline underline-offset-4">Register</a>
                                 </div>
                             </div>
                         </form>
                         <div class="relative hidden bg-muted md:block">
                             <img
                                 src="/assets/placeholder.svg"
-                                alt="{{ __('image_alt') }}"
+                                alt="Login illustration"
                                 class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                             />
                         </div>
@@ -74,8 +71,8 @@
                 </div>
                 <div
                     class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    {{ __('terms_agreement') }} <a href="#">{{ __('terms_of_service') }}</a>
-                    {{ __('and') }} <a href="#">{{ __('privacy_policy') }}</a>.
+                    By continuing, you agree to our <a href="#">Terms of Service</a>
+                    and <a href="#">Privacy Policy</a>.
                 </div>
             </div>
         </div>
