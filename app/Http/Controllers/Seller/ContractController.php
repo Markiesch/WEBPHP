@@ -5,19 +5,22 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\Contract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelPdf\Facades\Pdf;
 
 class ContractController extends Controller
 {
     public function index(Request $request)
     {
-        $contracts = Contract::sortable($request)->paginate(6);
+        $contracts = Contract::where('user_id', Auth::id())
+            ->sortable($request)
+            ->paginate(6);
         return view('contracts.index', compact('contracts'));
     }
 
     public function showUploadForm()
     {
-        $contracts = Contract::all();
+        $contracts = Contract::where('user_id', Auth::id())->get();
         return view('contracts.upload', compact('contracts'));
     }
 
@@ -38,6 +41,7 @@ class ContractController extends Controller
         $contract->email = $request->input('email');
         $contract->description = $request->input('description');
         $contract->file_path = $path;
+        $contract->user_id = Auth::id();
         $contract->save();
 
         return redirect()->route('contracts.index')
@@ -46,7 +50,7 @@ class ContractController extends Controller
 
     public function exportPdf($id)
     {
-        $contract = Contract::findOrFail($id);
+        $contract = Contract::where('user_id', Auth::id())->findOrFail($id);
 
         return Pdf::view('pdf.pdf', [
             'name' => $contract->name,
