@@ -55,7 +55,7 @@
                 @auth
                     <div class="mt-6 pt-4 border-t">
                         <h5 class="font-bold">Write a Review</h5>
-                        <form action="{{ route('advertisement.review', $advertisement->id) }}" method="POST">
+                        <form action="{{ route('reviews.submit', $advertisement->id) }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="rating" class="form-label">Rating</label>

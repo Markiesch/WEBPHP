@@ -10,9 +10,6 @@ use Illuminate\Http\Request;
 
 class AdvertisementReviewController extends Controller
 {
-    /**
-     * Store a newly created review in storage.
-     */
     public function store(Request $request, $id): RedirectResponse
     {
         $advertisement = Advertisement::findOrFail($id);

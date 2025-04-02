@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\AdvertisementCrudController;
 use App\Http\Controllers\Public\AdvertisementController;
+use App\Http\Controllers\Public\AdvertisementReviewController;
 use App\Http\Controllers\Public\LoginController;
 use App\Http\Controllers\Public\SignupController;
 use Illuminate\Support\Facades\App;
@@ -11,11 +11,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')->group(function () {
     Route::get('/', [AdvertisementController::class, 'advertisements'])->name('home');
     Route::get('advertisements/{id}', [AdvertisementController::class, 'advertisement'])->name('advertisement');
-
-    // Advertisement review route
-    Route::post('/advertisements/{id}/review', [App\Http\Controllers\AdvertisementReviewController::class, 'store'])
+    Route::post('advertisements/{id}/reviews', [AdvertisementReviewController::class, 'store'])
         ->middleware(['auth'])
-        ->name('advertisement.review');
+        ->name('reviews.submit');
 
     // Login routes
     Route::view('/login', 'auth.login')->name('login');
