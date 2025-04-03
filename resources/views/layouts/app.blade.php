@@ -40,7 +40,7 @@
             <div></div>
         </div>
         <div class="flex-grow bg-white m-2 ml-0 rounded-lg shadow border overflow-auto">
-            <div class="border-b h-12 flex items-center px-4 lg:px-6 sticky top-0">
+            <div class="bg-white z-10 border-b h-12 flex items-center px-4 lg:px-6 sticky top-0">
                 <h2 class="text-base font-medium">
                     @yield('heading')
                 </h2>
