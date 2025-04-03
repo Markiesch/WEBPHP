@@ -25,6 +25,7 @@ class Advertisement extends Model
         'description',
         'price',
         'wear_percentage',
+        'wear_per_day',
         'image_url',
         'business_id',
         'type',
@@ -38,6 +39,7 @@ class Advertisement extends Model
         'title',
         'price',
         'wear_percentage',
+        'wear_per_day',
         'type',
         'created_at',
         'updated_at'
@@ -48,7 +50,8 @@ class Advertisement extends Model
         'rental_end_date' => 'date',
         'expiry_date' => 'date',
         'price' => 'decimal:2',
-        'wear_percentage' => 'integer'
+        'wear_percentage' => 'integer',
+        'wear_per_day' => 'decimal:2'
     ];
 
     public static function getTypes(): array

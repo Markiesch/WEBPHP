@@ -117,6 +117,29 @@
 
                 <div class="space-y-6">
                     <div>
+                        <label for="wear_per_day" class="uk-form-label">
+                            {{ __('Wear Per Day') }}
+                        </label>
+                        <div class="relative">
+                            <span class="uk-form-icon">
+                                <uk-icon icon="percent"></uk-icon>
+                            </span>
+                            <input type="number"
+                                   name="wear_per_day"
+                                   id="wear_per_day"
+                                   class="uk-input @error('wear_per_day') border-red-500 @enderror"
+                                   value="{{ old('wear_per_day', $advertisement->wear_per_day) }}"
+                                   min="0"
+                                   max="100"
+                                   step="0.01"
+                                {{ $advertisement->type === 'rental' ? 'required' : '' }}>
+                        </div>
+                        @error('wear_per_day')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
                         <label for="rental_start_date"
                                class="uk-form-label">
                             {{ __('Start Date') }}

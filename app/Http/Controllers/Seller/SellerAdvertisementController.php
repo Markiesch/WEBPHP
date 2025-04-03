@@ -45,8 +45,9 @@ class SellerAdvertisementController extends Controller
     {
         try {
             $validated = $this->validateAdvertisement($request);
+            $business = Business::where('user_id', Auth::id())->firstOrFail();
 
-            $userAdsCount = Advertisement::where('user_id', Auth::id())
+            $adsCount = Advertisement::where('business_id', $business->id)
                 ->ofType($request->input('type'))
                 ->count();
 
@@ -54,15 +55,16 @@ class SellerAdvertisementController extends Controller
                 ? Advertisement::MAX_SALE_ADS
                 : Advertisement::MAX_RENTAL_ADS;
 
-            if ($userAdsCount >= $maxAds) {
+            if ($adsCount >= $maxAds) {
                 return back()
                     ->withInput()
                     ->withErrors(['type' => "You have reached the maximum limit of {$maxAds} advertisements for this type."]);
             }
 
             $validated['image_url'] = $this->handleImageUpload($request);
-            $validated['user_id'] = Auth::id();
+            $validated['business_id'] = $business->id;
             $validated['wear_percentage'] = $request->input('wear_percentage');
+            $validated['wear_per_day'] = $request->input('type') === Advertisement::TYPE_RENTAL ? $request->input('wear_per_day') : null;
 
             if ($request->input('type') === Advertisement::TYPE_RENTAL) {
                 $validated['rental_start_date'] = $request->input('rental_start_date');
@@ -103,7 +105,9 @@ class SellerAdvertisementController extends Controller
     public function update(Request $request, Advertisement $advertisement): RedirectResponse
     {
         try {
-            if ($advertisement->user_id !== Auth::id()) {
+            $business = Business::where('user_id', Auth::id())->firstOrFail();
+
+            if ($advertisement->business_id !== $business->id) {
                 abort(403);
             }
 
@@ -119,6 +123,7 @@ class SellerAdvertisementController extends Controller
             if ($request->input('type') === Advertisement::TYPE_RENTAL) {
                 $rules['rental_start_date'] = 'required|date|after_or_equal:today';
                 $rules['rental_end_date'] = 'required|date|after:rental_start_date';
+                $rules['wear_per_day'] = 'required|numeric|min:0|max:100';
             }
 
             $validated = $request->validate($rules);
@@ -127,12 +132,16 @@ class SellerAdvertisementController extends Controller
                 $validated['image_url'] = $this->handleImageUpload($request);
             }
 
+            $validated['business_id'] = $business->id;
+
             if ($request->input('type') === Advertisement::TYPE_RENTAL) {
                 $validated['rental_start_date'] = $request->input('rental_start_date');
                 $validated['rental_end_date'] = $request->input('rental_end_date');
+                $validated['wear_per_day'] = $request->input('wear_per_day');
             } else {
                 $validated['rental_start_date'] = null;
                 $validated['rental_end_date'] = null;
+                $validated['wear_per_day'] = null;
             }
 
             $advertisement->update($validated);
@@ -160,6 +169,7 @@ class SellerAdvertisementController extends Controller
         if ($request->input('type') === Advertisement::TYPE_RENTAL) {
             $rules['rental_start_date'] = 'required|date|after_or_equal:today';
             $rules['rental_end_date'] = 'required|date|after:rental_start_date';
+            $rules['wear_per_day'] = 'required|numeric|min:0|max:100';
         }
 
         return $request->validate($rules);

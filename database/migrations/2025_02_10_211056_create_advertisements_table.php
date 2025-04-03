@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->unsignedTinyInteger('wear_percentage')->default(0);
+            $table->decimal('wear_per_day', 8, 2)->nullable();
             $table->string('image_url');
             $table->enum('type', ['sale', 'rental'])->default('sale');
             $table->date('rental_start_date')->nullable();
