@@ -10,7 +10,7 @@
         </div>
 
         <div class="pt-6">
-            <p>Listed by: <a href="/" class="text-blue-700 underline">{{ $advertisement->user->name }}</a></p>
+            <p>Listed by: <a href="{{ route('business-page', $advertisement->business->url)  }}" class="text-blue-700 underline">{{ $advertisement->business->name }}</a></p>
             <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
             <p class="pt-2">{{ $advertisement->description }}</p>
             <p class="pt-2 text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</p>

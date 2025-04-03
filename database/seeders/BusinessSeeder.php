@@ -20,7 +20,8 @@ class BusinessSeeder extends Seeder
         foreach ($users as $user) {
             $user->business()->create([
                 'user_id' => $user->id,
-                'url' => $faker->domainWord(),
+                'name' => $faker->company,
+                'url' => $faker->domainWord,
             ]);
         }
     }

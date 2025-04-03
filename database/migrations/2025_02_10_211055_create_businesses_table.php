@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
-            $table->string('url', 64)->nullable();
+            $table->string('name', 255);
+            $table->string('url', 255);
             $table->timestamps();
 
             $table->unique('url', 'businesses_url_unique');

@@ -20,7 +20,7 @@ class Advertisement extends Model
         'description',
         'price',
         'image_url',
-        'user_id',
+        'business_id',
         'rental_start_date',
         'rental_end_date',
         'expiry_date'
