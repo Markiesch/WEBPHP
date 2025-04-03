@@ -1,18 +1,39 @@
 @extends('layouts.app')
 
-@section('content')
-    <div class="container mx-auto py-6">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold">Business Page Editor</h1>
+@section('heading')
+    Business
+@endsection
 
-            @if($business)
-                <div>
-                    <a href="{{ route('business-page', ['url' => $business->url]) }}" class="uk-btn uk-btn-secondary" target="_blank">
-                        View live page
-                        <uk-icon icon="external-link" class="pl-2"></uk-icon>
-                    </a>
+@section('content')
+    <div class="uk-container">
+
+        <div class="uk-card uk-card-body mb-6">
+            <h2 class="text-lg font-semibold mb-4">Business settings</h2>
+            <form action="{{ route('business.update') }}" method="POST">
+                @csrf
+                @method("PUT")
+                <label for="name" class="uk-form-label">Name</label>
+
+                <input name="name" type="text" class="uk-input mb-4" value="{{ $business->name }}"/>
+                <label for="url" class="uk-form-label">URL</label>
+                <div class="flex">
+                    <div class="uk-card shadow-sm rounded-r-none px-4 flex items-center border-e-0">
+                        {{ url('/') }}/businesses/
+                    </div>
+                    <input name="url" type="text" class="uk-input rounded-none" value="{{ $business->url }}"/>
+                    <div class="flex-shrink-0">
+                        <a href="{{ route('business-page', $business->url) }}" class="uk-btn uk-btn-secondary border-s-0 border rounded-s-none" target="_blank">
+                            View live page
+                            <uk-icon icon="external-link" class="pl-2"></uk-icon>
+                        </a>
+                    </div>
                 </div>
-            @endif
+                <button type="submit" class="uk-btn uk-btn-primary mt-4">Save</button>
+            </form>
+        </div>
+
+        <div class="flex justify-between items-center mb-6 border-t pt-4">
+            <h1 class="text-2xl font-bold">Business Page Editor</h1>
         </div>
 
         <!-- Block type selector for adding new blocks -->
@@ -56,7 +77,8 @@
                             </h3>
                         </div>
                         <div class="flex gap-2">
-                            <button type="button" class="uk-btn uk-btn-default" data-uk-toggle="target: {{ '#editor-' . $block->id }}">
+                            <button type="button" class="uk-btn uk-btn-default"
+                                    data-uk-toggle="target: {{ '#editor-' . $block->id }}">
                                 Edit
                             </button>
                             <form action="{{ route('business.blocks.delete', $block) }}" method="POST">
@@ -100,48 +122,59 @@
                                 @if($block->type === 'intro_text')
                                     <div class="mb-3">
                                         <label class="uk-form-label">Title</label>
-                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}" class="uk-input">
+                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
+                                               class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Content</label>
-                                        <textarea name="content[text]" rows="5" class="uk-textarea w-full richtext">{{ $block->content['text'] }}</textarea>
+                                        <textarea name="content[text]" rows="5"
+                                                  class="uk-textarea w-full richtext">{{ $block->content['text'] }}</textarea>
                                     </div>
                                 @elseif($block->type === 'featured_ads')
                                     <div class="mb-3">
                                         <label class="uk-form-label">Title</label>
-                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}" class="uk-input">
+                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
+                                               class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Number of Ads</label>
-                                        <input type="number" name="content[count]" value="{{ $block->content['count'] ?? 3 }}" min="1" max="12" class="uk-input">
+                                        <input type="number" name="content[count]"
+                                               value="{{ $block->content['count'] ?? 3 }}" min="1" max="12"
+                                               class="uk-input">
                                     </div>
                                 @elseif($block->type === 'image')
                                     <div class="mb-3">
                                         <label class="uk-form-label">Title</label>
-                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}" class="uk-input">
+                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
+                                               class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Image URL</label>
-                                        <input type="text" name="content[url]" value="{{ $block->content['url'] }}" class="uk-input">
+                                        <input type="text" name="content[url]" value="{{ $block->content['url'] }}"
+                                               class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Alt Text</label>
-                                        <input type="text" name="content[alt]" value="{{ $block->content['alt'] }}" class="uk-input">
+                                        <input type="text" name="content[alt]" value="{{ $block->content['alt'] }}"
+                                               class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Caption</label>
-                                        <input type="text" name="content[caption]" value="{{ $block->content['caption'] }}" class="uk-input">
+                                        <input type="text" name="content[caption]"
+                                               value="{{ $block->content['caption'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="flex items-center uk-form-label">
-                                            <input type="checkbox" name="content[fullWidth]" value="1" {{ isset($block->content['fullWidth']) && $block->content['fullWidth'] ? 'checked' : '' }} class="uk-checkbox">
+                                            <input type="checkbox" name="content[fullWidth]" value="1"
+                                                   {{ isset($block->content['fullWidth']) && $block->content['fullWidth'] ? 'checked' : '' }} class="uk-checkbox">
                                             <span class="ml-2">Full Width</span>
                                         </label>
                                     </div>
                                 @endif
 
                                 <div class="flex justify-end">
-                                    <button type="button" class="uk-btn uk-modal-close uk-btn-secondary mr-2">Cancel</button>
+                                    <button type="button" class="uk-btn uk-modal-close uk-btn-secondary mr-2">Cancel
+                                    </button>
                                     <button type="submit" class="uk-btn uk-btn-primary">Save Changes</button>
                                 </div>
                             </form>
