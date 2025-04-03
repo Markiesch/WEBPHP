@@ -34,7 +34,6 @@
     "activity_1": "Activiteit 1",
     "activity_2": "Activiteit 2",
     "activity_3": "Activiteit 3",
-
     "welcome_back": "Welkom terug",
     "login_with_account": "Login met uw Bazaar account",
     "email": "E-mail",
@@ -46,7 +45,6 @@
     "terms_of_service": "Servicevoorwaarden",
     "and": "en",
     "privacy_policy": "Privacybeleid",
-
     "create_account": "Maak een Account",
     "signup_with_account": "Registreer met uw Bazaar account",
     "name": "Naam",
@@ -55,5 +53,81 @@
     "business": "Zakelijk",
     "continue_as_buyer": "Doorgaan als Koper",
     "continue_as_seller": "Doorgaan als Verkoper",
-    "have_account": "Heeft u al een account?"
+    "have_account": "Heeft u al een account?",
+
+
+
+    "seller": {
+        "dashboard": "Verkoper Dashboard",
+        "advertisements": "Mijn Advertenties",
+        "create_ad": "Advertentie Aanmaken",
+        "edit_ad": "Advertentie Bewerken",
+        "ad_type": "Advertentie Type",
+        "sale": "Te Koop",
+        "rental": "Te Huur",
+        "wear_percentage": "Slijtagepercentage",
+        "wear_per_day": "Slijtage per Dag",
+        "rental_period": "Huurperiode",
+        "rental_start": "Huurdatum Start",
+        "rental_end": "Huurdatum Einde",
+        "image": "Advertentie Afbeelding",
+        "current_image": "Huidige Afbeelding",
+        "max_ads_reached": "Maximaal aantal advertenties bereikt",
+        "update_success": "Advertentie succesvol bijgewerkt",
+        "create_success": "Advertentie succesvol aangemaakt",
+        "delete_success": "Advertentie succesvol verwijderd",
+        "save": "Advertentie Opslaan",
+        "back": "Terug naar Advertenties",
+        "filters": {
+            "type": "Filter op Type",
+            "price": "Filter op Prijs",
+            "sort": "Sorteer op",
+            "direction": "Sorteerrichting"
+        }
+    },
+
+    "advertisements": {
+        "title": "Advertenties",
+        "index": "Advertenties",
+        "create": "Advertentie Aanmaken",
+        "edit Advertisement": "Advertentie Bewerken",
+        "type": "Type",
+        "title_field": "Titel",
+        "description": "Beschrijving",
+        "price": "Prijs",
+        "wear": "Slijtage",
+        "wear_percentage": "Slijtagepercentage",
+        "wear_per_day": "Slijtage/Dag",
+        "start_date": "Startdatum",
+        "end_date": "Einddatum",
+        "date": "Datum",
+        "image": "Afbeelding",
+        "current_image": "Huidige Afbeelding",
+        "qr_code": "QR Code/Bewerken",
+        "view_qr": "Bekijk QR",
+        "edit": "Bewerken",
+        "update": "Advertentie Bijwerken",
+        "all": "Alle",
+        "validation": {
+            "required": "Dit veld is verplicht",
+            "numeric": "Dit veld moet een getal zijn",
+            "min": "Dit veld moet minimaal :min zijn",
+            "max": "Dit veld mag maximaal :max zijn",
+            "date": "Dit veld moet een geldige datum zijn",
+            "after": "Deze datum moet na de startdatum liggen",
+            "image": "Dit veld moet een afbeelding zijn",
+            "file_types": "Toegestane bestandstypen: JPEG, PNG, JPG, GIF"
+        }
+    },
+    "contracts": {
+        "title": "Contracten",
+        "upload": "Contract Uploaden",
+        "name": "Naam",
+        "email": "E-mail",
+        "description": "Beschrijving",
+        "upload_date": "Upload Datum",
+        "actions": "Acties",
+        "export_pdf": "Exporteer naar PDF"
+    }
 }
+
