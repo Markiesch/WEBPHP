@@ -55,5 +55,81 @@
     "business": "Business",
     "continue_as_buyer": "Continue as Buyer",
     "continue_as_seller": "Continue as Seller",
-    "have_account": "Already have an account?"
+    "have_account": "Already have an account?",
+
+
+    "seller": {
+        "dashboard": "Seller Dashboard",
+        "advertisements": "My Advertisements",
+        "create_ad": "Create Advertisement",
+        "edit_ad": "Edit Advertisement",
+        "ad_type": "Advertisement Type",
+        "sale": "For Sale",
+        "rental": "For Rent",
+        "wear_percentage": "Wear Percentage",
+        "wear_per_day": "Wear Per Day",
+        "rental_period": "Rental Period",
+        "rental_start": "Rental Start Date",
+        "rental_end": "Rental End Date",
+        "image": "Advertisement Image",
+        "current_image": "Current Image",
+        "max_ads_reached": "Maximum advertisements limit reached",
+        "update_success": "Advertisement updated successfully",
+        "create_success": "Advertisement created successfully",
+        "delete_success": "Advertisement deleted successfully",
+        "save": "Save Advertisement",
+        "back": "Back to Advertisements",
+        "filters": {
+            "type": "Filter by Type",
+            "price": "Filter by Price",
+            "sort": "Sort by",
+            "direction": "Sort Direction"
+        }
+    },
+
+    "advertisements": {
+        "title": "Advertisements",
+        "index": "Advertisements",
+        "create": "Create Advertisement",
+        "edit Advertisement": "Edit Advertisement",
+        "type": "Type",
+        "title_field": "Title",
+        "description": "Description",
+        "price": "Price",
+        "wear": "Wear",
+        "wear_percentage": "Wear Percentage",
+        "wear_per_day": "Wear/Day",
+        "start_date": "Start Date",
+        "end_date": "End Date",
+        "date": "Date",
+        "image": "Image",
+        "current_image": "Current Image",
+        "qr_code": "QR Code/Edit",
+        "view_qr": "View QR",
+        "edit": "Edit",
+        "update": "Update Advertisement",
+        "all": "All",
+        "validation": {
+            "required": "This field is required",
+            "numeric": "This field must be a number",
+            "min": "This field must be at least :min",
+            "max": "This field must be at most :max",
+            "date": "This field must be a valid date",
+            "after": "This date must be after the start date",
+            "image": "This field must be an image",
+            "file_types": "Allowed file types: JPEG, PNG, JPG, GIF"
+        }
+    },
+    "contracts": {
+        "title": "Contracts",
+        "upload": "Upload Contract",
+        "name": "Name",
+        "email": "Email",
+        "description": "Description",
+        "upload_date": "Upload Date",
+        "actions": "Actions",
+        "export_pdf": "Export to PDF"
+    }
 }
+
+
