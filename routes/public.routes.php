@@ -3,6 +3,7 @@
 use App\Http\Controllers\Public\AdvertisementController;
 use App\Http\Controllers\Public\AdvertisementFavoriteController;
 use App\Http\Controllers\Public\AdvertisementReviewController;
+use App\Http\Controllers\Public\BusinessController;
 use App\Http\Controllers\Public\LoginController;
 use App\Http\Controllers\Public\SignupController;
 use Illuminate\Support\Facades\App;
@@ -21,6 +22,9 @@ Route::prefix('/')->group(function () {
     Route::post('advertisements/{id}/favorite', [AdvertisementFavoriteController::class, 'store'])
         ->middleware(['auth'])
         ->name('advertisement.favorite');
+
+    Route::get('businesses/{url}', [BusinessController::class, 'index'])
+        ->name('business-page');
 
     // Login routes
     Route::view('/login', 'auth.login')->name('login');
