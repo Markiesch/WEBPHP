@@ -1,9 +1,8 @@
-<div class="py-8 max-w-3xl mx-auto">
-    @if(isset($block->content['title']))
+<div class="py-6">
+    <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold mb-4">{{ $block->content['title'] }}</h2>
-    @endif
-    
-    <div class="prose lg:prose-xl">
-        {!! $block->content['text'] ?? '' !!}
+        <div class="prose max-w-none">
+            {!! $block->content['text'] !!}
+        </div>
     </div>
 </div>

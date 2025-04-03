@@ -11,6 +11,7 @@ class Business extends Model
     protected $fillable = [
         'user_id',
         'url',
+        'name',
     ];
 
     public function user(): BelongsTo
