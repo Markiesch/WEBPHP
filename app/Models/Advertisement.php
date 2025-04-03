@@ -18,6 +18,9 @@ class Advertisement extends Model
     const TYPE_SALE = 'sale';
     const TYPE_RENTAL = 'rental';
     const MAX_SALE_ADS = 4;
+
+    const MAX_ADS_PER_BUSINESS = 8;
+
     const MAX_RENTAL_ADS = 4;
 
     protected $fillable = [

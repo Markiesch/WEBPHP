@@ -205,4 +205,104 @@ class SellerAdvertisementController extends Controller
             return $query->where('price', '>', 100);
         }
     }
+
+    /**
+     * Show the CSV upload form.
+     */
+    public function uploadCsv(): View
+    {
+        return view('advertisements.upload-csv');
+    }
+
+    /**
+     * Process the CSV upload.
+     */
+    public function processCsv(Request $request): RedirectResponse
+    {
+        try {
+            $request->validate([
+                'csv_file' => 'required|file|mimes:csv,txt|max:2048'
+            ]);
+
+            $business = Business::where('user_id', Auth::id())->firstOrFail();
+            $file = file($request->file('csv_file')->getPathname());
+
+            // Skip header row
+            $header = str_getcsv(array_shift($file));
+            $requiredColumns = ['title', 'description', 'price', 'type', 'wear_percentage'];
+
+            if (count(array_intersect($requiredColumns, $header)) !== count($requiredColumns)) {
+                return back()->withErrors(['csv_file' => 'Invalid CSV format. Required columns missing.']);
+            }
+
+            foreach ($file as $line) {
+                $data = array_combine($header, str_getcsv($line));
+
+                // Basic validation
+                if (empty($data['title']) || empty($data['description']) || !is_numeric($data['price'])) {
+                    continue;
+                }
+
+                Advertisement::create([
+                    'business_id' => $business->id,
+                    'title' => $data['title'],
+                    'description' => $data['description'],
+                    'price' => $data['price'],
+                    'type' => $data['type'],
+                    'wear_percentage' => $data['wear_percentage'],
+                    'wear_per_day' => $data['wear_per_day'] ?? null,
+                    'rental_start_date' => $data['rental_start_date'] ?? null,
+                    'rental_end_date' => $data['rental_end_date'] ?? null,
+                    'image_url' => null
+                ]);
+            }
+
+            return redirect()
+                ->route('advertisements.index')
+                ->with('success', 'Advertisements imported successfully.');
+
+        } catch (Exception $e) {
+            return $this->handleError($e);
+        }
+    }
+
+    /**
+     * Download CSV template.
+     */
+    public function downloadTemplate(): Response
+    {
+        $headers = [
+            'title',
+            'description',
+            'price',
+            'type',
+            'wear_percentage',
+            'wear_per_day',
+            'rental_start_date',
+            'rental_end_date'
+        ];
+
+        $example = [
+            'Example Product',
+            'Product Description',
+            '99.99',
+            Advertisement::TYPE_SALE,
+            '0',
+            '',
+            '',
+            ''
+        ];
+
+        $output = fopen('php://temp', 'r+');
+        fputcsv($output, $headers);
+        fputcsv($output, $example);
+        rewind($output);
+        $csv = stream_get_contents($output);
+        fclose($output);
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="advertisements_template.csv"',
+        ]);
+    }
 }

@@ -11,6 +11,9 @@
                 <a href="{{ route('advertisements.create') }}" class="uk-btn uk-btn-primary">
                     {{ __('Create Advertisement') }}
                 </a>
+                <a href="{{ route('advertisements.upload-csv') }}" class="uk-btn uk-btn-secondary">
+                    {{ __('Upload CSV') }}
+                </a>
                 <div class="flex items-center">
                     <div class="flex items-center space-x-2">
                         <a href="{{ request()->fullUrlWithQuery(['type' => null]) }}"

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdvertisementCrudController;
 use App\Http\Controllers\Seller\BusinessEditorController;
 use App\Http\Controllers\Seller\SellerAdvertisementController;
 use App\Http\Controllers\Seller\ContractController;
@@ -19,18 +18,28 @@ Route::middleware(['auth'])->group(function () {
             Route::post('export-pdf/{id}', [ContractController::class, 'exportPdf'])->name('export-pdf');
         });
 
-        // Advertisement routes
         Route::prefix('advertisements')->group(function () {
-            Route::get('/', [SellerAdvertisementController::class, 'index'])->name('advertisements.index');
-            Route::get('create', [SellerAdvertisementController::class, 'create'])->name('advertisements.create');
-            Route::post('/', [SellerAdvertisementController::class, 'store'])->name('advertisements.store');
-            Route::get('{advertisement}', [SellerAdvertisementController::class, 'show'])->name('advertisements.show');
-            Route::get('{advertisement}/edit', [SellerAdvertisementController::class, 'edit'])->name('advertisements.edit');
-            Route::put('{advertisement}', [SellerAdvertisementController::class, 'update'])->name('advertisements.update');
+            // CSV routes
+            Route::get('upload', [SellerAdvertisementController::class, 'uploadCsv'])
+                ->name('advertisements.upload-csv');
+            Route::post('upload', [SellerAdvertisementController::class, 'processCsv'])
+                ->name('advertisements.process-csv');
+            Route::get('template', [SellerAdvertisementController::class, 'downloadTemplate'])
+                ->name('advertisements.template');
 
-            // Advertisement CSV upload routes
-            Route::get('upload-csv', [AdvertisementCrudController::class, 'showUploadForm'])->name('crud.advertisement.uploadCsvForm');
-            Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');
+            //resource routes
+            Route::get('/', [SellerAdvertisementController::class, 'index'])
+                ->name('advertisements.index');
+            Route::get('create', [SellerAdvertisementController::class, 'create'])
+                ->name('advertisements.create');
+            Route::post('/', [SellerAdvertisementController::class, 'store'])
+                ->name('advertisements.store');
+            Route::get('{advertisement}', [SellerAdvertisementController::class, 'show'])
+                ->name('advertisements.show');
+            Route::get('{advertisement}/edit', [SellerAdvertisementController::class, 'edit'])
+                ->name('advertisements.edit');
+            Route::put('{advertisement}', [SellerAdvertisementController::class, 'update'])
+                ->name('advertisements.update');
         });
 
         // Business routes
@@ -51,4 +60,3 @@ Route::middleware(['auth'])->group(function () {
         })->name('calendar');
     });
 });
-
