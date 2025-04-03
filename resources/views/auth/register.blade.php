@@ -28,23 +28,23 @@
                                 <div class="grid gap-1">
                                     <label class="font-medium" for="name">Name</label>
                                     <input
-                                        class="uk-input"
-                                        id="name"
-                                        type="text"
-                                        name="name"
-                                        value="{{ old('name') }}"
-                                        required
+                                            class="uk-input"
+                                            id="name"
+                                            type="text"
+                                            name="name"
+                                            value="{{ old('name') }}"
+                                            required
                                     />
                                 </div>
                                 <div class="grid gap-1">
                                     <label class="font-medium" for="email">Email</label>
                                     <input
-                                        class="uk-input"
-                                        id="email"
-                                        type="email"
-                                        name="email"
-                                        value="{{ old('email') }}"
-                                        required
+                                            class="uk-input"
+                                            id="email"
+                                            type="email"
+                                            name="email"
+                                            value="{{ old('email') }}"
+                                            required
                                     />
                                 </div>
                                 <div class="grid gap-1">
@@ -53,67 +53,83 @@
                                 </div>
 
                                 <!-- Account Type Toggle -->
-                                <div class="flex flex-col gap-3">
-                                    <input type="hidden" name="account_type" value="{{ $accountType ?? 'buyer' }}"
-                                           id="account_type">
+                                <input type="hidden" name="account_type" value="{{ $accountType ?? 'buyer' }}"
+                                       id="account_type">
 
-                                    <!-- Seller-specific fields -->
-                                    <div id="seller_fields" class="{{ $accountType === 'seller' ? '' : 'hidden' }} grid gap-3">
-                                        <div class="grid gap-1">
-                                            <div class="flex gap-4">
-                                                <label class="flex items-center gap-2">
-                                                    <input type="radio" name="seller_type" value="particulier" class="uk-radio" checked>
-                                                    Private
-                                                </label>
-                                                <label class="flex items-center gap-2">
-                                                    <input type="radio" name="seller_type" value="zakelijk" class="uk-radio">
-                                                    Business
-                                                </label>
-                                            </div>
+                                <!-- Seller-specific fields -->
+                                <div id="seller_fields" class="{{ $accountType === 'seller' ? '' : 'hidden' }} grid gap-3">
+                                    <div class="grid gap-1">
+                                        <div class="flex gap-4">
+                                            <label class="flex items-center gap-2">
+                                                <input type="radio" name="seller_type" value="particulier" class="uk-radio" checked onclick="toggleBusinessField()">
+                                                Private
+                                            </label>
+                                            <label class="flex items-center gap-2">
+                                                <input type="radio" name="seller_type" value="zakelijk" class="uk-radio" onclick="toggleBusinessField()">
+                                                Business
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <button type="submit"
-                                            class="w-full uk-btn uk-btn-primary">Sign Up</button>
+                                <!-- Business Name Field -->
+                                <div id="business_name_field" class="grid gap-1 hidden">
+                                    <label class="font-medium" for="business_name">Business Name</label>
+                                    <input
+                                            class="uk-input"
+                                            id="business_name"
+                                            type="text"
+                                            name="business_name"
+                                            value="{{ old('business_name') }}"
+                                    />
+                                    @error('business_name')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
-                                    <!-- Account Type Switch Button -->
+                                <div>
+                                    <button type="submit" class="w-full uk-btn uk-btn-primary">Sign Up</button>
                                     <div class="pt-2">
                                         @if(isset($accountType) && $accountType === 'seller')
-                                            <a href="{{ route('signup', ['type' => 'buyer']) }}" class="uk-btn uk-btn-secondary w-full">
-                                                Continue as Buyer
-                                            </a>
+                                            <a href="{{ route('signup', ['type' => 'buyer']) }}" class="uk-btn uk-btn-secondary w-full">Continue as Buyer</a>
                                         @else
-                                            <a href="{{ route('signup', ['type' => 'seller']) }}" class="uk-btn uk-btn-secondary w-full">
-                                                Continue as Seller
-                                            </a>
+                                            <a href="{{ route('signup', ['type' => 'seller']) }}" class="uk-btn uk-btn-secondary w-full">Continue as Seller</a>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="text-center text-sm">
                                     Already have an account?
-                                    <a href="{{ route('login') }}"
-                                       class="underline underline-offset-4">Login</a>
+                                    <a href="{{ route('login') }}" class="underline underline-offset-4">Login</a>
                                 </div>
                             </div>
                         </form>
                         <div class="relative hidden bg-muted md:block">
                             <img
-                                src="/assets/placeholder.svg"
-                                alt="Registration illustration"
-                                class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                                    src="/assets/placeholder.svg"
+                                    alt="Registration illustration"
+                                    class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                             />
                         </div>
                     </div>
                 </div>
-                <div
-                    class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    By signing up, you agree to our <a href="#">Terms of Service</a>
-                    and <a href="#">Privacy Policy</a>.
+                <div class="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+                    By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
                 </div>
             </div>
         </div>
     </div>
+
+
+    // Business name toggle
+    <script>
+        function toggleBusinessField() {
+            const businessField = document.getElementById('business_name_field');
+            const businessInput = document.getElementById('business_name');
+            const isBusinessType = document.querySelector('input[name="seller_type"]:checked').value === 'zakelijk';
+
+            businessField.classList.toggle('hidden', !isBusinessType);
+            businessInput.required = isBusinessType;
+        }
+    </script>
 @endsection
