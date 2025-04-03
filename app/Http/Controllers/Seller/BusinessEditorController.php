@@ -46,6 +46,20 @@ class BusinessEditorController extends Controller
         return redirect()->route('business.index')->with('success', 'Block updated successfully');
     }
 
+    public function update(Request $request): RedirectResponse
+    {
+        $business = Business::where("user_id", auth()->id())->firstOrFail();
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'url' => 'required|string|max:255|regex:/^[^\s]*$/',
+        ]);
+
+        $business->update($validatedData);
+
+        return redirect()->route('business.index')->with('success', 'updated successfully');
+    }
+
     public function updateOrder(Request $request): RedirectResponse
     {
         $business = Business::where("user_id", auth()->id())->firstOrFail();

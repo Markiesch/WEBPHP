@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
             // Block management routes
             Route::put('blocks/{block}', [BusinessEditorController::class, 'updateBlock'])->name('business.blocks.update');
+            Route::put('/', [BusinessEditorController::class, 'update'])->name('business.update');
             Route::post('blocks/order', [BusinessEditorController::class, 'updateOrder'])->name('business.blocks.order');
             Route::post('blocks/create', [BusinessEditorController::class, 'createBlock'])->name('business.blocks.create');
             Route::delete('blocks/{block}', [BusinessEditorController::class, 'deleteBlock'])->name('business.blocks.delete');
