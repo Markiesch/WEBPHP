@@ -8,6 +8,7 @@ use App\Models\Business;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -206,17 +207,11 @@ class SellerAdvertisementController extends Controller
         }
     }
 
-    /**
-     * Show the CSV upload form.
-     */
     public function uploadCsv(): View
     {
         return view('advertisements.upload-csv');
     }
 
-    /**
-     * Process the CSV upload.
-     */
     public function processCsv(Request $request): RedirectResponse
     {
         try {
@@ -225,84 +220,72 @@ class SellerAdvertisementController extends Controller
             ]);
 
             $business = Business::where('user_id', Auth::id())->firstOrFail();
-            $file = file($request->file('csv_file')->getPathname());
 
-            // Skip header row
-            $header = str_getcsv(array_shift($file));
-            $requiredColumns = ['title', 'description', 'price', 'type', 'wear_percentage'];
+            // Check existing advertisement counts
+            $existingSaleCount = Advertisement::where('business_id', $business->id)
+                ->where('type', Advertisement::TYPE_SALE)
+                ->count();
+            $existingRentalCount = Advertisement::where('business_id', $business->id)
+                ->where('type', Advertisement::TYPE_RENTAL)
+                ->count();
 
-            if (count(array_intersect($requiredColumns, $header)) !== count($requiredColumns)) {
-                return back()->withErrors(['csv_file' => 'Invalid CSV format. Required columns missing.']);
-            }
+            $file = $request->file('csv_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/csv'), $filename);
 
-            foreach ($file as $line) {
-                $data = array_combine($header, str_getcsv($line));
+            $handle = fopen(public_path('assets/csv/' . $filename), 'r');
+            $header = fgetcsv($handle);
 
-                // Basic validation
-                if (empty($data['title']) || empty($data['description']) || !is_numeric($data['price'])) {
+            $successCount = 0;
+            $saleCount = 0;
+            $rentalCount = 0;
+
+            while (($row = fgetcsv($handle)) !== false) {
+                if (count($row) < 5) continue;
+
+                $type = strtolower(trim($row[4]));
+
+                // Check limits based on type
+                if ($type === Advertisement::TYPE_SALE && ($saleCount + $existingSaleCount) >= 4) {
+                    continue;
+                }
+                if ($type === Advertisement::TYPE_RENTAL && ($rentalCount + $existingRentalCount) >= 4) {
                     continue;
                 }
 
-                Advertisement::create([
-                    'business_id' => $business->id,
-                    'title' => $data['title'],
-                    'description' => $data['description'],
-                    'price' => $data['price'],
-                    'type' => $data['type'],
-                    'wear_percentage' => $data['wear_percentage'],
-                    'wear_per_day' => $data['wear_per_day'] ?? null,
-                    'rental_start_date' => $data['rental_start_date'] ?? null,
-                    'rental_end_date' => $data['rental_end_date'] ?? null,
-                    'image_url' => null
-                ]);
+                try {
+                    Advertisement::create([
+                        'business_id' => $business->id,
+                        'title' => trim($row[0]),
+                        'description' => trim($row[1]),
+                        'price' => (float) trim($row[2]),
+                        'image_url' => trim($row[3]),
+                        'type' => $type,
+                        'wear_percentage' => trim($row[5] ?? 0),
+                        'wear_per_day' => $type === Advertisement::TYPE_RENTAL ? trim($row[6] ?? 0) : null,
+                        'rental_start_date' => $type === Advertisement::TYPE_RENTAL ? trim($row[7] ?? null) : null,
+                        'rental_end_date' => $type === Advertisement::TYPE_RENTAL ? trim($row[8] ?? null) : null
+                    ]);
+
+                    $successCount++;
+                    if ($type === Advertisement::TYPE_SALE) {
+                        $saleCount++;
+                    } else {
+                        $rentalCount++;
+                    }
+                } catch (Exception $e) {
+                    Log::error('Failed to import row: ' . implode(',', $row) . ' Error: ' . $e->getMessage());
+                }
             }
 
-            return redirect()
-                ->route('advertisements.index')
-                ->with('success', 'Advertisements imported successfully.');
+            fclose($handle);
+
+            return redirect()->route('advertisements.index')
+                ->with('success', "{$successCount} advertisements imported successfully.");
 
         } catch (Exception $e) {
-            return $this->handleError($e);
+            return redirect()->route('advertisements.index')
+                ->withErrors(['error' => 'Failed to import advertisements: ' . $e->getMessage()]);
         }
-    }
-
-    /**
-     * Download CSV template.
-     */
-    public function downloadTemplate(): Response
-    {
-        $headers = [
-            'title',
-            'description',
-            'price',
-            'type',
-            'wear_percentage',
-            'wear_per_day',
-            'rental_start_date',
-            'rental_end_date'
-        ];
-
-        $example = [
-            'Example Product',
-            'Product Description',
-            '99.99',
-            Advertisement::TYPE_SALE,
-            '0',
-            '',
-            '',
-            ''
-        ];
-
-        $output = fopen('php://temp', 'r+');
-        fputcsv($output, $headers);
-        fputcsv($output, $example);
-        rewind($output);
-        $csv = stream_get_contents($output);
-        fclose($output);
-
-        return response($csv, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="advertisements_template.csv"',
-        ]);
     }
 }
