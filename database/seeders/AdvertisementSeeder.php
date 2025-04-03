@@ -2,19 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Advertisement;
-use App\Models\Business;
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use App\Models\Advertisement;
+use Faker\Factory as Faker;
 
 class AdvertisementSeeder extends Seeder
 {
     public function run(): void
     {
         $faker = Faker::create();
-        $userId = 3; // business_advertiser ID
-
-        $business = Business::where('user_id', $userId)->first();
 
         // Create 4 sale advertisements
         for ($i = 0; $i < 4; $i++) {
@@ -23,10 +19,9 @@ class AdvertisementSeeder extends Seeder
                 'description' => $faker->paragraph(2),
                 'price' => $faker->randomFloat(2, 200, 2000),
                 'wear_percentage' => $faker->numberBetween(0, 100),
-                'user_id' => $userId,
-                'business_id' => $business->id,
+                'business_id' => 1,
                 'type' => Advertisement::TYPE_SALE,
-                'image_url' => 'https://picsum.photos/800/600',
+                'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
                 'expiry_date' => now()->addMonths(3),
             ]);
         }
@@ -38,10 +33,9 @@ class AdvertisementSeeder extends Seeder
                 'description' => $faker->paragraph(2),
                 'price' => $faker->randomFloat(2, 50, 500),
                 'wear_percentage' => $faker->numberBetween(0, 100),
-                'user_id' => $userId,
-                'business_id' => $business->id,
+                'business_id' => 1,
                 'type' => Advertisement::TYPE_RENTAL,
-                'image_url' => 'https://picsum.photos/800/600',
+                'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
                 'rental_start_date' => now()->addDays($faker->numberBetween(1, 30)),
                 'rental_end_date' => now()->addMonths($faker->numberBetween(2, 6)),
                 'expiry_date' => now()->addMonths(1),
