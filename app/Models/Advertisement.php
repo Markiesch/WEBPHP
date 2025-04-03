@@ -26,7 +26,7 @@ class Advertisement extends Model
         'price',
         'wear_percentage',
         'image_url',
-        'user_id',
+        'business_id',
         'type',
         'rental_start_date',
         'rental_end_date',
@@ -72,6 +72,11 @@ class Advertisement extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function business(): BelongsTo
+    {
+        return $this->belongsTo(Business::class);
     }
 
     public function reviews(): HasMany
