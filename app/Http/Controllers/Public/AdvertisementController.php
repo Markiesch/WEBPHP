@@ -23,4 +23,10 @@ class AdvertisementController extends Controller
 
         return view('public/advertisement', $data);
     }
+
+    public function purchase(Request $request, $id): View {
+        $this->service->purchase($request, $id);
+
+        return $this->advertisement($request, $id);
+    }
 }

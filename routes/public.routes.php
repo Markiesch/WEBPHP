@@ -23,6 +23,10 @@ Route::prefix('/')->group(function () {
         ->middleware(['auth'])
         ->name('advertisement.favorite');
 
+    Route::get('advertisements/{id}/buy', [AdvertisementController::class, 'purchase'])
+        ->middleware(['auth'])
+        ->name('advertisement.buy');
+
     Route::get('businesses/{url}', [BusinessController::class, 'index'])
         ->name('business-page');
 

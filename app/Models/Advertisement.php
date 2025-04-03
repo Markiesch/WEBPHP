@@ -95,6 +95,16 @@ class Advertisement extends Model
         return $this->hasMany(AdvertisementFavorite::class);
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(AdvertisementTransaction::class);
+    }
+
+    public function isPurchased(): bool
+    {
+        return $this->transactions()->exists();
+    }
+
     public function scopeOfType(EloquentBuilder $query, string $type): EloquentBuilder
     {
         return $query->where('type', $type);

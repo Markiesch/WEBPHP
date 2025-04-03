@@ -14,8 +14,14 @@
         </div>
         <div class="uk-card-body">
             <div>
-                <div class="flex justify-between">
-                    <h3 class="uk-card-title">{{ $advertisement->title }}</h3>
+                <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center w-full">
+
+                        <h3 class="uk-card-title">{{ $advertisement->title }}</h3>
+                        @if ($advertisement->isPurchased())
+                            <div class="uk-label uk-label-destructive mr-2">{{__('sold')}}</div>
+                        @endif
+                    </div>
                     @if($advertisement->is_favorited)
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                              fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"

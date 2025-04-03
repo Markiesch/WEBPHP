@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Services\Public;
 
 use App\Models\Advertisement;
 use App\Models\AdvertisementFavorite;
+use App\Models\AdvertisementTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -149,6 +150,29 @@ class AdvertisementService
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
+    }
+
+    public function purchase(Request $request, $id): array
+    {
+        $advertisement = Advertisement::findOrFail($id);
+
+        // Check if the advertisement is already purchased
+        if ($advertisement->is_purchased) {
+            return [
+                'error' => 'This advertisement has already been purchased.',
+            ];
+        }
+
+        AdvertisementTransaction::create([
+            'user_id' => Auth::id(),
+            'advertisement_id' => $advertisement->id,
+            'price' => $advertisement->price,
+        ]);
+
+        return [
+            'success' => 'Advertisement purchased successfully.',
+            'advertisement' => $advertisement,
+        ];
     }
 }
 
