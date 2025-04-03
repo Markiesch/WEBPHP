@@ -19,13 +19,10 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('advertisements')->group(function () {
-            // CSV routes
             Route::get('upload', [SellerAdvertisementController::class, 'uploadCsv'])
                 ->name('advertisements.upload-csv');
             Route::post('upload', [SellerAdvertisementController::class, 'processCsv'])
                 ->name('advertisements.process-csv');
-            Route::get('template', [SellerAdvertisementController::class, 'downloadTemplate'])
-                ->name('advertisements.template');
 
             //resource routes
             Route::get('/', [SellerAdvertisementController::class, 'index'])
