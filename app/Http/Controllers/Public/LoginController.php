@@ -19,22 +19,11 @@ class LoginController extends Controller
                 return redirect('/');
             }
 
-            return redirect()->intended('seller/dashboard');
+            return redirect()->intended('seller/business');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
-
-    public function dashboard()
-    {
-        if (Auth::check()) {
-            return view('dashboard');
-        }
-
-        return redirect('login')->withErrors([
-            'auth' => 'You must be logged in to access the dashboard.',
         ]);
     }
 

@@ -81,7 +81,7 @@ class SignupController extends Controller
                 return redirect('/');
             }
 
-            return redirect('seller/dashboard');
+            return redirect('seller/business');
 
         } catch (\Exception $e) {
             DB::rollBack();

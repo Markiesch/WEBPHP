@@ -10,7 +10,6 @@
                 <ul class="uk-nav uk-nav-primary">
                     <?php
                     const links = [
-                        'dashboard' => ['label' => 'Dashboard', 'icon' => 'layout-dashboard'],
                         'business.index' => ['label' => 'Business', 'icon' => 'store'],
                         'advertisements.index' => ['label' => 'Advertisements', 'icon' => 'megaphone'],
                         'agenda.index' => ['label' => 'Agenda', 'icon' => 'calendar'],

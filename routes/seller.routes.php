@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Route;
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::prefix('seller')->group(function () {
-        Route::view('dashboard', 'dashboard')->middleware('verified')->name('dashboard');
-
         // Contract routes
         Route::prefix('contracts')->group(function () {
             Route::get('/', [ContractController::class, 'index'])->name('contracts.index');
