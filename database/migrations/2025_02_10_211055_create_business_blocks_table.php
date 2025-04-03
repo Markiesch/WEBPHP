@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('type'); // featured_ads, intro_text, image, etc.
             $table->text('content')->nullable(); // JSON or text content
             $table->integer('order')->default(0);
-            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

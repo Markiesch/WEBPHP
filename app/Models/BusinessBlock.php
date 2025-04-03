@@ -12,7 +12,6 @@ class BusinessBlock extends Model
         'type',
         'content',
         'order',
-        'active'
     ];
 
     protected $casts = [

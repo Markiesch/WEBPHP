@@ -20,7 +20,7 @@ class BusinessController extends Controller
         return view('public/business', [
             'business' => $business,
             'advertisements' => $business->advertisements,
-            'blocks' => $business->activeBlocks
+            'blocks' => $business->blocks
         ]);
     }
 }

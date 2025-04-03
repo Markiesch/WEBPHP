@@ -12,7 +12,7 @@ class BusinessBlockSeeder extends Seeder
     {
         // Get all business IDs
         $businesses = Business::all();
-        
+
         foreach ($businesses as $business) {
             // Intro text block
             BusinessBlock::create([
@@ -23,9 +23,8 @@ class BusinessBlockSeeder extends Seeder
                     'text' => '<p>We are dedicated to providing the best products and services to our customers. With years of experience in the industry, we have built a reputation for quality and reliability.</p><p>Browse our listings below to find what you need!</p>'
                 ],
                 'order' => 1,
-                'active' => true
             ]);
-            
+
             // Featured ads block
             BusinessBlock::create([
                 'business_id' => $business->id,
@@ -35,9 +34,8 @@ class BusinessBlockSeeder extends Seeder
                     'count' => 3
                 ],
                 'order' => 2,
-                'active' => true
             ]);
-            
+
             // Image block
             BusinessBlock::create([
                 'business_id' => $business->id,
@@ -50,7 +48,6 @@ class BusinessBlockSeeder extends Seeder
                     'fullWidth' => false
                 ],
                 'order' => 3,
-                'active' => true
             ]);
         }
     }

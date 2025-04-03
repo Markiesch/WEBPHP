@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Business extends Model
@@ -12,7 +13,7 @@ class Business extends Model
         'url',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -25,10 +26,5 @@ class Business extends Model
     public function blocks(): HasMany
     {
         return $this->hasMany(BusinessBlock::class)->orderBy('order');
-    }
-
-    public function activeBlocks(): HasMany
-    {
-        return $this->blocks()->where('active', true);
     }
 }
