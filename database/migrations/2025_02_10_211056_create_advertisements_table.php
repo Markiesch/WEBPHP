@@ -14,11 +14,15 @@ class CreateAdvertisementsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->decimal('price', 8, 2);
+            $table->unsignedTinyInteger('wear_percentage')->default(0);
             $table->string('image_url');
+            $table->enum('type', ['sale', 'rental'])->default('sale');
             $table->date('rental_start_date')->nullable();
             $table->date('rental_end_date')->nullable();
             $table->date('expiry_date')->nullable();
             $table->timestamps();
+
+            $table->index(['user_id', 'type']);
         });
     }
 
