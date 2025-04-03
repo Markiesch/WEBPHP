@@ -17,7 +17,7 @@
         </div>
 
         <!-- Block type selector for adding new blocks -->
-        <div class="uk-card uk-card-body">
+        <div class="uk-card uk-card-body mb-4">
             <h2 class="text-lg font-semibold mb-4">Add New Block</h2>
             <form action="{{ route('business.blocks.create') }}" method="POST" class="flex gap-4">
                 @csrf
@@ -26,7 +26,7 @@
                     <option value="featured_ads">Featured Advertisements</option>
                     <option value="image">Image</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Add Block</button>
+                <button type="submit" class="uk-btn uk-btn-primary">Add Block</button>
             </form>
         </div>
 
@@ -35,14 +35,12 @@
             @csrf
             <div id="blockContainer" class="space-y-4 mb-6">
                 @forelse($blocks as $block)
-                    <div class="bg-white shadow-md rounded-lg p-4 block-item cursor-move" data-id="{{ $block->id }}">
+                    <div class="uk-card uk-card-body" data-id="{{ $block->id }}">
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex items-center">
                                     <span class="mr-2 text-gray-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             stroke="currentColor" class="w-5 h-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M4 6h16M4 12h16M4 18h16"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                                         </svg>
                                     </span>
                                 <h3 class="font-semibold">
@@ -50,15 +48,14 @@
                                 </h3>
                             </div>
                             <div class="flex gap-2">
-                                <button type="button" class="btn-edit text-blue-600"
+                                <button type="button" class="uk-btn uk-btn-default"
                                         onclick="toggleEditor({{ $block->id }})">
                                     Edit
                                 </button>
-                                <form action="{{ route('business.blocks.delete', $block) }}" method="POST"
-                                      onsubmit="return confirm('Are you sure you want to delete this block?')">
+                                <form action="{{ route('business.blocks.delete', $block) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this block?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600">Delete</button>
+                                    <button type="submit" class="uk-btn uk-btn-destructive">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -147,10 +144,10 @@
                                 @endif
 
                                 <div class="flex justify-end">
-                                    <button type="button" class="btn btn-secondary mr-2"
+                                    <button type="button" class="uk-btn uk-btn-secondary mr-2"
                                             onclick="toggleEditor({{ $block->id }})">Cancel
                                     </button>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit" class="uk-btn uk-btn-primary">Save Changes</button>
                                 </div>
                             </form>
                         </div>
@@ -166,12 +163,11 @@
 
             @if(count($blocks) > 1)
                 <div class="flex justify-end">
-                    <button type="submit" class="btn btn-primary">Save Block Order</button>
+                    <button type="submit" class="uk-btn uk-btn-primary">Save Block Order</button>
                 </div>
             @endif
         </form>
     </div>
-
 @endsection
 
 @push('scripts')
