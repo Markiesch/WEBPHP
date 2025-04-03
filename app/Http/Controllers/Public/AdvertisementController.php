@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Services\Public\AdvertisementService;
+use App\Http\Services\Public\AdvertisementService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 

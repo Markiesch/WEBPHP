@@ -1,8 +1,8 @@
-<table class="uk-table">
+<table class="uk-table uk-table-divider">
     <thead>
     <tr>
         @foreach($headers as $key => $header)
-            <th class="px-8 py-5 bg-gray-50 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+            <th>
                 @if(isset($header['sortable']) && $header['sortable'])
                     <div class="flex items-center gap-2">
                         <span>{{ $header['label'] }}</span>
@@ -25,7 +25,7 @@
         @endforeach
     </tr>
     </thead>
-    <tbody class="bg-white divide-y divide-gray-200">
+    <tbody>
     {{ $slot }}
     </tbody>
 </table>

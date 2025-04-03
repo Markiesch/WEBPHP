@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Seller\AgendaController;
 use App\Http\Controllers\Seller\BusinessEditorController;
 use App\Http\Controllers\Seller\SellerAdvertisementController;
 use App\Http\Controllers\Seller\ContractController;
@@ -49,6 +50,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('blocks/order', [BusinessEditorController::class, 'updateOrder'])->name('business.blocks.order');
             Route::post('blocks/create', [BusinessEditorController::class, 'createBlock'])->name('business.blocks.create');
             Route::delete('blocks/{block}', [BusinessEditorController::class, 'deleteBlock'])->name('business.blocks.delete');
+        });
+
+        Route::prefix("agenda")->group(function () {
+            Route::get('/', [AgendaController::class, 'index'])->name('agenda.index');
         });
 
         // Rental routes
