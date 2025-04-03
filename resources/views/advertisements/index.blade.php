@@ -36,6 +36,7 @@
             'description' => ['label' => __('Description')],
             'price' => ['label' => __('Price'), 'sortable' => true],
             'wear_percentage' => ['label' => __('Wear'), 'sortable' => true],
+            'wear_per_day' => ['label' => __('Wear/Day'), 'sortable' => true],
             'created_at' => ['label' => __('Date'), 'sortable' => true],
             'qr' => ['label' => __('QR Code/Edit')]
         ]"
@@ -63,6 +64,15 @@
                     <span class="uk-badge {{ $advertisement->wear_percentage > 50 ? 'uk-badge-warning' : 'uk-badge-success' }}">
                         {{ $advertisement->wear_percentage }}%
                     </span>
+                </td>
+                <td class="px-8 py-4">
+                    @if($advertisement->type === 'rental' && $advertisement->wear_per_day)
+                        <span class="uk-badge {{ $advertisement->wear_per_day > 1 ? 'uk-badge-warning' : 'uk-badge-success' }}">
+                            {{ number_format($advertisement->wear_per_day, 2) }}%
+                        </span>
+                    @else
+                        <span class="text-gray-400">-</span>
+                    @endif
                 </td>
                 <td class="px-8 py-4">{{ $advertisement->created_at->format('Y-m-d H:i') }}</td>
                 <td class="px-8 py-4">

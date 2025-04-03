@@ -22,6 +22,7 @@ class AdvertisementSeeder extends Seeder
                     'wear_percentage' => $faker->numberBetween(0, 100),
                     'business_id' => $b,
                     'type' => Advertisement::TYPE_SALE,
+                    'wear_per_day' => null,
                     'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
                     'expiry_date' => now()->addMonths(3),
                 ]);
@@ -36,6 +37,7 @@ class AdvertisementSeeder extends Seeder
                     'description' => $faker->paragraph(2),
                     'price' => $faker->randomFloat(2, 50, 500),
                     'wear_percentage' => $faker->numberBetween(0, 100),
+                    'wear_per_day' => $faker->randomFloat(2, 0.1, 2.0),
                     'business_id' => $b,
                     'type' => Advertisement::TYPE_RENTAL,
                     'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
