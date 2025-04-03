@@ -21,4 +21,14 @@ class Business extends Model
     {
         return $this->hasMany(Advertisement::class);
     }
+
+    public function blocks(): HasMany
+    {
+        return $this->hasMany(BusinessBlock::class)->orderBy('order');
+    }
+
+    public function activeBlocks(): HasMany
+    {
+        return $this->blocks()->where('active', true);
+    }
 }

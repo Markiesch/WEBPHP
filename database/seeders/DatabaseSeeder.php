@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             BusinessSeeder::class,
+            BusinessBlockSeeder::class,
             AdvertisementSeeder::class,
             AdvertisementReviewSeeder::class,
             AdvertisementFavoriteSeeder::class,

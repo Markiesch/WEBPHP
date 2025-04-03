@@ -16,6 +16,11 @@ class BusinessController extends Controller
     public function index(Request $request): View
     {
         $business = Business::where('url', $request->route('url'))->firstOrFail();
-        return view('public/business', ['business' => $business, 'advertisements' => $business->advertisements]);
+
+        return view('public/business', [
+            'business' => $business,
+            'advertisements' => $business->advertisements,
+            'blocks' => $business->activeBlocks
+        ]);
     }
 }
