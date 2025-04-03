@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdvertisementCrudController;
+use App\Http\Controllers\Seller\BusinessController;
 use App\Http\Controllers\Seller\SellerAdvertisementController;
 use App\Http\Controllers\Seller\ContractController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,11 @@ Route::middleware(['auth'])->group(function () {
             // Advertisement CSV upload routes
             Route::get('upload-csv', [AdvertisementCrudController::class, 'showUploadForm'])->name('crud.advertisement.uploadCsvForm');
             Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');
+        });
+
+        // Business routes
+        Route::prefix('business')->group(function () {
+            Route::get('/', [BusinessController::class, 'index'])->name('business.index');
         });
 
         // Rental routes
