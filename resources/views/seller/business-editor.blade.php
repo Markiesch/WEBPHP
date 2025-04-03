@@ -22,7 +22,8 @@
                     </div>
                     <input name="url" type="text" class="uk-input rounded-none" value="{{ $business->url }}"/>
                     <div class="flex-shrink-0">
-                        <a href="{{ route('business-page', $business->url) }}" class="uk-btn uk-btn-secondary border-s-0 border rounded-s-none" target="_blank">
+                        <a href="{{ route('business-page', $business->url) }}"
+                           class="uk-btn uk-btn-secondary border-s-0 border rounded-s-none" target="_blank">
                             View live page
                             <uk-icon icon="external-link" class="pl-2"></uk-icon>
                         </a>
@@ -103,7 +104,7 @@
                         @elseif($block->type === 'image')
                             <h4 class="font-medium">{{ $block->content['title'] }}</h4>
                             @if(!empty($block->content['url']))
-                                <img src="{{ $block->content['url'] }}" alt="{{ $block->content['alt'] }}"
+                                <img src="{{ asset($block->content['url']) }}" alt="{{ $block->content['alt'] }}"
                                      class="h-20 object-cover mt-2">
                             @else
                                 <div class="text-sm text-gray-600">No image uploaded yet</div>
@@ -115,7 +116,8 @@
                     <div id="editor-{{ $block->id }}" class="uk-modal" data-uk-modal>
                         <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
 
-                            <form action="{{ route('business.blocks.update', $block) }}" method="POST">
+                            <form action="{{ route('business.blocks.update', $block) }}" enctype="multipart/form-data"
+                                  method="POST">
                                 @csrf
                                 @method('PUT')
 
@@ -150,8 +152,12 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Image URL</label>
-                                        <input type="text" name="content[url]" value="{{ $block->content['url'] }}"
-                                               class="uk-input">
+                                        <input type="file"
+                                               name="image"
+                                               id="image"
+                                               class="uk-input @error('image') border-red-500 @enderror"
+                                               accept="image/jpeg,image/png,image/jpg,image/gif"
+                                        >
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Alt Text</label>

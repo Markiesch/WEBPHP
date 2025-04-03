@@ -8,6 +8,8 @@ use App\Models\BusinessBlock;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class BusinessEditorController extends Controller
@@ -41,8 +43,13 @@ class BusinessEditorController extends Controller
             'content' => 'required|array',
         ]);
 
-        $block->update($validatedData);
+        if ($request->file('image')) {
+            $validatedData['content']['url'] = $this->handleImageUpload($request);
+        } else {
+            $validatedData['content']['url'] = $block->content['url'] ?? null;
+        }
 
+        $block->update($validatedData);
         return redirect()->route('business.index')->with('success', 'Block updated successfully');
     }
 
@@ -171,5 +178,17 @@ class BusinessEditorController extends Controller
             ],
             default => [],
         };
+    }
+
+    private function handleImageUpload(Request $request): ?string
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->file('image')) {
+            return $request->file('image')->store('uploads', 'public');
+        }
+        return back()->withErrors(['image' => 'Failed to upload image.']);
     }
 }
