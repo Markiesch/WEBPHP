@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Advertisement;
+use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
@@ -11,47 +12,36 @@ class AdvertisementSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        for ($i = 0; $i < 20; $i++) {
+        $userId = 3; // business_advertiser ID
+
+        // Create 3 sale advertisements
+        for ($i = 0; $i < 4; $i++) {
             Advertisement::create([
                 'title' => $faker->words(3, true),
-                'description' => $faker->sentence,
-                'price' => $faker->randomFloat(0, 200, 2000),
-                'business_id' => 1,
-                'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
+                'description' => $faker->paragraph(2),
+                'price' => $faker->randomFloat(2, 200, 2000),
+                'wear_percentage' => $faker->numberBetween(0, 100),
+                'user_id' => $userId,
+                'type' => Advertisement::TYPE_SALE,
+                'image_url' => 'https://picsum.photos/800/600',
+                'expiry_date' => now()->addMonths(3),
             ]);
         }
 
-        Advertisement::create([
-            'title' => 'Modern Office Space',
-            'description' => 'Bright and spacious office space in the city center. Perfect for small businesses.',
-            'price' => 1250.00,
-            'image_url' => 'storage/images/office.jpg',
-            'rental_start_date' => '2024-04-01',
-            'rental_end_date' => '2024-09-30',
-            'expiry_date' => '2024-03-31',
-            'business_id' => 1,
-        ]);
-
-        Advertisement::create([
-            'title' => 'Retail Shop Location',
-            'description' => 'Prime retail location with high foot traffic. Recently renovated with modern facilities.',
-            'price' => 2500.00,
-            'image_url' => 'storage/images/office.jpg',
-            'rental_start_date' => '2024-05-01',
-            'rental_end_date' => '2025-04-30',
-            'expiry_date' => '2024-04-15',
-            'business_id' => 1,
-        ]);
-
-        Advertisement::create([
-            'title' => 'Storage Unit',
-            'description' => 'Secure storage unit with 24/7 access. Climate controlled environment.',
-            'price' => 450.00,
-            'image_url' => 'storage/images/office.jpg',
-            'rental_start_date' => '2024-04-15',
-            'rental_end_date' => '2024-07-15',
-            'expiry_date' => '2024-04-10',
-            'business_id' => 2,
-        ]);
+        // Create 3 rental advertisements
+        for ($i = 0; $i < 3; $i++) {
+            Advertisement::create([
+                'title' => $faker->words(3, true),
+                'description' => $faker->paragraph(2),
+                'price' => $faker->randomFloat(2, 50, 500),
+                'wear_percentage' => $faker->numberBetween(0, 100),
+                'user_id' => $userId,
+                'type' => Advertisement::TYPE_RENTAL,
+                'image_url' => 'https://picsum.photos/800/600',
+                'rental_start_date' => now()->addDays($faker->numberBetween(1, 30)),
+                'rental_end_date' => now()->addMonths($faker->numberBetween(2, 6)),
+                'expiry_date' => now()->addMonths(1),
+            ]);
+        }
     }
 }

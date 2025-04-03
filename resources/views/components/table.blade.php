@@ -2,14 +2,15 @@
     <thead>
     <tr>
         @foreach($headers as $key => $header)
-            <th>
+            <th class="px-8 py-5 bg-gray-50 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
                 @if(isset($header['sortable']) && $header['sortable'])
-                    <div>
+                    <div class="flex items-center gap-2">
                         <span>{{ $header['label'] }}</span>
                         <a href="{{ request()->fullUrlWithQuery([
                                     'sort_by' => $key,
                                     'direction' => ($sortBy === $key && $direction === 'asc') ? 'desc' : 'asc'
-                                ]) }}">
+                                ]) }}"
+                           class="text-gray-400 hover:text-gray-600">
                             @if($sortBy === $key)
                                 {!! $direction === 'asc' ? '↑' : '↓' !!}
                             @else
@@ -24,7 +25,7 @@
         @endforeach
     </tr>
     </thead>
-    <tbody>
+    <tbody class="bg-white divide-y divide-gray-200">
     {{ $slot }}
     </tbody>
 </table>

@@ -15,12 +15,19 @@ class Advertisement extends Model
 {
     use HasFactory;
 
+    const TYPE_SALE = 'sale';
+    const TYPE_RENTAL = 'rental';
+    const MAX_SALE_ADS = 4;
+    const MAX_RENTAL_ADS = 4;
+
     protected $fillable = [
         'title',
         'description',
         'price',
+        'wear_percentage',
         'image_url',
-        'business_id',
+        'user_id',
+        'type',
         'rental_start_date',
         'rental_end_date',
         'expiry_date'
@@ -30,13 +37,41 @@ class Advertisement extends Model
         'id',
         'title',
         'price',
+        'wear_percentage',
+        'type',
         'created_at',
         'updated_at'
     ];
 
-    public function business(): BelongsTo
+    protected $casts = [
+        'rental_start_date' => 'date',
+        'rental_end_date' => 'date',
+        'expiry_date' => 'date',
+        'price' => 'decimal:2',
+        'wear_percentage' => 'integer'
+    ];
+
+    public static function getTypes(): array
     {
-        return $this->belongsTo(Business::class);
+        return [
+            self::TYPE_SALE => 'For Sale',
+            self::TYPE_RENTAL => 'For Rent'
+        ];
+    }
+
+    public function isSale(): bool
+    {
+        return $this->type === self::TYPE_SALE;
+    }
+
+    public function isRental(): bool
+    {
+        return $this->type === self::TYPE_RENTAL;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function reviews(): HasMany
@@ -47,6 +82,11 @@ class Advertisement extends Model
     public function favorites(): HasMany
     {
         return $this->hasMany(AdvertisementFavorite::class);
+    }
+
+    public function scopeOfType(EloquentBuilder $query, string $type): EloquentBuilder
+    {
+        return $query->where('type', $type);
     }
 
     public function getQrCodeDataUri()
@@ -77,4 +117,3 @@ class Advertisement extends Model
         return $query;
     }
 }
-

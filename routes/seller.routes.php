@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('create', [SellerAdvertisementController::class, 'create'])->name('advertisements.create');
             Route::post('/', [SellerAdvertisementController::class, 'store'])->name('advertisements.store');
             Route::get('{advertisement}', [SellerAdvertisementController::class, 'show'])->name('advertisements.show');
+            Route::get('{advertisement}/edit', [SellerAdvertisementController::class, 'edit'])->name('advertisements.edit');
+            Route::put('{advertisement}', [SellerAdvertisementController::class, 'update'])->name('advertisements.update');
+
             // Advertisement CSV upload routes
             Route::get('upload-csv', [AdvertisementCrudController::class, 'showUploadForm'])->name('crud.advertisement.uploadCsvForm');
             Route::post('upload-csv', [AdvertisementCrudController::class, 'uploadCsv'])->name('crud.advertisement.uploadCsv');

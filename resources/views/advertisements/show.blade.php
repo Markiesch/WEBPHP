@@ -12,10 +12,36 @@
                                 <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                                     €{{ number_format($advertisement->price, 2) }}
                                 </span>
+                                <span class="px-3 py-1 {{ $advertisement->type === 'sale' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800' }} rounded-full text-sm font-medium">
+                                    {{ __($advertisement->type === 'sale' ? 'For Sale' : 'For Rent') }}
+                                </span>
+                                <span class="px-3 py-1 {{ $advertisement->wear_percentage > 50 ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800' }} rounded-full text-sm font-medium">
+                                    {{ $advertisement->wear_percentage }}% {{ __('Wear') }}
+                                </span>
                                 <span class="text-gray-500 text-sm">
                                     {{ __('Posted on') }} {{ $advertisement->created_at->format('F j, Y') }}
                                 </span>
                             </div>
+
+                            @if($advertisement->type === 'rental')
+                                <div class="mb-6 bg-gray-50 rounded-lg p-4">
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ __('Rental Period') }}</h3>
+                                    <div class="flex items-center space-x-4 text-gray-600">
+                                        <div>
+                                            <span class="block text-sm font-medium">{{ __('Start Date') }}</span>
+                                            <span class="text-sm">{{ $advertisement->rental_start_date->format('F j, Y') }}</span>
+                                        </div>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                        </svg>
+                                        <div>
+                                            <span class="block text-sm font-medium">{{ __('End Date') }}</span>
+                                            <span class="text-sm">{{ $advertisement->rental_end_date->format('F j, Y') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="prose max-w-none mb-8">
                                 <p class="text-gray-700 leading-relaxed">{{ $advertisement->description }}</p>
                             </div>
