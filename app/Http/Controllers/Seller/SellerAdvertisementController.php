@@ -220,12 +220,16 @@ class SellerAdvertisementController extends Controller
             ]);
 
             $business = Business::where('user_id', Auth::id())->firstOrFail();
+
+            // Check existing advertisement counts
+            $existingSaleCount = Advertisement::where('business_id', $business->id)
+                ->where('type', Advertisement::TYPE_SALE)
+                ->count();
+            $existingRentalCount = Advertisement::where('business_id', $business->id)
+                ->where('type', Advertisement::TYPE_RENTAL)
+                ->count();
+
             $file = $request->file('csv_file');
-
-            if (!file_exists(public_path('assets/csv'))) {
-                mkdir(public_path('assets/csv'), 0777, true);
-            }
-
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('assets/csv'), $filename);
 
@@ -233,9 +237,21 @@ class SellerAdvertisementController extends Controller
             $header = fgetcsv($handle);
 
             $successCount = 0;
+            $saleCount = 0;
+            $rentalCount = 0;
 
             while (($row = fgetcsv($handle)) !== false) {
                 if (count($row) < 5) continue;
+
+                $type = strtolower(trim($row[4]));
+
+                // Check limits based on type
+                if ($type === Advertisement::TYPE_SALE && ($saleCount + $existingSaleCount) >= 4) {
+                    continue;
+                }
+                if ($type === Advertisement::TYPE_RENTAL && ($rentalCount + $existingRentalCount) >= 4) {
+                    continue;
+                }
 
                 try {
                     Advertisement::create([
@@ -244,14 +260,19 @@ class SellerAdvertisementController extends Controller
                         'description' => trim($row[1]),
                         'price' => (float) trim($row[2]),
                         'image_url' => trim($row[3]),
-                        'type' => strtolower(trim($row[4])),
-                        'expires_at' => isset($row[5]) ? trim($row[5]) : null,
-                        'wear_percentage' => 0,
-                        'wear_per_day' => null,
-                        'rental_start_date' => null,
-                        'rental_end_date' => null
+                        'type' => $type,
+                        'wear_percentage' => trim($row[5] ?? 0),
+                        'wear_per_day' => $type === Advertisement::TYPE_RENTAL ? trim($row[6] ?? 0) : null,
+                        'rental_start_date' => $type === Advertisement::TYPE_RENTAL ? trim($row[7] ?? null) : null,
+                        'rental_end_date' => $type === Advertisement::TYPE_RENTAL ? trim($row[8] ?? null) : null
                     ]);
+
                     $successCount++;
+                    if ($type === Advertisement::TYPE_SALE) {
+                        $saleCount++;
+                    } else {
+                        $rentalCount++;
+                    }
                 } catch (Exception $e) {
                     Log::error('Failed to import row: ' . implode(',', $row) . ' Error: ' . $e->getMessage());
                 }
