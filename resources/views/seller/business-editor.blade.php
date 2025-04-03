@@ -37,11 +37,11 @@
         </div>
 
         <!-- Block type selector for adding new blocks -->
-        <div class="uk-card uk-card-body mb-4">
+        <div class="uk-card uk-card-secondary uk-card-body mb-4">
             <h2 class="text-lg font-semibold mb-4">Add New Block</h2>
-            <form action="{{ route('business.blocks.create') }}" method="POST" class="flex gap-4">
+            <form action="{{ route('business.blocks.create') }}" method="POST" class="flex gap-2">
                 @csrf
-                <select name="type" class="uk-select">
+                <select name="type" class="uk-select bg-white">
                     <option value="intro_text">Text Section</option>
                     <option value="featured_ads">Featured Advertisements</option>
                     <option value="image">Image</option>
@@ -51,10 +51,10 @@
         </div>
 
         <!-- Block order management -->
-        <div id="blockContainer" class="space-y-4 mb-6">
+        <div id="blockContainer" class="mb-6 uk-card border-b-0">
             @forelse($blocks as $block)
-                <div class="uk-card uk-card-body" data-id="{{ $block->id }}">
-                    <div class="flex justify-between items-center mb-4">
+                <div class="rounded-none uk-card-body border-b" data-id="{{ $block->id }}">
+                    <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-2">
                             <form id="orderForm" action="{{ route('business.blocks.order') }}" method="POST">
                                 @csrf
@@ -77,20 +77,20 @@
                             </h3>
                         </div>
                         <div class="flex gap-2">
-                            <button type="button" class="uk-btn uk-btn-default"
+                            <button type="button" class="uk-btn uk-btn-sm uk-btn-default"
                                     data-uk-toggle="target: {{ '#editor-' . $block->id }}">
                                 Edit
                             </button>
                             <form action="{{ route('business.blocks.delete', $block) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="uk-btn uk-btn-destructive">Delete</button>
+                                <button type="submit" class="uk-btn uk-btn-sm uk-btn-destructive">Delete</button>
                             </form>
                         </div>
                     </div>
 
                     <!-- Preview of block content -->
-                    <div class="preview mb-4">
+                    <div class="preview">
                         @if($block->type === 'intro_text')
                             <h4 class="font-medium">{{ $block->content['title'] }}</h4>
                             <div
