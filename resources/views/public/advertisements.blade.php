@@ -3,8 +3,7 @@
 @section('content')
     <x-header/>
 
-
-    <h1 class="text-6xl font-bold text-center py-12">BAZAAR</h1>
+    <h1 class="text-6xl font-bold text-center py-12">{{ __('bazaar') }}</h1>
 
     <div class="uk-container">
         {{-- SEARCH --}}
@@ -12,35 +11,35 @@
             <form method="GET" action="{{ route('home') }}" class="uk-grid-small" uk-grid>
                 <div class="flex gap-4 items-end">
                     <div class="grow">
-                        <label class="uk-form-label" for="search">Search by title</label>
+                        <label class="uk-form-label" for="search">{{ __('search.by_title') }}</label>
                         <div class="uk-form-controls">
                             <input class="uk-input" type="text" id="search" name="search"
-                                   value="{{ request('search') }}" placeholder="Enter keywords...">
+                                   value="{{ request('search') }}" placeholder="{{ __('search.enter_keywords') }}">
                         </div>
                     </div>
 
                     <div>
-                        <label class="uk-form-label" for="sort">Sort by</label>
+                        <label class="uk-form-label" for="sort">{{ __('search.sort_by') }}</label>
                         <div class="uk-form-controls">
                             <select class="uk-select" id="sort" name="sort">
                                 <option value="date_desc" {{ request('sort') === 'date_desc' ? 'selected' : '' }}>
-                                    Newest first
+                                    {{ __('search.newest_first') }}
                                 </option>
                                 <option value="date_asc" {{ request('sort') === 'date_asc' ? 'selected' : '' }}>
-                                    Oldest first
+                                    {{ __('search.oldest_first') }}
                                 </option>
                                 <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>
-                                    Price: Low to High
+                                    {{ __('search.price_low_high') }}
                                 </option>
                                 <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>
-                                    Price: High to Low
+                                    {{ __('search.price_high_low') }}
                                 </option>
                             </select>
                         </div>
                     </div>
 
                     <div class="min-w-[10rem]">
-                        <label class="uk-form-label">Price range:</label>
+                        <label class="uk-form-label">{{ __('search.price_range') }}</label>
                         <div class="uk-input">
                             <uk-input-range multiple min="{{ $min_price }}" max="{{ $max_price }}"
                                             value="{{$current_min}},{{$current_max}}" name="price_range"
@@ -51,13 +50,13 @@
                     @if(auth()->check())
                         <div>
                             <input id="favorite" name="favorite" type="checkbox" class="uk-checkbox" {{ request('favorite') ? 'checked' : ''  }}>
-                            <label class="uk-form-label" for="favorite">Favorites only</label>
+                            <label class="uk-form-label" for="favorite">{{ __('search.favorites_only') }}</label>
                         </div>
                     @endif
 
                     <div class="uk-width-1-1 uk-margin-small-top uk-text-right border-s pl-4">
-                        <button type="submit" class="uk-btn uk-btn-primary">Search</button>
-                        <a href="{{ route('home') }}" class="uk-btn uk-btn-default">Reset</a>
+                        <button type="submit" class="uk-btn uk-btn-primary">{{ __('search.button') }}</button>
+                        <a href="{{ route('home') }}" class="uk-btn uk-btn-default">{{ __('search.reset') }}</a>
                     </div>
                 </div>
             </form>
@@ -70,7 +69,7 @@
             @empty
                 <div class="uk-width-1-1">
                     <div class="uk-alert uk-alert-warning">
-                        <p>No advertisements found matching your criteria.</p>
+                        <p>{{ __('search.no_results') }}</p>
                     </div>
                 </div>
             @endforelse

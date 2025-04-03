@@ -129,7 +129,17 @@
         "upload_date": "Upload Date",
         "actions": "Actions",
         "export_pdf": "Export to PDF"
-    }
+    },
+    "search.by_title": "Search by title",
+    "search.enter_keywords": "Enter keywords...",
+    "search.sort_by": "Sort by",
+    "search.newest_first": "Newest first",
+    "search.oldest_first": "Oldest first",
+    "search.price_low_high": "Price: Low to High",
+    "search.price_high_low": "Price: High to Low",
+    "search.price_range": "Price range:",
+    "search.favorites_only": "Favorites only",
+    "search.button": "Search",
+    "search.reset": "Reset",
+    "search.no_results": "No advertisements found matching your criteria."
 }
-
-

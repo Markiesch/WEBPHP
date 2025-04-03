@@ -128,6 +128,18 @@
         "upload_date": "Upload Datum",
         "actions": "Acties",
         "export_pdf": "Exporteer naar PDF"
-    }
-}
+    },
 
+    "search.by_title": "Zoeken op titel",
+    "search.enter_keywords": "Voer zoekwoorden in...",
+    "search.sort_by": "Sorteren op",
+    "search.newest_first": "Nieuwste eerst",
+    "search.oldest_first": "Oudste eerst",
+    "search.price_low_high": "Prijs: Laag naar Hoog",
+    "search.price_high_low": "Prijs: Hoog naar Laag",
+    "search.price_range": "Prijsbereik:",
+    "search.favorites_only": "Alleen favorieten",
+    "search.button": "Zoeken",
+    "search.reset": "Reset",
+    "search.no_results": "Geen advertenties gevonden die aan uw criteria voldoen."
+}
