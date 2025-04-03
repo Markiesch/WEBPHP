@@ -10,7 +10,7 @@
         </div>
 
         <div class="pt-6">
-            <p>Listed by: <a href="{{ route('business-page', $advertisement->business->url)  }}" class="text-blue-700 underline">{{ $advertisement->business->name }}</a></p>
+            <p>@lang('advertisement.listed_by'): <a href="{{ route('business-page', $advertisement->business->url)  }}" class="text-blue-700 underline">{{ $advertisement->business->name }}</a></p>
             <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
             <p class="pt-2">{{ $advertisement->description }}</p>
             <p class="pt-2 text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</p>
@@ -18,7 +18,7 @@
             <div class="pt-4 grid gap-2">
                 <button class="uk-btn uk-btn-md uk-btn-primary w-full gap-1">
                     <uk-icon icon="shopping-cart"></uk-icon>
-                    Kopen
+                    @lang('advertisement.buy')
                 </button>
                 <form action="{{ route('advertisement.favorite', $advertisement->id) }}" method="POST">
                     @csrf
@@ -34,7 +34,7 @@
                                     d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/>
                             <path d="M5 21h14"/>
                         </svg>
-                        {{ $advertisement->is_favorited ? "Favorited" : "Favorite" }}
+                        {{ $advertisement->is_favorited ? __('advertisement.favorited') : __('advertisement.favorite') }}
                     </button>
                 </form>
             </div>
@@ -59,7 +59,7 @@
                                 </svg>
                             @endfor
                         </div>
-                        <p>Gemiddelde van {{ $total_reviews_count }} reviews</p>
+                        <p>@lang('advertisement.average_of_reviews', ['count' => $total_reviews_count])</p>
                     </div>
                 </div>
 
@@ -101,13 +101,13 @@
 
                 @auth
                     <div class="mt-6 pt-4 border-t">
-                        <h5 class="font-bold">Write a Review</h5>
+                        <h5 class="font-bold">@lang('advertisement.write_review')</h5>
                         <form action="{{ route('reviews.submit', $advertisement->id) }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="rating" class="form-label">Rating</label>
+                                <label for="rating" class="form-label">@lang('advertisement.rating')</label>
                                 <select class="uk-select" id="rating" name="rating" required>
-                                    <option value="">Select rating</option>
+                                    <option value="">@lang('advertisement.select_rating')</option>
                                     <option value="5">5</option>
                                     <option value="4">4</option>
                                     <option value="3">3</option>
@@ -116,22 +116,22 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="comment" class="form-label">Comment</label>
+                                <label for="comment" class="form-label">@lang('advertisement.comment')</label>
                                 <textarea class="uk-textarea" id="comment" name="comment" rows="3"
                                           required></textarea>
                             </div>
-                            <button type="submit" class="uk-btn uk-btn-secondary border w-full">Submit Review</button>
+                            <button type="submit" class="uk-btn uk-btn-secondary border w-full">@lang('advertisement.submit_review')</button>
                         </form>
                     </div>
                 @else
                     <div class="alert alert-info mt-3">
-                        <a href="{{ route('login') }}">Log in</a> to write a review.
+                        <a href="{{ route('login') }}">@lang('advertisement.login_to_review')</a>
                     </div>
                 @endauth
             </div>
             <div class="col-span-2">
                 <div class="flex justify-between items-end">
-                    <h2 class="text-2xl font-bold">Reviews</h2>
+                    <h2 class="text-2xl font-bold">@lang('advertisement.reviews')</h2>
                     <div class="uk-form-controls">
                         <form id="sortForm" action="{{ route('advertisement', $advertisement->id) }}" method="GET">
                             @if (request('rating') !== null)
@@ -141,16 +141,16 @@
                             <select class="uk-select" id="sort" name="sort"
                                     onchange="document.getElementById('sortForm').submit()">
                                 <option value="date_desc" {{ $currentSort === 'date_desc' ? 'selected' : '' }}>
-                                    Newest first
+                                    @lang('advertisement.newest_first')
                                 </option>
                                 <option value="date_asc" {{ $currentSort === 'date_asc' ? 'selected' : '' }}>
-                                    Oldest first
+                                    @lang('advertisement.oldest_first')
                                 </option>
                                 <option value="rating_asc" {{ $currentSort === 'rating_asc' ? 'selected' : '' }}>
-                                    Rating: Low to High
+                                    @lang('advertisement.rating_low_high')
                                 </option>
                                 <option value="rating_desc" {{ $currentSort === 'rating_desc' ? 'selected' : '' }}>
-                                    Rating: High to Low
+                                    @lang('advertisement.rating_high_low')
                                 </option>
                             </select>
                         </form>
@@ -161,7 +161,7 @@
                         <div class="flex justify-between pt-6">
                             <div>
                                 <h2 class="font-bold pb-1">{{ $review->user->name }} @if(auth()->id() === $review->user->id)
-                                        (you)
+                                        (@lang('advertisement.you'))
                                     @endif</h2>
                                 <div class="flex">
                                     @for($i = 1; $i <= 5; $i++)
@@ -197,7 +197,7 @@
                         {{ $reviews->links() }}
                     </div>
                 @else
-                    <p class="text-muted-foreground">No reviews yet.`</p>
+                    <p class="text-muted-foreground">@lang('advertisement.no_reviews_yet')</p>
                 @endif
             </div>
         </div>
