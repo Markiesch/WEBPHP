@@ -4,9 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContractsTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
@@ -22,11 +22,11 @@ class CreateContractsTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('contracts', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('contracts');
     }
-}
+};

@@ -16,7 +16,7 @@ class AdvertisementSeeder extends Seeder
                 'title' => $faker->words(3, true),
                 'description' => $faker->sentence,
                 'price' => $faker->randomFloat(0, 200, 2000),
-                'user_id' => 1,
+                'business_id' => 1,
                 'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
             ]);
         }
@@ -29,7 +29,7 @@ class AdvertisementSeeder extends Seeder
             'rental_start_date' => '2024-04-01',
             'rental_end_date' => '2024-09-30',
             'expiry_date' => '2024-03-31',
-            'user_id' => 3,
+            'business_id' => 1,
         ]);
 
         Advertisement::create([
@@ -40,7 +40,7 @@ class AdvertisementSeeder extends Seeder
             'rental_start_date' => '2024-05-01',
             'rental_end_date' => '2025-04-30',
             'expiry_date' => '2024-04-15',
-            'user_id' => 3,
+            'business_id' => 1,
         ]);
 
         Advertisement::create([
@@ -51,7 +51,7 @@ class AdvertisementSeeder extends Seeder
             'rental_start_date' => '2024-04-15',
             'rental_end_date' => '2024-07-15',
             'expiry_date' => '2024-04-10',
-            'user_id' => 2,
+            'business_id' => 2,
         ]);
     }
 }

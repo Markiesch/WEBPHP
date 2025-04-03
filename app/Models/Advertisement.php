@@ -34,9 +34,9 @@ class Advertisement extends Model
         'updated_at'
     ];
 
-    public function user(): BelongsTo
+    public function business(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Business::class);
     }
 
     public function reviews(): HasMany
