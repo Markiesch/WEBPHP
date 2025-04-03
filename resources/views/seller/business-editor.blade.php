@@ -7,8 +7,7 @@
 
             @if($business)
                 <div>
-                    <a href="{{ route('business-page', ['url' => $business->url]) }}" class="uk-btn uk-btn-secondary"
-                       target="_blank">
+                    <a href="{{ route('business-page', ['url' => $business->url]) }}" class="uk-btn uk-btn-secondary" target="_blank">
                         View live page
                         <uk-icon icon="external-link" class="pl-2"></uk-icon>
                     </a>
@@ -101,61 +100,48 @@
                                 @if($block->type === 'intro_text')
                                     <div class="mb-3">
                                         <label class="uk-form-label">Title</label>
-                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
-                                               class="uk-input">
+                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Content</label>
-                                        <textarea name="content[text]" rows="5"
-                                                  class="uk-textarea w-full richtext">{{ $block->content['text'] }}</textarea>
+                                        <textarea name="content[text]" rows="5" class="uk-textarea w-full richtext">{{ $block->content['text'] }}</textarea>
                                     </div>
                                 @elseif($block->type === 'featured_ads')
                                     <div class="mb-3">
                                         <label class="uk-form-label">Title</label>
-                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
-                                               class="uk-input">
+                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Number of Ads</label>
-                                        <input type="number" name="content[count]"
-                                               value="{{ $block->content['count'] ?? 3 }}"
-                                               min="1" max="12" class="uk-input">
+                                        <input type="number" name="content[count]" value="{{ $block->content['count'] ?? 3 }}" min="1" max="12" class="uk-input">
                                     </div>
                                 @elseif($block->type === 'image')
                                     <div class="mb-3">
                                         <label class="uk-form-label">Title</label>
-                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
-                                               class="uk-input">
+                                        <input type="text" name="content[title]" value="{{ $block->content['title'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Image URL</label>
-                                        <input type="text" name="content[url]" value="{{ $block->content['url'] }}"
-                                               class="uk-input">
+                                        <input type="text" name="content[url]" value="{{ $block->content['url'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Alt Text</label>
-                                        <input type="text" name="content[alt]" value="{{ $block->content['alt'] }}"
-                                               class="uk-input">
+                                        <input type="text" name="content[alt]" value="{{ $block->content['alt'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="uk-form-label">Caption</label>
-                                        <input type="text" name="content[caption]"
-                                               value="{{ $block->content['caption'] }}"
-                                               class="uk-input">
+                                        <input type="text" name="content[caption]" value="{{ $block->content['caption'] }}" class="uk-input">
                                     </div>
                                     <div class="mb-3">
                                         <label class="flex items-center uk-form-label">
-                                            <input type="checkbox" name="content[fullWidth]" value="1"
-                                                   {{ isset($block->content['fullWidth']) && $block->content['fullWidth'] ? 'checked' : '' }}
-                                                   class="uk-checkbox">
+                                            <input type="checkbox" name="content[fullWidth]" value="1" {{ isset($block->content['fullWidth']) && $block->content['fullWidth'] ? 'checked' : '' }} class="uk-checkbox">
                                             <span class="ml-2">Full Width</span>
                                         </label>
                                     </div>
                                 @endif
 
                                 <div class="flex justify-end">
-                                    <button type="button" class="uk-btn uk-modal-close uk-btn-secondary mr-2">Cancel
-                                    </button>
+                                    <button type="button" class="uk-btn uk-modal-close uk-btn-secondary mr-2">Cancel</button>
                                     <button type="submit" class="uk-btn uk-btn-primary">Save Changes</button>
                                 </div>
                             </form>
