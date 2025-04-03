@@ -5,31 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AdvertisementApiController extends Controller
 {
-    /**
-     * Return a listing of advertisements.
-     */
-
-    public function index(Request $request): JsonResponse
+    public function index($id): JsonResponse
     {
-        $userId = Auth::id();
-
-        if (!$userId) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not authenticated'
-            ], 401);
-        }
-
-        $advertisements = Advertisement::where('user_id', $userId)
-            ->when($request->filled('price_range'), function ($query) use ($request) {
-                $this->applyPriceFilter($query, $request->input('price_range'));
-            })
-            ->get();
+        $advertisements = Advertisement::where('business_id', $id)->get();
 
         return response()->json([
             'success' => true,
@@ -37,32 +18,13 @@ class AdvertisementApiController extends Controller
         ]);
     }
 
-    /**
-     * Return a specific advertisement.
-     */
-    public function show($id): JsonResponse
+    public function show($id, $adId): JsonResponse
     {
-        $advertisement = Advertisement::where('user_id', Auth::id())->findOrFail($id);
+        $advertisement = Advertisement::where('business_id', $id)->findOrFail($adId);
 
         return response()->json([
             'success' => true,
             'data' => $advertisement
         ]);
-    }
-
-    /**
-     * Apply price range filter.
-     */
-    private function applyPriceFilter($query, $priceRange)
-    {
-        $range = explode('-', $priceRange);
-
-        if (count($range) === 2) {
-            return $query->whereBetween('price', [$range[0], $range[1]]);
-        }
-
-        if ($range[0] === '100plus') {
-            return $query->where('price', '>', 100);
-        }
     }
 }

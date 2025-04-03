@@ -12,9 +12,10 @@
                     const links = [
                         'dashboard' => ['label' => 'Dashboard', 'icon' => 'layout-dashboard'],
                         'business.index' => ['label' => 'Business', 'icon' => 'store'],
-                        'contracts.index' => ['label' => 'Contracts', 'icon' => 'file-text'],
                         'advertisements.index' => ['label' => 'Advertisements', 'icon' => 'megaphone'],
                         'agenda.index' => ['label' => 'Agenda', 'icon' => 'calendar'],
+                        'contracts.index' => ['label' => 'Contracts', 'icon' => 'file-text'],
+                        'api.index' => ['label' => 'API', 'icon' => 'webhook'],
                     ];
                     ?>
                     @foreach (links as $route => $data)

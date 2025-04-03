@@ -4,6 +4,7 @@ use App\Http\Controllers\Seller\AgendaController;
 use App\Http\Controllers\Seller\BusinessEditorController;
 use App\Http\Controllers\Seller\SellerAdvertisementController;
 use App\Http\Controllers\Seller\ContractController;
+use App\Http\Controllers\Seller\SellerAPIController;
 use Illuminate\Support\Facades\Route;
 
 // Authenticated routes
@@ -54,6 +55,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix("agenda")->group(function () {
             Route::get('/', [AgendaController::class, 'index'])->name('agenda.index');
+        });
+
+        Route::prefix("api")->group(function () {
+            Route::get('/', [SellerAPIController::class, 'index'])->name('api.index');
         });
 
         // Rental routes
