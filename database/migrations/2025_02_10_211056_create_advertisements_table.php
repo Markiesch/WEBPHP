@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('business_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
@@ -23,7 +22,7 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
             $table->timestamps();
 
-            $table->index(['user_id', 'type']);
+            $table->index(['business_id', 'type']);
         });
     }
 
