@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdvertisementCrudController;
-use App\Http\Controllers\Seller\BusinessController;
+use App\Http\Controllers\Seller\BusinessEditorController;
 use App\Http\Controllers\Seller\SellerAdvertisementController;
 use App\Http\Controllers\Seller\ContractController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +35,13 @@ Route::middleware(['auth'])->group(function () {
 
         // Business routes
         Route::prefix('business')->group(function () {
-            Route::get('/', [BusinessController::class, 'index'])->name('business.index');
+            Route::get('/', [BusinessEditorController::class, 'index'])->name('business.index');
+
+            // Block management routes
+            Route::put('blocks/{block}', [BusinessEditorController::class, 'updateBlock'])->name('business.blocks.update');
+            Route::post('blocks/order', [BusinessEditorController::class, 'updateOrder'])->name('business.blocks.order');
+            Route::post('blocks/create', [BusinessEditorController::class, 'createBlock'])->name('business.blocks.create');
+            Route::delete('blocks/{block}', [BusinessEditorController::class, 'deleteBlock'])->name('business.blocks.delete');
         });
 
         // Rental routes
@@ -44,3 +50,4 @@ Route::middleware(['auth'])->group(function () {
         })->name('calendar');
     });
 });
+
