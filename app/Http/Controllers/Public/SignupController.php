@@ -15,7 +15,7 @@ class SignupController extends Controller
     public function index(Request $request): View
     {
         $accountType = $request->query('type', 'buyer');
-        return view('auth/signup', ['accountType' => $accountType]);
+        return view('auth.register', ['accountType' => $accountType]);
     }
 
     public function submit(Request $request): RedirectResponse
@@ -27,7 +27,6 @@ class SignupController extends Controller
             'account_type' => 'required|in:buyer,seller',
         ];
 
-        // Add seller-specific validation rules
         if ($request->account_type === 'seller') {
             $validationRules['seller_type'] = 'required|in:particulier,zakelijk';
         }
@@ -41,15 +40,26 @@ class SignupController extends Controller
             'account_type' => $request->account_type,
         ];
 
-        // Add seller-specific data
         if ($request->account_type === 'seller') {
             $userData['seller_type'] = $request->seller_type;
         }
 
         $user = User::create($userData);
 
+        // Assign roles based on account type
+        if ($request->account_type === 'buyer') {
+            $user->assignRole('user');
+        } else {
+            $role = $request->seller_type === 'particulier' ? 'private_advertiser' : 'business_advertiser';
+            $user->assignRole($role);
+        }
+
         Auth::login($user);
 
-        return redirect()->intended('dashboard');
+        if ($user->hasRole('user')) {
+            return redirect('/');
+        }
+
+        return redirect('seller/dashboard');
     }
 }

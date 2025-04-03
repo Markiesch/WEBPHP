@@ -32,7 +32,7 @@ Route::prefix('/')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Signup routes
-    Route::view('/signup', 'auth.register')->name('signup');
+    Route::get('/signup', [SignupController::class, 'index'])->name('signup');
     Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit');
 
     // Locale switcher route
