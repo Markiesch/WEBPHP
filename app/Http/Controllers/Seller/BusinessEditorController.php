@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Models\Business;
 use App\Models\BusinessBlock;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -47,29 +48,58 @@ class BusinessEditorController extends Controller
 
     public function updateOrder(Request $request): RedirectResponse
     {
-        $business = auth()->user()->business;
+        $business = Business::where("user_id", auth()->id())->firstOrFail();
 
         if (!$business) {
-            abort(404);
+            return redirect()->back();
         }
 
         $validatedData = $request->validate([
-            'blocks' => 'required|array',
-            'blocks.*' => 'numeric|exists:business_blocks,id',
+            'block_id' => 'required|numeric|exists:business_blocks,id',
+            'direction' => 'required|in:up,down',
         ]);
 
-        foreach ($validatedData['blocks'] as $order => $blockId) {
-            BusinessBlock::where('id', $blockId)
-                ->where('business_id', $business->id)
-                ->update(['order' => $order + 1]);
+        $blockId = $validatedData['block_id'];
+        $direction = $validatedData['direction'];
+
+        // Get the block to move
+        $blockToMove = BusinessBlock::where('id', $blockId)
+            ->where('business_id', $business->id)
+            ->first();
+
+        if (!$blockToMove) {
+            return redirect()->back();
         }
 
-        return redirect()->route('business.index')->with('success', 'Block order updated');
+        // Get current order
+        $currentOrder = $blockToMove->order;
+
+        // Find adjacent block to swap with
+        if ($direction === 'up') {
+            $adjacentBlock = BusinessBlock::where('business_id', $business->id)
+                ->where('order', '<', $currentOrder)
+                ->orderBy('order', 'desc')
+                ->first();
+        } else {
+            $adjacentBlock = BusinessBlock::where('business_id', $business->id)
+                ->where('order', '>', $currentOrder)
+                ->orderBy('order', 'asc')
+                ->first();
+        }
+
+        if ($adjacentBlock) {
+            // Swap orders
+            $adjacentOrder = $adjacentBlock->order;
+            $blockToMove->update(['order' => $adjacentOrder]);
+            $adjacentBlock->update(['order' => $currentOrder]);
+        }
+
+        return redirect()->back();
     }
 
     public function createBlock(Request $request): RedirectResponse
     {
-        $business = auth()->user()->business;
+        $business = Business::where("user_id", auth()->id())->firstOrFail();
 
         if (!$business) {
             abort(404);
@@ -109,7 +139,7 @@ class BusinessEditorController extends Controller
 
     private function getDefaultContentForType(string $type): array
     {
-        return match($type) {
+        return match ($type) {
             'intro_text' => [
                 'title' => 'New Section Title',
                 'text' => '<p>Add your text here</p>',
