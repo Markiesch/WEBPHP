@@ -61,7 +61,7 @@ class AdvertisementService
 
     public function getAdvertisement(Request $request, $id): array
     {
-        $advertisement = Advertisement::with(['user'])
+        $advertisement = Advertisement::with(['business'])
             ->findOrFail($id);
 
         $userId = Auth::id();
@@ -144,7 +144,7 @@ class AdvertisementService
 
     private function getSellerOtherAds(Advertisement $advertisement)
     {
-        return Advertisement::where('user_id', $advertisement->user_id)
+        return Advertisement::where('business_id', $advertisement->business_id)
             ->where('id', '!=', $advertisement->id)
             ->orderBy('created_at', 'desc')
             ->take(5)

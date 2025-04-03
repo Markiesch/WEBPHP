@@ -10,7 +10,7 @@
         </div>
 
         <div class="pt-6">
-            <p>Listed by: <a href="/" class="text-blue-700 underline">{{ $advertisement->user->name }}</a></p>
+            <p>Listed by: <a href="{{ route('business-page', $advertisement->business->url)  }}" class="text-blue-700 underline">{{ $advertisement->business->name }}</a></p>
             <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
             <p class="pt-2">{{ $advertisement->description }}</p>
             <p class="pt-2 text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</p>
@@ -66,7 +66,9 @@
                 @for($i = 5; $i > 0; $i--)
                     <form action="{{ route('advertisement', $advertisement->id) }}" method="GET">
                         <input type="hidden" name="rating" value="{{ $i }}">
+                        @if (request('sort') !== null)
                         <input type="hidden" name="sort" value="{{ request('sort') }}">
+                        @endif
                         <button type="submit" class="w-full flex gap-4 items-center">
                             <div class="flex justify-end flex-grow-0 w-[8rem]">
                                 @for($y = 1; $y <= $i; $y++)
@@ -132,7 +134,9 @@
                     <h2 class="text-2xl font-bold">Reviews</h2>
                     <div class="uk-form-controls">
                         <form id="sortForm" action="{{ route('advertisement', $advertisement->id) }}" method="GET">
-                            <input type="hidden" name="rating" value="{{ request('rating') }}">
+                            @if (request('rating') !== null)
+                                <input type="hidden" name="rating" value="{{ request('rating') }}">
+                            @endif
 
                             <select class="uk-select" id="sort" name="sort"
                                     onchange="document.getElementById('sortForm').submit()">

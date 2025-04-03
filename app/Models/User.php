@@ -60,8 +60,8 @@ class User extends Authenticatable
         return $this->hasMany(AdvertisementFavorite::class);
     }
 
-    public function advertisements(): HasMany
+    public function business()
     {
-        return $this->hasMany(Advertisement::class);
+        return $this->belongsTo(Business::class);
     }
 }
