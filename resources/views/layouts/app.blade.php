@@ -14,7 +14,7 @@
                         'business.index' => ['label' => 'Business', 'icon' => 'store'],
                         'contracts.index' => ['label' => 'Contracts', 'icon' => 'file-text'],
                         'advertisements.index' => ['label' => 'Advertisements', 'icon' => 'megaphone'],
-                        'calendar' => ['label' => 'Calendar', 'icon' => 'calendar'],
+                        'agenda.index' => ['label' => 'Agenda', 'icon' => 'calendar'],
                     ];
                     ?>
                     @foreach (links as $route => $data)
