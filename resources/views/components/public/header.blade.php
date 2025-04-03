@@ -29,6 +29,8 @@
 
                 <!-- Auth Buttons -->
                 @auth
+                    <a href="{{ route('purchase.history') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('purchase history') }}</a>
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="uk-btn uk-btn-sm uk-btn-default">

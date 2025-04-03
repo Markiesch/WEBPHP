@@ -27,6 +27,10 @@ Route::prefix('/')->group(function () {
         ->middleware(['auth'])
         ->name('advertisement.buy');
 
+    Route::get("purchases", [AdvertisementController::class, 'purchases'])
+        ->middleware(['auth'])
+        ->name('purchase.history');
+
     Route::get('businesses/{url}', [BusinessController::class, 'index'])
         ->name('business-page');
 

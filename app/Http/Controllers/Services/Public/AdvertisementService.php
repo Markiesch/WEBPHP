@@ -174,5 +174,62 @@ class AdvertisementService
             'advertisement' => $advertisement,
         ];
     }
+
+    public function purchases(Request $request): array
+    {
+        $advertisements = Advertisement::query();
+
+
+        $userId = Auth::id();
+
+        $advertisements->whereHas('transactions', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        });
+
+        // filter on purchases
+
+        // Search by name (title)
+        if ($request->filled('search')) {
+            $advertisements->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        $min_price = Advertisement::min('price') ?: 0;
+        $max_price = Advertisement::max('price') ?: 1000;
+
+        // Filter by price range
+        if ($request->filled('price_range')) {
+            $advertisements->whereBetween('price', [$request->price_range[0], $request->price_range[1]]);
+        }
+
+        // Filter favorites only
+        if ($request->has('favorite') && $userId) {
+            $advertisements->whereHas('favorites', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            });
+        }
+
+        // Default sorting
+        $advertisements->orderBy('created_at', 'desc');
+        // Sort results
+        if ($request->filled('sort')) {
+            $sort = explode('_', $request->sort);
+            if (count($sort) === 2 && in_array($sort[0], ['date', 'price']) && in_array($sort[1], ['asc', 'desc'])) {
+                $column = $sort[0] === 'date' ? 'created_at' : 'price';
+                $advertisements->orderBy($column, $sort[1]);
+            }
+        }
+
+        $paginatedAds = $advertisements->paginate(9)->withQueryString();
+
+        $this->markFavorites($paginatedAds, $userId);
+
+        return [
+            'advertisements' => $paginatedAds,
+            'min_price' => $min_price,
+            'max_price' => $max_price,
+            'current_min' => ($request->price_range ? $request->price_range[0] : $min_price),
+            'current_max' => ($request->price_range ? $request->price_range[1] : $max_price),
+        ];
+    }
 }
 
