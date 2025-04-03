@@ -28,8 +28,17 @@
                 </div>
 
                 <!-- Auth Buttons -->
-                <a href="{{ route('login') }}" class="uk-btn uk-btn-sm uk-btn-default">{{ __('login') }}</a>
-                <a href="{{ route('signup') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('register') }}</a>
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="uk-btn uk-btn-sm uk-btn-default">
+                            {{ __('logout') }}
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="uk-btn uk-btn-sm uk-btn-default">{{ __('login') }}</a>
+                    <a href="{{ route('signup') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('register') }}</a>
+                @endauth
             </div>
         </div>
     </div>

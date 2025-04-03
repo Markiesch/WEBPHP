@@ -58,27 +58,15 @@
                                            id="account_type">
 
                                     <!-- Seller-specific fields -->
-                                    <div id="seller_fields"
-                                         class="{{ (isset($accountType) && $accountType == 'seller') ? '' : 'hidden' }} grid gap-3">
+                                    <div id="seller_fields" class="{{ $accountType === 'seller' ? '' : 'hidden' }} grid gap-3">
                                         <div class="grid gap-1">
                                             <div class="flex gap-4">
                                                 <label class="flex items-center gap-2">
-                                                    <input
-                                                        type="radio"
-                                                        name="seller_type"
-                                                        value="particulier"
-                                                        class="uk-radio"
-                                                        checked
-                                                    >
+                                                    <input type="radio" name="seller_type" value="particulier" class="uk-radio" checked>
                                                     Private
                                                 </label>
                                                 <label class="flex items-center gap-2">
-                                                    <input
-                                                        type="radio"
-                                                        name="seller_type"
-                                                        value="zakelijk"
-                                                        class="uk-radio"
-                                                    >
+                                                    <input type="radio" name="seller_type" value="zakelijk" class="uk-radio">
                                                     Business
                                                 </label>
                                             </div>
@@ -92,14 +80,12 @@
 
                                     <!-- Account Type Switch Button -->
                                     <div class="pt-2">
-                                        @if(isset($accountType) && $accountType == 'seller')
-                                            <a href="{{ route('signup', ['type' => 'buyer']) }}"
-                                               class="uk-btn uk-btn-secondary w-full">
+                                        @if(isset($accountType) && $accountType === 'seller')
+                                            <a href="{{ route('signup', ['type' => 'buyer']) }}" class="uk-btn uk-btn-secondary w-full">
                                                 Continue as Buyer
                                             </a>
                                         @else
-                                            <a href="{{ route('signup', ['type' => 'seller']) }}"
-                                               class="uk-btn uk-btn-secondary w-full">
+                                            <a href="{{ route('signup', ['type' => 'seller']) }}" class="uk-btn uk-btn-secondary w-full">
                                                 Continue as Seller
                                             </a>
                                         @endif
