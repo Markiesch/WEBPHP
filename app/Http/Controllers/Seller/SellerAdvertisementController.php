@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advertisement;
+use App\Models\Business;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,9 @@ class SellerAdvertisementController extends Controller
 {
     public function index(Request $request): View
     {
-        $advertisements = Advertisement::where('user_id', Auth::id())
+        $business = Business::where('user_id', Auth::id())->firstOrFail();
+
+        $advertisements = Advertisement::where('business_id', $business->id)
             ->when($request->filled('type'), function ($query) use ($request) {
                 $query->ofType($request->input('type'));
             })
@@ -85,7 +88,9 @@ class SellerAdvertisementController extends Controller
 
     public function edit(Advertisement $advertisement): View
     {
-        if ($advertisement->user_id !== Auth::id()) {
+        $business = Business::where('user_id', Auth::id())->firstOrFail();
+
+        if ($advertisement->business_id !== $business->id) {
             abort(403);
         }
 
