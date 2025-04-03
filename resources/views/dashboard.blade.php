@@ -34,7 +34,7 @@
                     <a href="{{ route('advertisements.create') }}"
                        class="text-blue-600 hover:text-blue-800">{{ __('Create Advertisement') }}</a>
                     <a href="{{ route('advertisements.list') }}"
-                       class="text-blue-600 hover:text-blue-800">{{ __('View Advertisements') }}</a>
+                       class="text-blue-600 hover:text-blue-800">{{ __('View Advertisements API') }}</a>
                 </div>
             </div>
         </div>
