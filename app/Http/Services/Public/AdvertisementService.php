@@ -25,7 +25,7 @@ class AdvertisementService
         $this->applyFilters($query, $request, $userId);
         $this->applySorting($query, $request);
 
-        $paginatedAds = $query->paginate(9)->withQueryString();
+        $paginatedAds = $query->paginate(6)->withQueryString();
         $this->markFavorites($paginatedAds, $userId);
 
         $priceRange = $this->getPriceRange($request);
@@ -98,7 +98,7 @@ class AdvertisementService
         $this->applyFilters($query, $request, $userId);
         $this->applySorting($query, $request);
 
-        $paginatedAds = $query->paginate(9)->withQueryString();
+        $paginatedAds = $query->paginate(6)->withQueryString();
         $this->markFavorites($paginatedAds, $userId);
 
         $priceRange = $this->getPriceRange($request);
