@@ -30,7 +30,11 @@
                 <!-- Auth Buttons -->
                 @auth
                     <a href="{{ route('home') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('Store') }}</a>
-                    <a href="{{ route('purchase.history') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('purchase history') }}</a>
+                    @if(auth()->user()->hasRole(['private_advertiser', 'business_advertiser', 'super_admin']))
+                        <a href="{{ route('business.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('business') }}</a>
+                    @else
+                        <a href="{{ route('purchase.history') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('purchase history') }}</a>
+                    @endif
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
