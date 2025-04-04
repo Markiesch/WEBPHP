@@ -18,10 +18,9 @@ class Advertisement extends Model
     const TYPE_SALE = 'sale';
     const TYPE_RENTAL = 'rental';
     const MAX_SALE_ADS = 4;
-
     const MAX_ADS_PER_BUSINESS = 8;
-
     const MAX_RENTAL_ADS = 4;
+    const DEFAULT_EXPIRY_DAYS = 20;
 
     protected $fillable = [
         'title',
@@ -45,7 +44,8 @@ class Advertisement extends Model
         'wear_per_day',
         'type',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'expiry_date'
     ];
 
     protected $casts = [
@@ -56,6 +56,17 @@ class Advertisement extends Model
         'wear_percentage' => 'integer',
         'wear_per_day' => 'decimal:2'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($advertisement) {
+            if (!$advertisement->expiry_date) {
+                $advertisement->expiry_date = now()->addDays(self::DEFAULT_EXPIRY_DAYS);
+            }
+        });
+    }
 
     public static function getTypes(): array
     {
@@ -73,6 +84,28 @@ class Advertisement extends Model
     public function isRental(): bool
     {
         return $this->type === self::TYPE_RENTAL;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->expiry_date && $this->expiry_date->isPast();
+    }
+
+    public function daysUntilExpiry(): int
+    {
+        if (!$this->expiry_date) {
+            return 0;
+        }
+        return max(0, now()->diffInDays($this->expiry_date, false));
+    }
+
+    public function extend(int $days = self::DEFAULT_EXPIRY_DAYS): void
+    {
+        $this->update([
+            'expiry_date' => $this->expiry_date
+                ? $this->expiry_date->addDays($days)
+                : now()->addDays($days)
+        ]);
     }
 
     public function user(): BelongsTo
@@ -108,6 +141,19 @@ class Advertisement extends Model
     public function scopeOfType(EloquentBuilder $query, string $type): EloquentBuilder
     {
         return $query->where('type', $type);
+    }
+
+    public function scopeActive(EloquentBuilder $query): EloquentBuilder
+    {
+        return $query->where(function ($query) {
+            $query->whereNull('expiry_date')
+                ->orWhere('expiry_date', '>', now());
+        });
+    }
+
+    public function scopeExpired(EloquentBuilder $query): EloquentBuilder
+    {
+        return $query->where('expiry_date', '<=', now());
     }
 
     public function getQrCodeDataUri()

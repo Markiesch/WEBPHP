@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\Seller\AgendaService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AgendaController extends Controller
 {
-    public function __construct(private readonly AgendaService $service) {}
+    public function __construct(
+        private readonly AgendaService $agendaService
+    ) {}
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $data = $this->service->getAgendaList();
-        return view('seller/agenda', $data);
+        $data = $this->agendaService->getAgendaList($request->get('month'));
+        return view('seller.agenda', $data);
     }
 }

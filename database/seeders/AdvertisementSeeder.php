@@ -24,7 +24,7 @@ class AdvertisementSeeder extends Seeder
                     'type' => Advertisement::TYPE_SALE,
                     'wear_per_day' => null,
                     'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
-                    'expiry_date' => now()->addMonths(3),
+                    'expiry_date' => '2025-04-25',
                 ]);
             }
         }
@@ -41,9 +41,9 @@ class AdvertisementSeeder extends Seeder
                     'business_id' => $b,
                     'type' => Advertisement::TYPE_RENTAL,
                     'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
-                    'rental_start_date' => now()->addDays($faker->numberBetween(1, 30)),
-                    'rental_end_date' => now()->addMonths($faker->numberBetween(2, 6)),
-                    'expiry_date' => now()->addMonths(1),
+                    'rental_start_date' => '2025-04-08',
+                    'rental_end_date' => '2025-04-25',
+                    'expiry_date' => '2025-04-25',
                 ]);
             }
         }
