@@ -13,7 +13,7 @@ class AdvertisementSeeder extends Seeder
         $faker = Faker::create();
 
         // Create 4 sale advertisements
-        for ($i = 0; $i < 1; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             for ($b = 1; $b < 3; $b++) {
                 Advertisement::create([
                     'title' => $faker->words(3, true),
@@ -29,8 +29,8 @@ class AdvertisementSeeder extends Seeder
             }
         }
 
-        // Create 3 rental advertisements
-        for ($i = 0; $i < 1; $i++) {
+        // Create 4 rental advertisements
+        for ($i = 0; $i < 2; $i++) {
             for ($b = 1; $b < 3; $b++) {
                 Advertisement::create([
                     'title' => $faker->words(3, true),

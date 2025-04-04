@@ -14,11 +14,40 @@ class UserSeeder extends Seeder
 
         // Create regular user
         $user = new User();
-        $user->name = 'User';
-        $user->email = 'user@bazaar.nl';
+        $user->name = 'Pieter';
+        $user->email = 'Pieter@bazaar.nl';
         $user->password = $password;
         $user->save();
         $user->assignRole('user');
+
+        $user = new User();
+        $user->name = 'Jantje';
+        $user->email = 'Jantje@bazaar.nl';
+        $user->password = $password;
+        $user->save();
+        $user->assignRole('user');
+
+        $user = new User();
+        $user->name = 'Peter';
+        $user->email = 'Peter@bazaar.nl';
+        $user->password = $password;
+        $user->save();
+        $user->assignRole('user');
+
+        $user = new User();
+        $user->name = 'Pepijn';
+        $user->email = 'Pepijn@bazaar.nl';
+        $user->password = $password;
+        $user->save();
+        $user->assignRole('user');
+
+        $user = new User();
+        $user->name = 'Linda';
+        $user->email = 'Linda@bazaar.nl';
+        $user->password = $password;
+        $user->save();
+        $user->assignRole('user');
+
 
         // Create private advertiser
         $privateAdvertiser = new User();
@@ -28,6 +57,7 @@ class UserSeeder extends Seeder
         $privateAdvertiser->save();
         $privateAdvertiser->assignRole('private_advertiser');
 
+
         // Create business advertiser
         $businessAdvertiser = new User();
         $businessAdvertiser->name = 'Business advertiser';
@@ -36,10 +66,11 @@ class UserSeeder extends Seeder
         $businessAdvertiser->save();
         $businessAdvertiser->assignRole('business_advertiser');
 
+
         // Create super admin user
         $superAdmin = new User();
         $superAdmin->name = 'Super Admin';
-        $superAdmin->email = 'admin@bazaar.com';
+        $superAdmin->email = 'admin@bazaar.nl';
         $superAdmin->password = $password;
         $superAdmin->save();
         $superAdmin->assignRole('super_admin');
