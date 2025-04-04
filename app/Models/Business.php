@@ -28,4 +28,9 @@ class Business extends Model
     {
         return $this->hasMany(BusinessBlock::class)->orderBy('order');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(BusinessReview::class);
+    }
 }

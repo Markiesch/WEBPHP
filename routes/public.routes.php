@@ -4,6 +4,7 @@ use App\Http\Controllers\Public\AdvertisementController;
 use App\Http\Controllers\Public\AdvertisementFavoriteController;
 use App\Http\Controllers\Public\AdvertisementReviewController;
 use App\Http\Controllers\Public\BusinessController;
+use App\Http\Controllers\Public\BusinessReviewController;
 use App\Http\Controllers\Public\LoginController;
 use App\Http\Controllers\Public\SignupController;
 use Illuminate\Support\Facades\App;
@@ -31,8 +32,15 @@ Route::prefix('/')->group(function () {
         ->middleware(['auth'])
         ->name('purchase.history');
 
+    // Business routes
     Route::get('businesses/{url}', [BusinessController::class, 'index'])
         ->name('business-page');
+    Route::post('businesses/{business}/reviews', [BusinessReviewController::class, 'store'])
+        ->middleware(['auth'])
+        ->name('business.reviews.submit');
+    Route::post('businesses/{business}/reviews/{review}/delete', [BusinessReviewController::class, 'delete'])
+        ->middleware(['auth'])
+        ->name('business.reviews.delete');
 
     // Login routes
     Route::view('/login', 'auth.login')->name('login');
