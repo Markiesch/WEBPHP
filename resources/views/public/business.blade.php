@@ -31,77 +31,101 @@
             </div>
         </div>
 
-        {{-- Business Reviews --}}
+        {{-- Business Reviews Section --}}
         <div class="mt-12">
-            <h2 class="text-2xl font-bold mb-4">Reviews</h2>
+            <div class="uk-card uk-card-body">
+                <h2 class="text-2xl font-bold mb-6">Reviews</h2>
 
-            @auth
-                <form action="{{ route('business.reviews.submit', $business->id) }}" method="POST" class="mb-8">
-                    @csrf
-                    <div class="grid gap-4">
-                        <div>
-                            <label class="uk-form-label">Rating</label>
-                            <select name="rating" class="uk-select">
-                                @foreach(range(1, 5) as $rating)
-                                    <option value="{{ $rating }}">{{ $rating }} stars</option>
-                                @endforeach
-                            </select>
-                        </div>
+                {{-- Review Form --}}
+                @auth
+                    <div class="mb-8 bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4">Write a Review</h3>
+                        <form action="{{ route('business.reviews.submit', $business->id) }}" method="POST">
+                            @csrf
+                            <div class="grid gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Rating</label>
+                                    <select name="rating" class="uk-select" required>
+                                        <option value="">Select rating</option>
+                                        @foreach(range(5, 1) as $rating)
+                                            <option value="{{ $rating }}">{{ $rating }} stars</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                        <div>
-                            <label class="uk-form-label">Your Review</label>
-                            <textarea name="content" rows="3" class="uk-textarea" required></textarea>
-                        </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Your Review</label>
+                                    <textarea
+                                        name="content"
+                                        rows="3"
+                                        class="uk-textarea"
+                                        placeholder="Share your experience..."
+                                        required
+                                    ></textarea>
+                                </div>
 
-                        <div>
-                            <button type="submit" class="uk-btn uk-btn-primary">Post Review</button>
-                        </div>
-                    </div>
-                </form>
-            @else
-                <p class="mb-6">Please <a href="{{ route('login') }}" class="text-blue-500">login</a> to leave a review.</p>
-            @endauth
-
-            <div class="space-y-6">
-                @forelse($business->reviews()->latest()->get() as $review)
-                    <div class="uk-card">
-                        <div class="flex justify-between">
-                            <div>
-                                <h3 class="font-bold">{{ $review->user->name }}
-                                    @if(auth()->id() === $review->user_id)
-                                        (You)
-                                    @endif
-                                </h3>
-                                <div class="flex text-yellow-500">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             viewBox="0 0 24 24"
-                                             fill="{{ $i <= $review->rating ? '#eab308' : 'transparent' }}"
-                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round">
-                                            <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
-                                        </svg>
-                                    @endfor
+                                <div>
+                                    <button type="submit" class="uk-btn uk-btn-primary w-full">
+                                        Submit Review
+                                    </button>
                                 </div>
                             </div>
-                            <div class="flex gap-2 items-start">
+                        </form>
+                    </div>
+                @else
+                    <div class="mb-8 p-6 bg-gray-50 rounded-lg text-center">
+                        <p>Please <a href="{{ route('login') }}" class="text-blue-600 hover:underline">login</a> to leave a review.</p>
+                    </div>
+                @endauth
+
+                {{-- Reviews List --}}
+                <div class="space-y-6">
+                    @forelse($business->reviews()->latest()->get() as $review)
+                        <div class="p-4 border rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="font-semibold">
+                                            {{ $review->user->name }}
+                                            @if(auth()->id() === $review->user_id)
+                                                <span class="text-sm text-gray-500">(You)</span>
+                                            @endif
+                                        </h3>
+                                        <span class="text-sm text-gray-500">{{ $review->created_at->format('d M Y') }}</span>
+                                    </div>
+                                    <div class="flex text-yellow-500 mt-1">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 class="h-4 w-4"
+                                                 viewBox="0 0 24 24"
+                                                 fill="{{ $i <= $review->rating ? 'currentColor' : 'none' }}"
+                                                 stroke="currentColor">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </div>
                                 @if(auth()->id() === $review->user_id)
-                                    <form action="{{ route('business.reviews.delete', [$business->id, $review->id]) }}" method="POST">
+                                    <form action="{{ route('business.reviews.delete', [$business->id, $review->id]) }}"
+                                          method="POST"
+                                          class="ml-4">
                                         @csrf
-                                        <button class="uk-btn uk-btn-icon uk-btn-destructive uk-btn-xs">
+                                        <button type="submit"
+                                                class="uk-btn uk-btn-link text-red-500 hover:text-red-700"
+                                                onclick="return confirm('Are you sure you want to delete this review?')">
                                             <uk-icon icon="trash"></uk-icon>
                                         </button>
                                     </form>
                                 @endif
-                                <span class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</span>
                             </div>
+                            <p class="mt-3 text-gray-700">{{ $review->content }}</p>
                         </div>
-                        <p class="mt-2">{{ $review->content }}</p>
-                    </div>
-                @empty
-                    <p class="text-muted-foreground">No reviews yet.</p>
-                @endforelse
+                    @empty
+                        <div class="text-center py-8 text-gray-500">
+                            <p>No reviews yet. Be the first to review!</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>
-@endsection
