@@ -15,6 +15,10 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            if (Auth::user()->hasRole('super_admin')) {
+                return redirect()->route('admin.contracts.index');
+            }
+
             if (Auth::user()->hasRole('user')) {
                 return redirect('/');
             }
@@ -35,4 +39,3 @@ class LoginController extends Controller
         return redirect()->route('home');
     }
 }
-
