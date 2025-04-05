@@ -72,6 +72,22 @@ class AdvertisementSeeder extends Seeder
             ],
         ];
 
+        // Auction advertisements
+        $auctionProducts = [
+            [
+                'title' => 'Leica M11 Limited Edition',
+                'description' => 'Zeldzame limited edition Leica M11 in perfecte staat. Nummer 47/250. Inclusief originele doos en certificaat.',
+                'starting_price' => 70.00,
+                'wear_percentage' => 5,
+            ],
+            [
+                'title' => 'Hasselblad 907X Anniversary Edition',
+                'description' => 'Speciale 50-jarige maanlanding editie. Nieuw in doos, nooit gebruikt. Collector\'s item.',
+                'starting_price' => 90.00,
+                'wear_percentage' => 0,
+            ],
+        ];
+
         // Create sale advertisements
         for ($i = 0; $i < 4; $i++) {
             Advertisement::create([
@@ -103,5 +119,21 @@ class AdvertisementSeeder extends Seeder
                 'expiry_date' => '2025-04-25',
             ]);
         }
-    }
+
+        // Create auction advertisements
+        for ($i = 0; $i < 2; $i++) {
+            Advertisement::create([
+                'title' => $auctionProducts[$i]['title'],
+                'description' => $auctionProducts[$i]['description'],
+                'starting_price' => $auctionProducts[$i]['starting_price'],
+                'current_bid' => null,
+                'wear_percentage' => $auctionProducts[$i]['wear_percentage'],
+                'business_id' => 1,
+                'type' => 'auction',
+                'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
+                'auction_end_date' => '2025-04-25 20:00:00',
+                'expiry_date' => '2025-04-25',
+            ]);
+        }
+        }
 }

@@ -10,48 +10,58 @@ use App\Http\Controllers\Public\SignupController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
-// Public routes
 Route::prefix('/')->group(function () {
+    // Home and advertisement details
     Route::get('/', [AdvertisementController::class, 'advertisements'])->name('home');
     Route::get('advertisements/{id}', [AdvertisementController::class, 'advertisement'])->name('advertisement');
-    Route::post('advertisements/{id}/reviews', [AdvertisementReviewController::class, 'store'])
-        ->middleware(['auth'])
-        ->name('reviews.submit');
-    Route::post('advertisements/{advertisementId}/reviews/{id}', [AdvertisementReviewController::class, 'delete'])
-        ->middleware(['auth'])
-        ->name('reviews.delete');
+
+    // Advertisement actions (authenticated users only)
+    Route::middleware(['auth'])->group(function () {
+        // Changed GET to POST for purchase action
+        Route::post('advertisements/{id}/buy', [AdvertisementController::class, 'purchase'])
+            ->name('advertisement.buy');
+
+        Route::post('advertisements/{id}/bid', [AdvertisementController::class, 'placeBid'])
+            ->name('advertisements.bid');
+
+        Route::get('purchases', [AdvertisementController::class, 'purchases'])
+            ->name('purchase.history');
+    });
+
+    // Reviews
+    Route::middleware(['auth'])->group(function () {
+        Route::post('advertisements/{id}/reviews', [AdvertisementReviewController::class, 'store'])
+            ->name('reviews.submit');
+
+        Route::post('advertisements/{advertisementId}/reviews/{id}/delete', [AdvertisementReviewController::class, 'delete'])
+            ->name('reviews.delete');
+    });
+
+    // Favorites
     Route::post('advertisements/{id}/favorite', [AdvertisementFavoriteController::class, 'store'])
         ->middleware(['auth'])
         ->name('advertisement.favorite');
 
-    Route::get('advertisements/{id}/buy', [AdvertisementController::class, 'purchase'])
-        ->middleware(['auth'])
-        ->name('advertisement.buy');
-
-    Route::get("purchases", [AdvertisementController::class, 'purchases'])
-        ->middleware(['auth'])
-        ->name('purchase.history');
-
     // Business routes
     Route::get('businesses/{url}', [BusinessController::class, 'index'])
         ->name('business-page');
-    Route::post('businesses/{business}/reviews', [BusinessReviewController::class, 'store'])
-        ->middleware(['auth'])
-        ->name('business.reviews.submit');
-    Route::post('businesses/{business}/reviews/{review}/delete', [BusinessReviewController::class, 'delete'])
-        ->middleware(['auth'])
-        ->name('business.reviews.delete');
 
-    // Login routes
+    Route::middleware(['auth'])->group(function () {
+        Route::post('businesses/{business}/reviews', [BusinessReviewController::class, 'store'])
+            ->name('business.reviews.submit');
+
+        Route::post('businesses/{business}/reviews/{review}/delete', [BusinessReviewController::class, 'delete'])
+            ->name('business.reviews.delete');
+    });
+
+    // Auth routes
     Route::view('/login', 'auth.login')->name('login');
     Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-    // Signup routes
     Route::get('/signup', [SignupController::class, 'index'])->name('signup');
     Route::post('/signup', [SignupController::class, 'submit'])->name('signup.submit');
 
-    // Locale switcher route
+    // Language switcher
     Route::get('/language/{locale}', function ($locale) {
         if (in_array($locale, config('languages.available'))) {
             App::setLocale($locale);

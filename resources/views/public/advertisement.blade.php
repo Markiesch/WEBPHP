@@ -2,80 +2,155 @@
 
 @section('content')
     <x-header/>
-    <div class="uk-container grid grid-cols-3 pt-6 gap-8">
-        <div class="col-span-2">
-            <img src="{{ asset($advertisement->image_url) }}"
-                 alt="{{ $advertisement->title }}"
-                 class="w-full object-cover rounded-lg shadow-lg aspect-video bg-gray-500"/>
-        </div>
+    <div class="uk-container py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Image Section -->
+            <div class="lg:col-span-2">
+                <div class="rounded-xl overflow-hidden shadow-lg bg-gray-50">
+                    <img src="{{ asset($advertisement->image_url) }}"
+                         alt="{{ $advertisement->title }}"
+                         class="w-full aspect-video object-cover hover:scale-105 transition-transform duration-300"/>
+                </div>
+            </div>
 
-        <div class="pt-6">
-            <p>@lang('advertisement.listed_by'): <a href="{{ route('business-page', $advertisement->business->url)  }}"
-                                                    class="text-blue-700 underline">{{ $advertisement->business->name }}</a>
-            </p>
-            <h1 class="text-3xl font-bold">{{ $advertisement->title }}</h1>
-            <p class="pt-2">{{ $advertisement->description }}</p>
-            <p class="pt-2 text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</p>
+            <!-- Details Section -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <!-- Business Info -->
+                <div class="flex items-center gap-2 text-gray-600 mb-4">
+                    <uk-icon icon="shop" ratio="1.2" class="text-blue-600"></uk-icon>
+                    <a href="{{ route('business-page', $advertisement->business->url) }}"
+                       class="text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                        {{ $advertisement->business->name }}
+                    </a>
+                </div>
 
-            <div class="uk-modal" id="buy-modal" data-uk-modal>
-                <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
-                    <form action="{{route("advertisement.buy", $advertisement->id)  }}" method="get">
-                        <h2 class="uk-modal-title mb-4">{{ $advertisement->title }}</h2>
-                        <button class="uk-modal-close uk-btn uk-btn-default w-full gap-1 mb-2" type="button">
-                            <uk-icon icon="circle-x"></uk-icon>
-                            {{__("cancel")}}
-                        </button>
-                        <button class="uk-btn uk-btn-md uk-btn-primary w-full gap-1"
+                <!-- Title and Description -->
+                <h1 class="text-2xl font-bold text-gray-900 mb-3">{{ $advertisement->title }}</h1>
+                <p class="text-gray-600 mb-6 leading-relaxed">{{ $advertisement->description }}</p>
+
+                <!-- Price Section -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-6 shadow-inner">
+                    @if($advertisement->type === 'auction')
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center text-sm text-gray-600">
+                                <span>@lang('advertisement.starting_price')</span>
+                                <span class="font-medium">&euro;{{ number_format($advertisement->price, 2) }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-900 font-medium">@lang('advertisement.current_bid')</span>
+                                <span class="text-2xl font-bold text-red-600">
+                                    &euro;{{ number_format($advertisement->current_bid ?? $advertisement->price, 2) }}
+                                </span>
+                            </div>
+
+                            @if($advertisement->auction_end_date)
+                                <div class="pt-3 border-t">
+                                    <div class="flex justify-between items-center text-sm">
+                                        <span class="text-gray-600">@lang('advertisement.ends_in')</span>
+                                        <span class="font-semibold {{ $advertisement->daysUntilExpiry() < 2 ? 'text-red-600' : 'text-gray-900' }}">
+                                            {{ $advertisement->auction_end_date->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                    @if(!$advertisement->isAuctionEnded())
+                                        <div class="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-blue-600 rounded-full transition-all duration-300"
+                                                 style="width: {{ min(100, 100 - ($advertisement->daysUntilExpiry() / 7 * 100)) }}%">
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    @else
+                        <div class="text-center py-2">
+                            <span class="text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-3">
+                    @if ($advertisement->isPurchased())
+                        <div class="bg-gray-100 rounded-lg p-4 text-center text-gray-600">
+                            <uk-icon icon="check" ratio="1.2" class="text-green-600"></uk-icon>
+                            <span class="ml-2 font-medium">{{ __('sold') }}</span>
+                        </div>
+                    @else
+                        <button class="uk-btn uk-btn-large uk-btn-primary w-full rounded-lg transition-all duration-300
+                                     hover:scale-[1.02] hover:shadow-md"
                                 data-uk-toggle="target: #buy-modal">
-                            <uk-icon icon="shopping-cart"></uk-icon>
-                            @if ($advertisement->type == "sale")
-                                {{ __('advertisement.buy') }}
-                            @endif
-                            @if ($advertisement->type == "rental")
-                                @lang('advertisement.rent')
-                            @endif
+                            <uk-icon icon="{{ $advertisement->type === 'auction' ? 'gavel' : 'shopping-cart' }}"
+                                     ratio="1.2">
+                            </uk-icon>
+                            <span class="ml-2">
+                                @lang($advertisement->type === 'auction' ? 'advertisement.place_bid' :
+                                    ($advertisement->type === 'sale' ? 'advertisement.buy' : 'advertisement.rent'))
+                            </span>
+                        </button>
+                    @endif
+
+                    <form action="{{ route('advertisement.favorite', $advertisement->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="value" value="{{!$advertisement->is_favorited}}">
+                        <button type="submit"
+                                class="uk-btn uk-btn-large w-full rounded-lg border transition-all duration-300
+                                       {{ $advertisement->is_favorited
+                                           ? 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100'
+                                           : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                 fill="{{ $advertisement->is_favorited ? 'currentColor' : 'none' }}"
+                                 stroke="currentColor" stroke-width="2"
+                                 class="inline-block mr-2 transition-transform duration-300 hover:scale-110">
+                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                            </svg>
+                            {{ $advertisement->is_favorited ? __('advertisement.favorited') : __('advertisement.favorite') }}
                         </button>
                     </form>
                 </div>
             </div>
+        </div>
 
-            <div class="pt-4 grid gap-2">
-                @if ($advertisement->isPurchased())
-                    <button class="uk-btn uk-btn-md uk-btn-primary w-full gap-1">
-                        <uk-icon icon="circle-x"></uk-icon>
-                        {{ __('sold') }}
-                    </button>
-                @else
-                    <button class="uk-btn uk-btn-md uk-btn-primary w-full gap-1" data-uk-toggle="target: #buy-modal">
-                        <uk-icon icon="shopping-cart"></uk-icon>
-                        @if ($advertisement->type == "sale")
-                            {{ __('advertisement.buy') }}
+        <!-- Purchase/Bid Modal -->
+        <div class="uk-modal" id="buy-modal" data-uk-modal>
+            <div class="uk-modal-dialog uk-margin-auto-vertical rounded-xl shadow-xl">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold mb-6">{{ $advertisement->title }}</h2>
+                    <form action="{{ $advertisement->type === 'auction' ? route('advertisements.bid', $advertisement->id) : route('advertisement.buy', $advertisement->id) }}"
+                          method="POST">
+                        @csrf
+                        @if($advertisement->type === 'auction')
+                            <div class="mb-6">
+                                <label for="bid_amount" class="block text-sm font-medium mb-2">@lang('advertisement.your_bid')</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-gray-500">&euro;</span>
+                                    <input type="number" name="bid_amount" id="bid_amount"
+                                           class="uk-input pl-7"
+                                           min="{{ ($advertisement->current_bid ?? $advertisement->price) + 1 }}"
+                                           step="0.01"
+                                           required>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">
+                                    @lang('advertisement.minimum_bid'): &euro;{{ number_format(($advertisement->current_bid ?? $advertisement->price) + 1, 2) }}
+                                </p>
+                            </div>
                         @endif
-                        @if ($advertisement->type == "rental")
-                            @lang('advertisement.rent')
-                                @endif
-                    </button>
-                @endif
-                <form action="{{ route('advertisement.favorite', $advertisement->id) }}" method="POST">
-                    @csrf
-                    <input id="value" name="value" type="hidden" value="{{!$advertisement->is_favorited}}">
-                    <button
-                        type="submit"
-                        class="uk-btn uk-btn-md w-full gap-1 border {{ $advertisement->is_favorited ? "uk-btn-destructive" : "uk-btn-ghost" }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                             fill="{{ $advertisement->is_favorited ? "currentColor" : "transparent" }}"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="lucide lucide-crown-icon lucide-crown">
-                            <path
-                                d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/>
-                            <path d="M5 21h14"/>
-                        </svg>
-                        {{ $advertisement->is_favorited ? __('advertisement.favorited') : __('advertisement.favorite') }}
-                    </button>
-                </form>
+
+                        <div class="flex gap-3">
+                            <button type="button" class="uk-modal-close uk-btn uk-btn-default flex-1 hover:bg-gray-100">
+                                @lang('cancel')
+                            </button>
+                            <button type="submit" class="uk-btn uk-btn-primary flex-1 hover:bg-blue-700">
+                                @lang($advertisement->type === 'auction' ? 'advertisement.place_bid' :
+                                    ($advertisement->type === 'sale' ? 'advertisement.buy' : 'advertisement.rent'))
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
 
     <div class="uk-container py-6">
         <div class="uk-card uk-card-body p-6 grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-8">
@@ -228,6 +303,33 @@
                         </div>
                         <p class="pt-2">{{ $review->comment }}</p>
                     @endforeach
+
+                        @if($advertisement->isAuction() && $advertisement->bids->isNotEmpty())
+                            <div class="mt-6 pt-4 border-t">
+                                <h3 class="text-xl font-semibold mb-4">@lang('Bid History')</h3>
+                                <div class="bg-white rounded-lg shadow divide-y">
+                                    @foreach($advertisement->bids()->with('user')->latest()->take(10)->get() as $bid)
+                                        <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                                    <span class="text-blue-600 font-medium">{{ substr($bid->user->name, 0, 1) }}</span>
+                                                </div>
+                                                <div>
+                                                    <p class="font-medium">{{ $bid->user->name }}</p>
+                                                    <p class="text-sm text-gray-500">{{ $bid->created_at->format('d M H:i') }}</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-lg font-semibold">&euro;{{ number_format($bid->amount, 2) }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                @if($advertisement->bids->count() > 10)
+                                    <p class="text-center text-sm text-gray-500 mt-4">
+                                        @lang('advertisement.showing_recent_bids', ['count' => 10, 'total' => $advertisement->bids->count()])
+                                    </p>
+                                @endif
+                            </div>
+                        @endif
 
                     <!-- Pagination Links -->
                     <div class="mt-6 pt-4">

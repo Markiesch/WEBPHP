@@ -38,7 +38,7 @@ class AdvertisementService
 
     public function getAdvertisement(Request $request, $id): array
     {
-        $advertisement = Advertisement::with(['business'])
+        $advertisement = Advertisement::with(['business', 'bids.user'])
             ->findOrFail($id);
 
         $userId = Auth::id();
@@ -57,32 +57,115 @@ class AdvertisementService
         $sellerOtherAds = $this->getSellerOtherAds($advertisement);
         $reviewsStats = $this->getReviewsStatistics($advertisement);
 
+        $auctionData = [];
+        if ($advertisement->type === 'auction') {
+            $auctionData = [
+                'auction_status' => [
+                    'current_bid' => $advertisement->current_bid ?? $advertisement->starting_price,
+                    'minimum_next_bid' => ($advertisement->current_bid ?? $advertisement->starting_price) + 1,
+                    'time_remaining' => $advertisement->auction_end_date->diffForHumans(),
+                    'is_ended' => $advertisement->auction_end_date < now(),
+                    'total_bids' => $advertisement->bids()->count(),
+                ],
+                'recent_bids' => $advertisement->bids()
+                    ->with('user:id,name')
+                    ->orderBy('created_at', 'desc')
+                    ->take(5)
+                    ->get()
+                    ->map(function ($bid) {
+                        return [
+                            'amount' => $bid->amount,
+                            'bidder' => $bid->user->name,
+                            'placed_at' => $bid->created_at->format('Y-m-d H:i:s'),
+                        ];
+                    }),
+                'user_highest_bid' => $userId ? $advertisement->bids()
+                    ->where('user_id', $userId)
+                    ->max('amount') : null,
+            ];
+        }
+
         return [
             'advertisement' => $advertisement,
             'sellerOtherAds' => $sellerOtherAds,
             'reviews' => $reviews,
             'currentSort' => $sort,
             ...$reviewsStats,
+            ...$auctionData,
         ];
     }
 
     public function purchase(Request $request, $id): array
     {
         $advertisement = Advertisement::findOrFail($id);
+        $userId = Auth::id();
 
-        if ($advertisement->is_purchased) {
+        if ($advertisement->isAuction()) {
+            $highestBid = $advertisement->bids()
+                ->where('user_id', $userId)
+                ->orderByDesc('amount')
+                ->first();
+
+            if (!$highestBid || !$advertisement->isAuctionEnded()) {
+                return [
+                    'error' => 'You cannot purchase this item yet. You must be the highest bidder and the auction must be ended.'
+                ];
+            }
+
+            $price = $highestBid->amount;
+        } else {
+            $price = $advertisement->price;
+        }
+
+        if ($advertisement->isPurchased()) {
             return ['error' => 'This advertisement has already been purchased.'];
         }
 
         AdvertisementTransaction::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'advertisement_id' => $advertisement->id,
-            'price' => $advertisement->price,
+            'price' => $price,
+            'type' => $advertisement->type
         ]);
 
         return [
             'success' => 'Advertisement purchased successfully.',
-            'advertisement' => $advertisement,
+            'advertisement' => $advertisement
+        ];
+    }
+
+    public function placeBid(Request $request, $id): array
+    {
+        $advertisement = Advertisement::findOrFail($id);
+        $bidAmount = $request->input('bid_amount');
+        $userId = Auth::id();
+
+        if ($advertisement->type !== 'auction') {
+            return ['error' => 'This advertisement is not an auction.'];
+        }
+
+        if ($advertisement->auction_end_date < now()) {
+            return ['error' => 'This auction has ended.'];
+        }
+
+        if ($bidAmount <= ($advertisement->current_bid ?? $advertisement->starting_price)) {
+            return ['error' => 'Bid must be higher than the current bid.'];
+        }
+
+        // Create bid record
+        $advertisement->bids()->create([
+            'user_id' => $userId,
+            'amount' => $bidAmount
+        ]);
+
+        // Update current bid
+        $advertisement->update([
+            'current_bid' => $bidAmount
+        ]);
+
+        return [
+            'success' => 'Bid placed successfully.',
+            'advertisement' => $advertisement
         ];
     }
 
