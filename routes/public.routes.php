@@ -6,6 +6,7 @@ use App\Http\Controllers\Public\AdvertisementReviewController;
 use App\Http\Controllers\Public\BusinessController;
 use App\Http\Controllers\Public\BusinessReviewController;
 use App\Http\Controllers\Public\LoginController;
+use App\Http\Controllers\Public\RentalCalendarController;
 use App\Http\Controllers\Public\SignupController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,10 @@ Route::prefix('/')->group(function () {
 
         Route::get('purchases', [AdvertisementController::class, 'purchases'])
             ->name('purchase.history');
+
+        // Rental Calendar route
+        Route::get('rental-calendar', [RentalCalendarController::class, 'index'])
+            ->name('rental-calendar');
     });
 
     // Reviews

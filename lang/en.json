@@ -144,5 +144,21 @@
     "advertisement.rating_low_high": "Rating: Low to High",
     "advertisement.rating_high_low": "Rating: High to Low",
     "advertisement.you": "you",
-    "advertisement.no_reviews_yet": "No reviews yet."
+    "advertisement.no_reviews_yet": "No reviews yet.",
+    "rental calendar": "Rental Calendar",
+    "purchase history": "Purchase History",
+    "store": "Store",
+    "logout": "Logout",
+    "rental.title": "Rental Calendar",
+    "rental.no_rentals": "No rentals found",
+    "rental.start_date": "Start Date",
+    "rental.end_date": "End Date",
+    "rental.status": "Status",
+    "rental.status.upcoming": "Upcoming",
+    "rental.status.active": "Active",
+    "rental.status.completed": "Completed",
+    "rental.status.overdue": "Overdue",
+    "rental.product": "Product",
+    "rental.note": "Note",
+    "rental.days_remaining": "Days Remaining"
 }

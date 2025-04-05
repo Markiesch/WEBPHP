@@ -143,5 +143,21 @@
     "advertisement.rating_low_high": "Beoordeling: Laag naar Hoog",
     "advertisement.rating_high_low": "Beoordeling: Hoog naar Laag",
     "advertisement.you": "u",
-    "advertisement.no_reviews_yet": "Nog geen beoordelingen."
+    "advertisement.no_reviews_yet": "Nog geen beoordelingen.",
+    "rental calendar": "Huurkalender",
+    "purchase history": "Aankoopgeschiedenis",
+    "store": "Winkel",
+    "logout": "Uitloggen",
+    "rental.title": "Huurkalender",
+    "rental.no_rentals": "Geen huuritems gevonden",
+    "rental.start_date": "Startdatum",
+    "rental.end_date": "Einddatum",
+    "rental.status": "Status",
+    "rental.status.upcoming": "Aankomend",
+    "rental.status.active": "Actief",
+    "rental.status.completed": "Voltooid",
+    "rental.status.overdue": "Te laat",
+    "rental.product": "Product",
+    "rental.note": "Notitie",
+    "rental.days_remaining": "Resterende dagen"
 }

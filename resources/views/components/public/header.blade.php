@@ -34,7 +34,7 @@
                         <a href="{{ route('business.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('business') }}</a>
                     @else
                         <a href="{{ route('purchase.history') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('purchase history') }}</a>
-                    @endif
+                        <a href="{{ route('rental-calendar') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('rental calendar') }}</a>                    @endif
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
