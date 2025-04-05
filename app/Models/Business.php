@@ -12,11 +12,27 @@ class Business extends Model
         'user_id',
         'url',
         'name',
+        'contract_status',
+        'contract_file',
+        'contract_updated_at',
+        'contract_reviewed_at',
+        'contract_reviewed_by',
+        'contract_rejection_reason'
+    ];
+
+    protected $casts = [
+        'contract_updated_at' => 'datetime',
+        'contract_reviewed_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reviewer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'contract_reviewed_by');
     }
 
     public function advertisements(): HasMany

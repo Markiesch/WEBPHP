@@ -71,4 +71,37 @@ class ContractController extends Controller
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
+    public function showUpload(Business $business): View
+    {
+        return view('admin.contracts.upload', compact('business'));
+    }
+
+    public function show(Business $business): View
+    {
+        return view('admin.contracts.show', compact('business'));
+    }
+
+    public function updateStatus(Request $request, Business $business): RedirectResponse
+    {
+        try {
+            $validated = $request->validate([
+                'status' => 'required|in:approved,rejected',
+                'rejection_reason' => 'required_if:status,rejected|nullable|string|max:500'
+            ]);
+
+            $business->update([
+                'contract_status' => $validated['status'],
+                'contract_rejection_reason' => $validated['status'] === 'rejected' ? $validated['rejection_reason'] : null,
+                'contract_reviewed_at' => now(),
+                'contract_reviewed_by' => auth()->id()
+            ]);
+
+            return redirect()
+                ->route('admin.contracts.index')
+                ->with('success', 'Contract status updated successfully');
+        } catch (Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }

@@ -1,51 +1,43 @@
 ﻿@extends('layouts.admin')
 
-@section('heading')
-    Upload Contract
-@endsection
-
 @section('content')
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 text-gray-900">
-            <form action="{{ route('admin.contracts.upload') }}" method="POST" enctype="multipart/form-data">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Upload Contract for {{ $business->name }}</h1>
+            <a href="{{ route('admin.contracts.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Back to List
+            </a>
+        </div>
+
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form action="{{ route('admin.contracts.upload.store', $business) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="space-y-4">
-                    <div>
-                        <label for="business_id" class="block text-sm font-medium text-gray-700">Business</label>
-                        <select name="business_id" id="business_id" class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">Select a business</option>
-                            @foreach($businesses as $business)
-                                <option value="{{ $business->id }}">{{ $business->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('business_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea name="description" id="description" rows="3"
-                                  class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-                        @error('description')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="contract_file">
+                        Contract PDF (Signed)
+                    </label>
+                    <input type="file" name="contract_file" id="contract_file" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <p class="text-gray-600 text-xs mt-1">Upload the signed contract (PDF only, max 5MB)</p>
+                </div>
 
-                    <div>
-                        <label for="contract" class="block text-sm font-medium text-gray-700">Contract File (PDF)</label>
-                        <input type="file" name="contract" id="contract" accept=".pdf"
-                               class="mt-1 block w-full">
-                        @error('contract')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
+                        Status
+                    </label>
+                    <select name="status" id="status" required
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="pending">Pending Review</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
 
-                    <div class="flex justify-end">
-                        <button type="submit" class="uk-button uk-button-primary">
-                            Upload Contract
-                        </button>
-                    </div>
+                <div class="flex items-center justify-end">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Upload Contract
+                    </button>
                 </div>
             </form>
         </div>

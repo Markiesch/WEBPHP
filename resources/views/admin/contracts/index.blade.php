@@ -20,6 +20,7 @@
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
         <div class="p-6 text-gray-900">
             <h2 class="text-xl font-semibold">Business Contracts</h2>
+            <p class="text-gray-600 mt-2">Manage all business contracts from this dashboard</p>
         </div>
     </div>
 
@@ -28,6 +29,7 @@
             'name' => ['label' => __('Business Name'), 'sortable' => true],
             'created_at' => ['label' => __('Registration Date'), 'sortable' => true],
             'contract_status' => ['label' => __('Contract Status'), 'sortable' => true],
+            'contract_updated_at' => ['label' => __('Last Update'), 'sortable' => true],
             'actions' => ['label' => __('Actions')]
         ]"
         :sort-by="request('sort_by')"
@@ -37,6 +39,7 @@
             <tr class="hover:bg-gray-50 transition-colors duration-200">
                 <td class="px-6 py-4 border-b border-gray-100">
                     <div class="font-medium">{{ $business->name }}</div>
+                    <div class="text-sm text-gray-500">{{ $business->email ?? 'No email provided' }}</div>
                 </td>
                 <td class="px-6 py-4 border-b border-gray-100">
                     {{ $business->created_at->format('d/m/Y H:i') }}
@@ -49,29 +52,45 @@
                         @endif">
                         {{ ucfirst($business->contract_status ?? 'pending') }}
                     </span>
+
+                    @if($business->contract_status === 'rejected' && $business->contract_rejection_reason)
+                        <div class="text-sm text-red-600 mt-1">
+                            Reason: {{ Str::limit($business->contract_rejection_reason, 30) }}
+                        </div>
+                    @endif
                 </td>
                 <td class="px-6 py-4 border-b border-gray-100">
-                    <div class="flex space-x-2">
+                    @if($business->contract_updated_at)
+                        {{ $business->contract_updated_at->format('d/m/Y H:i') }}
+
+                        @if($business->contract_reviewed_at)
+                            <div class="text-sm text-gray-500">
+                                Reviewed: {{ $business->contract_reviewed_at->format('d/m/Y') }}
+                            </div>
+                        @endif
+                    @else
+                        <span class="text-gray-500">Not updated</span>
+                    @endif
+                </td>
+                <td class="px-6 py-4 border-b border-gray-100">
+                    <div class="flex flex-wrap gap-2">
+                        <a href="{{ route('admin.contracts.show', $business) }}"
+                           class="uk-btn uk-btn-primary text-sm">
+                            Review
+                        </a>
+
                         <form action="{{ route('admin.contracts.generate-pdf', $business) }}"
                               method="POST"
                               class="inline">
                             @csrf
                             <button type="submit"
-                                    class="uk-btn uk-btn-secondary">
+                                    class="uk-btn uk-btn-secondary text-sm">
                                 Generate Contract
                             </button>
                         </form>
 
-                        @if($business->contract_file)
-                            <a href="{{ Storage::url($business->contract_file) }}"
-                               target="_blank"
-                               class="uk-btn uk-btn-secondary">
-                                View Contract
-                            </a>
-                        @endif
-
                         <a href="{{ route('admin.contracts.upload', $business) }}"
-                           class="uk-btn uk-btn-secondary">
+                           class="uk-btn uk-btn-secondary text-sm">
                             Upload Signed
                         </a>
                     </div>
@@ -79,7 +98,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
                     No businesses found
                 </td>
             </tr>
