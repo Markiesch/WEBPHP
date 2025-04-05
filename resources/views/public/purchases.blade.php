@@ -62,17 +62,46 @@
             </form>
         </div>
 
-        {{-- PRODUCT LIST --}}
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-            @forelse($advertisements as $ad)
-                <x-public.advertisement-card :advertisement="$ad"/>
-            @empty
-                <div class="uk-width-1-1">
-                    <div class="uk-alert uk-alert-warning">
-                        <p>{{ __('search.no_results') }}</p>
+        {{-- RETURNED ITEMS --}}
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">{{ __('Returned Items') }}</h2>
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+                @php $hasReturned = false; @endphp
+                @foreach($advertisements as $ad)
+                    @if($ad->isReturned())
+                        @php $hasReturned = true; @endphp
+                        <x-public.advertisement-card :advertisement="$ad"/>
+                    @endif
+                @endforeach
+                @if(!$hasReturned)
+                    <div class="uk-width-1-1">
+                        <div class="uk-alert uk-alert-info">
+                            <p>{{ __('No returned items') }}</p>
+                        </div>
                     </div>
-                </div>
-            @endforelse
+                @endif
+            </div>
+        </div>
+
+        {{-- ACTIVE PURCHASES --}}
+        <div>
+            <h2 class="text-2xl font-bold mb-4">{{ __('Active Purchases') }}</h2>
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+                @php $hasActive = false; @endphp
+                @foreach($advertisements as $ad)
+                    @if(!$ad->isReturned())
+                        @php $hasActive = true; @endphp
+                        <x-public.advertisement-card :advertisement="$ad"/>
+                    @endif
+                @endforeach
+                @if(!$hasActive)
+                    <div class="uk-width-1-1">
+                        <div class="uk-alert uk-alert-info">
+                            <p>{{ __('No active purchases') }}</p>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
 
         {{-- PAGINATION --}}

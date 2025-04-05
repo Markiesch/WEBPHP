@@ -165,13 +165,19 @@ class SellerAdvertisementController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'wear_percentage' => 'required|integer|min:0|max:100',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp,svg,bmp|max:5120',
             'type' => 'required|in:' . implode(',', [
                     Advertisement::TYPE_SALE,
                     Advertisement::TYPE_RENTAL,
                     Advertisement::TYPE_AUCTION
                 ]),
         ];
+
+        // Make image optional when updating
+        if ($request->isMethod('post')) {
+            $rules['image'] = 'required|image|mimes:jpeg,png,jpg,gif,webp,svg,bmp|max:5120';
+        } else {
+            $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg,bmp|max:5120';
+        }
 
         if ($request->input('type') === Advertisement::TYPE_SALE) {
             $rules['price'] = 'required|numeric|min:0';

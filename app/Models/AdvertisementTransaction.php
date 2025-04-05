@@ -3,21 +3,58 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AdvertisementTransaction extends Model
 {
     protected $fillable = [
         'user_id',
         'advertisement_id',
+        'price',
+        'type',
+        'status',
+        'returned',
+        'return_date',
+        'return_photo',
+        'calculated_wear',
+        'rental_days'
     ];
 
-    public function user()
+    protected $casts = [
+        'return_date' => 'datetime',
+        'returned' => 'boolean',
+        'rental_days' => 'integer'
+    ];
+
+    const STATUS_SOLD = 'sold';
+    const STATUS_RETURNED = 'returned';
+
+    public function advertisement(): BelongsTo
+    {
+        return $this->belongsTo(Advertisement::class);
+    }
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function advertisement()
+    public function markAsReturned(array $data = []): bool
     {
-        return $this->belongsTo(Advertisement::class);
+        return $this->update([
+            'returned' => true,
+            'status' => self::STATUS_RETURNED,
+            'return_date' => $data['return_date'] ?? now(),
+            'return_photo' => $data['return_photo'] ?? null,
+            'calculated_wear' => $data['calculated_wear'] ?? null
+        ]);
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match($this->status) {
+            self::STATUS_RETURNED => __('Returned'),
+            default => __('Sold'),
+        };
     }
 }

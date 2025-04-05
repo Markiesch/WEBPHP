@@ -132,6 +132,19 @@ class Advertisement extends Model
         return true;
     }
 
+    public function isReturned(): bool
+    {
+        return $this->transactions()
+            ->where('type', 'rental')
+            ->where('status', AdvertisementTransaction::STATUS_RETURNED)
+            ->exists();
+    }
+
+    public function rental_return()
+    {
+        return $this->hasOne(RentalReturn::class);
+    }
+
     public function isAuctionEnded(): bool
     {
         return $this->auction_end_date && $this->auction_end_date->isPast();
