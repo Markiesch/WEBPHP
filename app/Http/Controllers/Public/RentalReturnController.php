@@ -48,22 +48,18 @@ class RentalReturnController extends Controller
             return back()->with('error', __('This product has already been returned.'));
         }
 
-        // Calculate wear based on days rented and wear per day
         $daysRented = now()->diffInDays($transaction->created_at);
         $wearPerDay = $transaction->advertisement->wear_per_day ?? 0;
         $calculatedWear = $daysRented * $wearPerDay;
 
-        // Store photo
         $photoPath = $request->file('return_photo')->store('return-photos', 'public');
 
-        // Update transaction using markAsReturned method
         $transaction->markAsReturned([
             'return_date' => now(),
             'return_photo' => $photoPath,
             'calculated_wear' => $calculatedWear
         ]);
 
-        // Update additional fields
         $transaction->update([
             'return_notes' => $request->notes
         ]);

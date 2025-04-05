@@ -49,12 +49,4 @@ class AdvertisementTransaction extends Model
             'calculated_wear' => $data['calculated_wear'] ?? null
         ]);
     }
-
-    public function getStatusLabelAttribute(): string
-    {
-        return match($this->status) {
-            self::STATUS_RETURNED => __('Returned'),
-            default => __('Sold'),
-        };
-    }
 }

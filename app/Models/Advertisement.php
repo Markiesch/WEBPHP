@@ -280,10 +280,10 @@ class Advertisement extends Model
         return $builder->build()->getDataUri();
     }
 
-    public function scopeSortable(EloquentBuilder $query, $request)
+    public function scopeSortable(EloquentBuilder $query, array $params): EloquentBuilder
     {
-        $sortBy = $request->input('sort_by');
-        $direction = $request->input('direction', 'desc');
+        $sortBy = $params['sort_by'] ?? null;
+        $direction = $params['direction'] ?? 'desc';
 
         if ($sortBy && in_array($sortBy, $this->sortable)) {
             $query->orderBy($sortBy, $direction);
