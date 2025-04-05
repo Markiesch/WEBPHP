@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser;
+namespace Tests\Browser\controller;
 
 use App\Models\Advertisement;
 use App\Models\Business;
@@ -63,6 +63,14 @@ class AdvertisementTest extends DuskTestCase
         $this->business->delete();
         $this->user->delete();
         parent::tearDown();
+    }
+
+    public function testindex() {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAS(1)
+                ->visitRoute('advertisement.index')
+                ->assertSee('advertisements');
+        });
     }
 
     public function testViewAdvertisementsList()
