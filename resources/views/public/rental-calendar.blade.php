@@ -11,14 +11,21 @@
             <h3 class="text-2xl font-semibold mb-6">Mijn Gehuurde Producten</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 @forelse($rentals as $rental)
-                    <div class="p-4 bg-white rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-colors">
-                        <div class="font-medium text-blue-800 text-sm mb-2">
+                    <div class="p-4 bg-white rounded-lg border-2 {{ $rental->return_date ? 'border-green-200' : 'border-blue-200' }} hover:border-opacity-75 transition-colors">
+                        <div class="font-medium {{ $rental->return_date ? 'text-green-800' : 'text-blue-800' }} text-sm mb-2">
                             {{ $rental->advertisement->title }}
                         </div>
-                        <div class="text-sm text-gray-600 flex justify-between items-center">
-                            <span class="bg-blue-50 px-2 py-1 rounded">{{ $rental->rental_start->format('d/m') }}</span>
-                            <span class="text-gray-400">tot</span>
-                            <span class="bg-red-50 px-2 py-1 rounded">{{ $rental->rental_end->format('d/m/y') }}</span>
+                        <div class="text-sm text-gray-600 flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-blue-50 px-2 py-1 rounded">{{ $rental->rental_start->format('d/m') }}</span>
+                                <span class="text-gray-400">tot</span>
+                                <span class="{{ $rental->return_date ? 'bg-green-50' : 'bg-red-50' }} px-2 py-1 rounded">{{ $rental->rental_end->format('d/m/y') }}</span>
+                            </div>
+                            @if($rental->return_date)
+                                <div class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded text-center mt-1">
+                                    Ingeleverd op: {{ $rental->return_date->format('d/m/y') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @empty
@@ -41,6 +48,7 @@
                     $startOfMonth = $currentDate->copy()->startOfMonth();
                     $endOfMonth = $currentDate->copy()->endOfMonth();
                     $currentDay = $startOfMonth->copy()->startOfWeek();
+                    $activeRentals = $rentals->filter(fn($rental) => !$rental->return_date);
                 @endphp
 
                 @while($currentDay <= $endOfMonth->copy()->endOfWeek())
@@ -50,7 +58,7 @@
                         </span>
 
                         <div class="space-y-1 mt-1">
-                            @foreach($rentals as $rental)
+                            @foreach($activeRentals as $rental)
                                 @if($currentDay->between($rental->rental_start, $rental->rental_end))
                                     <div class="p-1.5 rounded border {{ $currentDay->isSameDay($rental->rental_start) ? 'border-l-4 border-l-green-500' : ($currentDay->isSameDay($rental->rental_end) ? 'border-r-4 border-r-red-500' : 'border-blue-200') }} bg-white hover:bg-blue-50 transition-colors shadow-sm">
                                         <a href="{{ route('advertisement', $rental->advertisement->id) }}" class="block truncate text-sm hover:text-blue-700">
@@ -75,7 +83,9 @@
                 <h3 class="text-2xl font-semibold mb-6 text-blue-800">Aankomende Inleverdata</h3>
                 <div class="grid gap-3">
                     @php
-                        $upcomingReturns = $rentals->sortBy('rental_end')->take(5);
+                        $upcomingReturns = $rentals->filter(fn($rental) => !$rental->return_date)
+                            ->sortBy('rental_end')
+                            ->take(5);
                     @endphp
                     @forelse($upcomingReturns as $rental)
                         <div class="p-4 rounded-lg border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-white hover:border-blue-400 transition-colors">
