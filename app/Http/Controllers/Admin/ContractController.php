@@ -9,6 +9,7 @@ use Spatie\LaravelPdf\Facades\Pdf;
 use Exception;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ContractController extends Controller
 {
@@ -56,7 +57,8 @@ class ContractController extends Controller
                 'status' => 'required|in:pending,approved,rejected'
             ]);
 
-            $path = $request->file('contract_file')->store('contracts');
+            // Store file in the public disk instead of the default disk
+            $path = $request->file('contract_file')->store('contracts', 'public');
 
             $business->update([
                 'contract_status' => $validated['status'],
@@ -103,5 +105,15 @@ class ContractController extends Controller
         } catch (Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    // Add this method to download contract
+    public function downloadContract(Business $business)
+    {
+        if (!$business->contract_file) {
+            return back()->withErrors(['error' => 'No contract file available']);
+        }
+
+        return Storage::disk('public')->download($business->contract_file);
     }
 }

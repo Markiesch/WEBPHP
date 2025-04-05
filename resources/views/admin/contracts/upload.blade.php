@@ -4,7 +4,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Upload Contract for {{ $business->name }}</h1>
-            <a href="{{ route('admin.contracts.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.contracts.index') }}" class="uk-btn uk-btn-secondary">
                 Back to List
             </a>
         </div>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="flex items-center justify-end">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <button type="submit" class="uk-btn uk-btn-primary">
                         Upload Contract
                     </button>
                 </div>

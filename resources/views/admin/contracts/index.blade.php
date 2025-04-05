@@ -88,7 +88,6 @@
                                 Generate Contract
                             </button>
                         </form>
-
                         <a href="{{ route('admin.contracts.upload', $business) }}"
                            class="uk-btn uk-btn-secondary text-sm">
                             Upload Signed

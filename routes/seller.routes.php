@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\ContractController;
 use App\Http\Controllers\Seller\AgendaController;
 use App\Http\Controllers\Seller\BusinessEditorController;
 use App\Http\Controllers\Seller\SellerAdvertisementController;
-use App\Http\Controllers\Seller\ContractController;
 use App\Http\Controllers\Seller\SellerAPIController;
 use Illuminate\Support\Facades\Route;
 
