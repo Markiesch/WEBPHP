@@ -18,6 +18,8 @@
                         <div class="text-xs text-gray-600 mt-0.5">
                             @if($ad->isRental())
                                 {{ $ad->rental_start_date->format('d/m') }} - {{ $ad->rental_end_date->format('d/m/y') }}
+                            @elseif($ad->type === 'auction')
+                                Veiling tot: {{ $ad->auction_end_date->format('d/m/y H:i') }}
                             @else
                                 Beschikbaar tot: {{ $ad->expiry_date->format('d/m/y') }}
                             @endif
@@ -54,20 +56,28 @@
                         @foreach($ads as $ad)
                             @php
                                 $startDate = $ad->rental_start_date ?? $ad->created_at;
-                                $endDate = $ad->rental_end_date ?? $ad->expiry_date;
+                                $endDate = match($ad->type) {
+                                    'rental' => $ad->rental_end_date,
+                                    'auction' => $ad->auction_end_date,
+                                    default => $ad->expiry_date
+                                };
                                 $isRental = $ad->isRental();
+                                $isAuction = $ad->type === 'auction';
                                 $isPurchased = $ad->isPurchased();
                             @endphp
 
-                            {{-- Show all ads on their end date or during their rental period --}}
                             @if($currentDay->isSameDay($endDate) ||
                                 ($isRental && $currentDay->between($startDate, $endDate)) ||
-                                (!$isRental && $currentDay->between($ad->created_at, $endDate)))
+                                (!$isRental && !$isAuction && $currentDay->between($ad->created_at, $endDate)))
                                 <div class="mt-0.5">
-                                    <div class="text-xs p-1.5 rounded border {{ $isPurchased ? 'border-red-500 bg-red-50' : 'border-gray-200 bg-gray-50' }}">
-                                        <a href="{{ route('advertisements.show', $ad->id) }}" class="hover:underline block truncate {{ $isPurchased ? 'text-red-600' : 'text-gray-700' }}">
+                                    <div class="text-xs p-1.5 rounded border {{ $isPurchased ? 'border-red-500 bg-red-50' : ($isAuction ? 'border-purple-500 bg-purple-50' : 'border-gray-200 bg-gray-50') }}">
+                                        <a href="{{ route('advertisements.show', $ad->id) }}" class="hover:underline block truncate {{ $isPurchased ? 'text-red-600' : ($isAuction ? 'text-purple-600' : 'text-gray-700') }}">
                                             <span>{{ $ad->title }}</span>
-                                            <span class="text-xs text-gray-500">({{ $isRental ? 'Huur' : 'Verkoop' }})</span>
+                                            <span class="text-xs text-gray-500">({{ match($ad->type) {
+                                                'rental' => 'Huur',
+                                                'auction' => 'Veiling',
+                                                default => 'Verkoop'
+                                            } }})</span>
                                         </a>
                                     </div>
                                 </div>
@@ -86,19 +96,30 @@
                 <div class="space-y-2">
                     @php
                         $sortedAds = $ads->sortBy(function($ad) {
-                            return $ad->rental_end_date ?? $ad->expiry_date;
+                            return match($ad->type) {
+                                'rental' => $ad->rental_end_date,
+                                'auction' => $ad->auction_end_date,
+                                default => $ad->expiry_date
+                            };
                         })->take(5);
                     @endphp
                     @forelse($sortedAds as $ad)
-                        <div class="p-2 rounded-md border {{ $ad->isPurchased() ? 'border-red-500 bg-red-50' : 'border-gray-200 bg-gray-50' }}">
-                            <div class="text-xs {{ $ad->isPurchased() ? 'text-red-600' : 'text-gray-700' }} font-medium">
+                        <div class="p-2 rounded-md border {{ $ad->isPurchased() ? 'border-red-500 bg-red-50' : ($ad->type === 'auction' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 bg-gray-50') }}">
+                            <div class="text-xs {{ $ad->isPurchased() ? 'text-red-600' : ($ad->type === 'auction' ? 'text-purple-600' : 'text-gray-700') }} font-medium">
                                 {{ $ad->title }}
-                                <span class="text-gray-500">({{ $ad->isRental() ? 'Huur' : 'Verkoop' }})</span>
+                                <span class="text-gray-500">({{ match($ad->type) {
+                                    'rental' => 'Huur',
+                                    'auction' => 'Veiling',
+                                    default => 'Verkoop'
+                                } }})</span>
                             </div>
                             <div class="text-xs text-gray-600">
                                 @if($ad->isRental())
                                     Start: {{ $ad->rental_start_date->format('d M Y') }}<br>
                                     Eindigt: {{ $ad->rental_end_date->format('d M Y') }}
+                                @elseif($ad->type === 'auction')
+                                    Start: {{ $ad->created_at->format('d M Y H:i') }}<br>
+                                    Eindigt: {{ $ad->auction_end_date->format('d M Y H:i') }}
                                 @else
                                     Beschikbaar tot: {{ $ad->expiry_date->format('d M Y') }}
                                 @endif

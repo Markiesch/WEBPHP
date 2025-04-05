@@ -89,6 +89,44 @@
                     @enderror
                 </div>
 
+                <div id="auction-fields" style="display: none;">
+                    <div>
+                        <label for="starting_price" class="uk-form-label">
+                            {{ __('Starting Price') }}
+                        </label>
+                        <div class="relative">
+                <span class="uk-form-icon">
+                    <uk-icon icon="euro"></uk-icon>
+                </span>
+                            <input type="number"
+                                   name="starting_price"
+                                   id="starting_price"
+                                   class="uk-input @error('starting_price') border-red-500 @enderror"
+                                   value="{{ old('starting_price') }}"
+                                   step="0.01"
+                                   min="0">
+                        </div>
+                        @error('starting_price')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="auction_end_date" class="uk-form-label">
+                            {{ __('Auction End Date') }}
+                        </label>
+                        <input type="datetime-local"
+                               name="auction_end_date"
+                               id="auction_end_date"
+                               class="uk-input @error('auction_end_date') border-red-500 @enderror"
+                               value="{{ old('auction_end_date') }}"
+                               min="{{ date('Y-m-d\TH:i') }}">
+                        @error('auction_end_date')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
                 <div>
                     <label for="wear_percentage" class="uk-form-label">
                         {{ __('Wear Percentage') }}
@@ -193,3 +231,18 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeSelect = document.getElementById('type');
+            const auctionFields = document.getElementById('auction-fields');
+
+            typeSelect.addEventListener('change', function() {
+                auctionFields.style.display = this.value === 'auction' ? 'block' : 'none';
+            });
+
+            // Show/hide on initial load
+            auctionFields.style.display = typeSelect.value === 'auction' ? 'block' : 'none';
+        });
+    </script>

@@ -52,9 +52,12 @@ class SellerAdvertisementController extends Controller
                 ->ofType($request->input('type'))
                 ->count();
 
-            $maxAds = $request->input('type') === Advertisement::TYPE_SALE
-                ? Advertisement::MAX_SALE_ADS
-                : Advertisement::MAX_RENTAL_ADS;
+            $maxAds = match($request->input('type')) {
+                Advertisement::TYPE_SALE => Advertisement::MAX_SALE_ADS,
+                Advertisement::TYPE_RENTAL => Advertisement::MAX_RENTAL_ADS,
+                Advertisement::TYPE_AUCTION => Advertisement::MAX_AUCTION_ADS,
+                default => Advertisement::MAX_SALE_ADS,
+            };
 
             if ($adsCount >= $maxAds) {
                 return back()
@@ -65,11 +68,18 @@ class SellerAdvertisementController extends Controller
             $validated['image_url'] = $this->handleImageUpload($request);
             $validated['business_id'] = $business->id;
             $validated['wear_percentage'] = $request->input('wear_percentage');
-            $validated['wear_per_day'] = $request->input('type') === Advertisement::TYPE_RENTAL ? $request->input('wear_per_day') : null;
 
             if ($request->input('type') === Advertisement::TYPE_RENTAL) {
                 $validated['rental_start_date'] = $request->input('rental_start_date');
                 $validated['rental_end_date'] = $request->input('rental_end_date');
+                $validated['wear_per_day'] = $request->input('wear_per_day');
+            }
+
+            if ($request->input('type') === Advertisement::TYPE_AUCTION) {
+                $validated['starting_price'] = $request->input('starting_price');
+                $validated['current_bid'] = $request->input('starting_price');
+                $validated['auction_end_date'] = $request->input('auction_end_date');
+                $validated['price'] = null;
             }
 
             Advertisement::create($validated);
@@ -82,6 +92,7 @@ class SellerAdvertisementController extends Controller
             return $this->handleError($e);
         }
     }
+
 
     public function show($id): View
     {
@@ -112,22 +123,7 @@ class SellerAdvertisementController extends Controller
                 abort(403);
             }
 
-            $rules = [
-                'title' => 'required|string|max:255',
-                'description' => 'required|string',
-                'price' => 'required|numeric|min:0',
-                'wear_percentage' => 'required|integer|min:0|max:100',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg,bmp|max:5120',
-                'type' => 'required|in:' . Advertisement::TYPE_SALE . ',' . Advertisement::TYPE_RENTAL,
-            ];
-
-            if ($request->input('type') === Advertisement::TYPE_RENTAL) {
-                $rules['rental_start_date'] = 'required|date|after_or_equal:today';
-                $rules['rental_end_date'] = 'required|date|after:rental_start_date';
-                $rules['wear_per_day'] = 'required|numeric|min:0|max:100';
-            }
-
-            $validated = $request->validate($rules);
+            $validated = $this->validateAdvertisement($request);
 
             if ($request->hasFile('image')) {
                 $validated['image_url'] = $this->handleImageUpload($request);
@@ -145,6 +141,12 @@ class SellerAdvertisementController extends Controller
                 $validated['wear_per_day'] = null;
             }
 
+            if ($request->input('type') === Advertisement::TYPE_AUCTION) {
+                $validated['starting_price'] = $request->input('starting_price');
+                $validated['auction_end_date'] = $request->input('auction_end_date');
+                $validated['price'] = null;
+            }
+
             $advertisement->update($validated);
 
             return redirect()
@@ -156,35 +158,38 @@ class SellerAdvertisementController extends Controller
         }
     }
 
+
     private function validateAdvertisement(Request $request): array
     {
         $rules = [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
             'wear_percentage' => 'required|integer|min:0|max:100',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp,svg,bmp|max:5120',
-            'type' => 'required|in:' . Advertisement::TYPE_SALE . ',' . Advertisement::TYPE_RENTAL,
+            'type' => 'required|in:' . implode(',', [
+                    Advertisement::TYPE_SALE,
+                    Advertisement::TYPE_RENTAL,
+                    Advertisement::TYPE_AUCTION
+                ]),
         ];
 
+        if ($request->input('type') === Advertisement::TYPE_SALE) {
+            $rules['price'] = 'required|numeric|min:0';
+        }
+
         if ($request->input('type') === Advertisement::TYPE_RENTAL) {
+            $rules['price'] = 'required|numeric|min:0';
             $rules['rental_start_date'] = 'required|date|after_or_equal:today';
             $rules['rental_end_date'] = 'required|date|after:rental_start_date';
             $rules['wear_per_day'] = 'required|numeric|min:0|max:100';
         }
 
-        return $request->validate($rules);
-    }
-
-    private function handleImageUpload(Request $request): ?string
-    {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . '_' . Str::slug($image->getClientOriginalName());
-            $image->storeAs('public/images', $filename);
-            return 'storage/images/' . $filename;
+        if ($request->input('type') === Advertisement::TYPE_AUCTION) {
+            $rules['starting_price'] = 'required|numeric|min:0';
+            $rules['auction_end_date'] = 'required|date|after:today';
         }
-        return null;
+
+        return $request->validate($rules);
     }
 
     private function handleError(Exception $e): RedirectResponse
@@ -205,6 +210,17 @@ class SellerAdvertisementController extends Controller
         if ($range[0] === '100plus') {
             return $query->where('price', '>', 100);
         }
+    }
+
+    private function handleImageUpload(Request $request): ?string
+    {
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . Str::slug($image->getClientOriginalName());
+            $image->storeAs('public/images', $filename);
+            return 'storage/images/' . $filename;
+        }
+        return null;
     }
 
     public function uploadCsv(): View
