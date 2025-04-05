@@ -8,7 +8,7 @@
             <div class="lg:col-span-2">
                 <div class="rounded-xl overflow-hidden shadow-lg bg-gray-50">
                     <img src="{{ asset($advertisement->image_url) }}"
-                         alt="{{ $advertisement->title }}"
+                         alt="@lang('advertisement.image_alt', ['title' => $advertisement->title])"
                          class="w-full aspect-video object-cover hover:scale-105 transition-transform duration-300"/>
                 </div>
             </div>
@@ -34,13 +34,13 @@
                         <div class="space-y-3">
                             <div class="flex justify-between items-center text-sm text-gray-600">
                                 <span>@lang('advertisement.starting_price')</span>
-                                <span class="font-medium">&euro;{{ number_format($advertisement->price, 2) }}</span>
+                                <span class="font-medium">@lang('advertisement.currency_symbol'){{ number_format($advertisement->price, 2) }}</span>
                             </div>
 
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-900 font-medium">@lang('advertisement.current_bid')</span>
                                 <span class="text-2xl font-bold text-red-600">
-                                    &euro;{{ number_format($advertisement->current_bid ?? $advertisement->price, 2) }}
+                                    @lang('advertisement.currency_symbol'){{ number_format($advertisement->current_bid ?? $advertisement->price, 2) }}
                                 </span>
                             </div>
 
@@ -64,7 +64,7 @@
                         </div>
                     @else
                         <div class="text-center py-2">
-                            <span class="text-3xl font-bold text-red-600">&euro;{{ number_format($advertisement->price, 2) }}</span>
+                            <span class="text-3xl font-bold text-red-600">@lang('advertisement.currency_symbol'){{ number_format($advertisement->price, 2) }}</span>
                         </div>
                     @endif
                 </div>
@@ -74,7 +74,7 @@
                     @if ($advertisement->isPurchased())
                         <div class="bg-gray-100 rounded-lg p-4 text-center text-gray-600">
                             <uk-icon icon="check" ratio="1.2" class="text-green-600"></uk-icon>
-                            <span class="ml-2 font-medium">{{ __('sold') }}</span>
+                            <span class="ml-2 font-medium">@lang('advertisement.sold')</span>
                         </div>
                     @else
                         <button class="uk-btn uk-btn-large uk-btn-primary w-full rounded-lg transition-all duration-300
@@ -123,7 +123,7 @@
                             <div class="mb-6">
                                 <label for="bid_amount" class="block text-sm font-medium mb-2">@lang('advertisement.your_bid')</label>
                                 <div class="relative">
-                                    <span class="absolute left-3 top-2.5 text-gray-500">&euro;</span>
+                                    <span class="absolute left-3 top-2.5 text-gray-500">@lang('advertisement.currency_symbol')</span>
                                     <input type="number" name="bid_amount" id="bid_amount"
                                            class="uk-input pl-7"
                                            min="{{ ($advertisement->current_bid ?? $advertisement->price) + 1 }}"
@@ -131,14 +131,14 @@
                                            required>
                                 </div>
                                 <p class="text-sm text-gray-500 mt-2">
-                                    @lang('advertisement.minimum_bid'): &euro;{{ number_format(($advertisement->current_bid ?? $advertisement->price) + 1, 2) }}
+                                    @lang('advertisement.minimum_bid'): @lang('advertisement.currency_symbol'){{ number_format(($advertisement->current_bid ?? $advertisement->price) + 1, 2) }}
                                 </p>
                             </div>
                         @endif
 
                         <div class="flex gap-3">
                             <button type="button" class="uk-modal-close uk-btn uk-btn-default flex-1 hover:bg-gray-100">
-                                @lang('cancel')
+                                @lang('common.cancel')
                             </button>
                             <button type="submit" class="uk-btn uk-btn-primary flex-1 hover:bg-blue-700">
                                 @lang($advertisement->type === 'auction' ? 'advertisement.place_bid' :
@@ -162,19 +162,19 @@
                            class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
                             <div class="aspect-video rounded-t-xl overflow-hidden bg-gray-50">
                                 <img src="{{ asset($related->image_url) }}"
-                                     alt="{{ $related->title }}"
+                                     alt="@lang('advertisement.image_alt', ['title' => $related->title])"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"/>
                             </div>
                             <div class="p-4">
                                 <div class="flex justify-between items-start gap-4 mb-2">
                                     <h3 class="font-medium text-gray-900 line-clamp-1">{{ $related->title }}</h3>
                                     <span class="uk-badge whitespace-nowrap {{ $related->type === 'sale' ? 'uk-badge-success' : 'uk-badge-warning' }}">
-                                    {{ $related->type === 'sale' ? __('Sale') : __('Rental') }}
-                                </span>
+                                        @lang($related->type === 'sale' ? 'advertisement.sale' : 'advertisement.rental')
+                                    </span>
                                 </div>
                                 <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $related->description }}</p>
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-red-600">&euro;{{ number_format($related->price, 2) }}</span>
+                                    <span class="font-bold text-red-600">@lang('advertisement.currency_symbol'){{ number_format($related->price, 2) }}</span>
                                     <span class="text-sm text-gray-500">{{ $related->created_at->diffForHumans() }}</span>
                                 </div>
                             </div>
@@ -184,7 +184,6 @@
             </div>
         @endif
     </div>
-
 
     <div class="uk-container py-6">
         <div class="uk-card uk-card-body p-6 grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-8">
@@ -199,8 +198,7 @@
                                      stroke="currentColor"
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="text-yellow-500">
-                                    <path
-                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                    <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
                                 </svg>
                             @endfor
                         </div>
@@ -221,8 +219,7 @@
                                          fill="currentColor" stroke="currentColor"
                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                          class="text-yellow-500">
-                                        <path
-                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
                                     </svg>
                                 @endfor
                             </div>
@@ -253,11 +250,9 @@
                                 <label for="rating" class="form-label">@lang('advertisement.rating')</label>
                                 <select class="uk-select" id="rating" name="rating" required>
                                     <option value="">@lang('advertisement.select_rating')</option>
-                                    <option value="5">5</option>
-                                    <option value="4">4</option>
-                                    <option value="3">3</option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
+                                    @for($i = 5; $i >= 1; $i--)
+                                        <option value="{{ $i }}">@lang("advertisement.rating_$i")</option>
+                                    @endfor
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -316,8 +311,7 @@
                                              fill="{{ $i <= $review->rating ? '#eab308' : 'transparent' }}"
                                              stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                              stroke-linejoin="round" class="text-yellow-500">
-                                            <path
-                                                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
+                                            <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>
                                         </svg>
                                     @endfor
                                 </div>
@@ -332,38 +326,38 @@
                                         </button>
                                     </form>
                                 @endif
-                                <p class="text-muted-foreground">{{ $review->created_at->format('d M Y') }}</p>
+                                <p class="text-muted-foreground">{{ $review->created_at->format(__('advertisement.date_format')) }}</p>
                             </div>
                         </div>
                         <p class="pt-2">{{ $review->comment }}</p>
                     @endforeach
 
-                        @if($advertisement->isAuction() && $advertisement->bids->isNotEmpty())
-                            <div class="mt-6 pt-4 border-t">
-                                <h3 class="text-xl font-semibold mb-4">@lang('Bid History')</h3>
-                                <div class="bg-white rounded-lg shadow divide-y">
-                                    @foreach($advertisement->bids()->with('user')->latest()->take(10)->get() as $bid)
-                                        <div class="p-4 flex justify-between items-center hover:bg-gray-50">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                                    <span class="text-blue-600 font-medium">{{ substr($bid->user->name, 0, 1) }}</span>
-                                                </div>
-                                                <div>
-                                                    <p class="font-medium">{{ $bid->user->name }}</p>
-                                                    <p class="text-sm text-gray-500">{{ $bid->created_at->format('d M H:i') }}</p>
-                                                </div>
+                    @if($advertisement->isAuction() && $advertisement->bids->isNotEmpty())
+                        <div class="mt-6 pt-4 border-t">
+                            <h3 class="text-xl font-semibold mb-4">@lang('advertisement.bid_history')</h3>
+                            <div class="bg-white rounded-lg shadow divide-y">
+                                @foreach($advertisement->bids()->with('user')->latest()->take(10)->get() as $bid)
+                                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                                <span class="text-blue-600 font-medium">{{ substr($bid->user->name, 0, 1) }}</span>
                                             </div>
-                                            <span class="text-lg font-semibold">&euro;{{ number_format($bid->amount, 2) }}</span>
+                                            <div>
+                                                <p class="font-medium">{{ $bid->user->name }}</p>
+                                                <p class="text-sm text-gray-500">{{ $bid->created_at->format(__('advertisement.datetime_format')) }}</p>
+                                            </div>
                                         </div>
-                                    @endforeach
-                                </div>
-                                @if($advertisement->bids->count() > 10)
-                                    <p class="text-center text-sm text-gray-500 mt-4">
-                                        @lang('advertisement.showing_recent_bids', ['count' => 10, 'total' => $advertisement->bids->count()])
-                                    </p>
-                                @endif
+                                        <span class="text-lg font-semibold">@lang('advertisement.currency_symbol'){{ number_format($bid->amount, 2) }}</span>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endif
+                            @if($advertisement->bids->count() > 10)
+                                <p class="text-center text-sm text-gray-500 mt-4">
+                                    @lang('advertisement.showing_recent_bids', ['count' => 10, 'total' => $advertisement->bids->count()])
+                                </p>
+                            @endif
+                        </div>
+                    @endif
 
                     <!-- Pagination Links -->
                     <div class="mt-6 pt-4">

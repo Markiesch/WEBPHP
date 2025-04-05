@@ -1,21 +1,20 @@
 @extends('layouts.app')
 
 @section('heading')
-    Business
+    @lang('business.editor_title')
 @endsection
 
 @section('content')
     <div class="uk-container">
-
         <div class="uk-card uk-card-body mb-6">
-            <h2 class="text-lg font-semibold mb-4">Business settings</h2>
+            <h2 class="text-lg font-semibold mb-4">@lang('business.settings')</h2>
             <form action="{{ route('business.update') }}" method="POST">
                 @csrf
                 @method("PUT")
-                <label for="name" class="uk-form-label">Name</label>
-
+                <label for="name" class="uk-form-label">@lang('business.name')</label>
                 <input name="name" type="text" class="uk-input mb-4" value="{{ $business->name }}"/>
-                <label for="url" class="uk-form-label">URL</label>
+
+                <label for="url" class="uk-form-label">@lang('business.url')</label>
                 <div class="flex">
                     <div class="uk-card shadow-sm rounded-r-none px-4 flex items-center border-e-0">
                         {{ url('/') }}/businesses/
@@ -24,34 +23,32 @@
                     <div class="flex-shrink-0">
                         <a href="{{ route('business-page', $business->url) }}"
                            class="uk-btn uk-btn-secondary border-s-0 border rounded-s-none" target="_blank">
-                            View live page
+                            @lang('business.view_live')
                             <uk-icon icon="external-link" class="pl-2"></uk-icon>
                         </a>
                     </div>
                 </div>
-                <button type="submit" class="uk-btn uk-btn-primary mt-4">Save</button>
+                <button type="submit" class="uk-btn uk-btn-primary mt-4">@lang('business.save')</button>
             </form>
         </div>
 
         <div class="flex justify-between items-center mb-6 border-t pt-4">
-            <h1 class="text-2xl font-bold">Business Page Editor</h1>
+            <h1 class="text-2xl font-bold">@lang('business.editor_title')</h1>
         </div>
 
-        <!-- Block type selector for adding new blocks -->
         <div class="uk-card uk-card-secondary uk-card-body mb-4">
-            <h2 class="text-lg font-semibold mb-4">Add New Block</h2>
+            <h2 class="text-lg font-semibold mb-4">@lang('business.add_block')</h2>
             <form action="{{ route('business.blocks.create') }}" method="POST" class="flex gap-2">
                 @csrf
                 <select name="type" class="uk-select bg-white">
-                    <option value="intro_text">Text Section</option>
-                    <option value="featured_ads">Featured Advertisements</option>
-                    <option value="image">Image</option>
+                    <option value="intro_text">@lang('business.block_type.intro_text')</option>
+                    <option value="featured_ads">@lang('business.block_type.featured_ads')</option>
+                    <option value="image">@lang('business.block_type.image')</option>
                 </select>
-                <button type="submit" class="uk-btn uk-btn-primary flex-shrink-0">Add Block</button>
+                <button type="submit" class="uk-btn uk-btn-primary flex-shrink-0">@lang('business.add_button')</button>
             </form>
         </div>
 
-        <!-- Block order management -->
         <div id="blockContainer" class="mb-6 uk-card border-b-0">
             @forelse($blocks as $block)
                 <div class="rounded-none uk-card-body border-b" data-id="{{ $block->id }}">
@@ -80,26 +77,24 @@
                         <div class="flex gap-2">
                             <button type="button" class="uk-btn uk-btn-sm uk-btn-default"
                                     data-uk-toggle="target: {{ '#editor-' . $block->id }}">
-                                Edit
+                                @lang('business.edit')
                             </button>
                             <form action="{{ route('business.blocks.delete', $block) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="uk-btn uk-btn-sm uk-btn-destructive">Delete</button>
+                                <button type="submit" class="uk-btn uk-btn-sm uk-btn-destructive">@lang('business.delete')</button>
                             </form>
                         </div>
                     </div>
 
-                    <!-- Preview of block content -->
                     <div class="preview">
                         @if($block->type === 'intro_text')
                             <h4 class="font-medium">{{ $block->content['title'] }}</h4>
-                            <div
-                                class="text-sm text-gray-600">{!! Str::limit(strip_tags($block->content['text']), 100) !!}</div>
+                            <div class="text-sm text-gray-600">{!! Str::limit(strip_tags($block->content['text']), 100) !!}</div>
                         @elseif($block->type === 'featured_ads')
                             <h4 class="font-medium">{{ $block->content['title'] }}</h4>
-                            <div class="text-sm text-gray-600">Showing {{ $block->content['count'] ?? 3 }} featured
-                                ads
+                            <div class="text-sm text-gray-600">
+                                @lang('business.preview.showing_ads', ['count' => $block->content['count'] ?? 3])
                             </div>
                         @elseif($block->type === 'image')
                             <h4 class="font-medium">{{ $block->content['title'] }}</h4>
@@ -107,15 +102,13 @@
                                 <img src="{{ asset($block->content['url']) }}" alt="{{ $block->content['alt'] }}"
                                      class="h-20 object-cover mt-2">
                             @else
-                                <div class="text-sm text-gray-600">No image uploaded yet</div>
+                                <div class="text-sm text-gray-600">@lang('business.preview.no_image')</div>
                             @endif
                         @endif
                     </div>
 
-                    <!-- Hidden editor panel -->
                     <div id="editor-{{ $block->id }}" class="uk-modal" data-uk-modal>
                         <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
-
                             <form action="{{ route('business.blocks.update', $block) }}" enctype="multipart/form-data"
                                   method="POST">
                                 @csrf
@@ -123,35 +116,35 @@
 
                                 @if($block->type === 'intro_text')
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Title</label>
+                                        <label class="uk-form-label">@lang('business.form.title')</label>
                                         <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
                                                class="uk-input">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Content</label>
+                                        <label class="uk-form-label">@lang('business.form.content')</label>
                                         <textarea name="content[text]" rows="5"
                                                   class="uk-textarea w-full richtext">{{ $block->content['text'] }}</textarea>
                                     </div>
                                 @elseif($block->type === 'featured_ads')
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Title</label>
+                                        <label class="uk-form-label">@lang('business.form.title')</label>
                                         <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
                                                class="uk-input">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Number of Ads</label>
+                                        <label class="uk-form-label">@lang('business.form.number_of_ads')</label>
                                         <input type="number" name="content[count]"
                                                value="{{ $block->content['count'] ?? 3 }}" min="1" max="12"
                                                class="uk-input">
                                     </div>
                                 @elseif($block->type === 'image')
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Title</label>
+                                        <label class="uk-form-label">@lang('business.form.title')</label>
                                         <input type="text" name="content[title]" value="{{ $block->content['title'] }}"
                                                class="uk-input">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Image URL</label>
+                                        <label class="uk-form-label">@lang('business.form.image_url')</label>
                                         <input type="file"
                                                name="image"
                                                id="image"
@@ -160,12 +153,12 @@
                                         >
                                     </div>
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Alt Text</label>
+                                        <label class="uk-form-label">@lang('business.form.alt_text')</label>
                                         <input type="text" name="content[alt]" value="{{ $block->content['alt'] }}"
                                                class="uk-input">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="uk-form-label">Caption</label>
+                                        <label class="uk-form-label">@lang('business.form.caption')</label>
                                         <input type="text" name="content[caption]"
                                                value="{{ $block->content['caption'] }}" class="uk-input">
                                     </div>
@@ -173,15 +166,14 @@
                                         <label class="flex items-center uk-form-label">
                                             <input type="checkbox" name="content[fullWidth]" value="1"
                                                    {{ isset($block->content['fullWidth']) && $block->content['fullWidth'] ? 'checked' : '' }} class="uk-checkbox">
-                                            <span class="ml-2">Full Width</span>
+                                            <span class="ml-2">@lang('business.form.full_width')</span>
                                         </label>
                                     </div>
                                 @endif
 
                                 <div class="flex justify-end">
-                                    <button type="button" class="uk-btn uk-modal-close uk-btn-secondary mr-2">Cancel
-                                    </button>
-                                    <button type="submit" class="uk-btn uk-btn-primary">Save Changes</button>
+                                    <button type="button" class="uk-btn uk-modal-close uk-btn-secondary mr-2">@lang('business.cancel')</button>
+                                    <button type="submit" class="uk-btn uk-btn-primary">@lang('business.save_changes')</button>
                                 </div>
                             </form>
                         </div>
@@ -191,7 +183,7 @@
                 </div>
             @empty
                 <div class="bg-gray-100 rounded-lg p-8 text-center">
-                    <p class="text-gray-500">No blocks added yet. Add your first block above.</p>
+                    <p class="text-gray-500">@lang('business.no_blocks')</p>
                 </div>
             @endforelse
         </div>

@@ -12,7 +12,7 @@ class AdvertisementSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Sale advertisements
+        // Sale advertisements data
         $saleProducts = [
             [
                 'title' => 'Canon EOS 5D Mark IV',
@@ -40,7 +40,7 @@ class AdvertisementSeeder extends Seeder
             ],
         ];
 
-        // Rental advertisements
+        // Rental advertisements data
         $rentalProducts = [
             [
                 'title' => 'Sony A7S III',
@@ -72,7 +72,7 @@ class AdvertisementSeeder extends Seeder
             ],
         ];
 
-        // Auction advertisements
+        // Auction advertisements data
         $auctionProducts = [
             [
                 'title' => 'Leica M11 Limited Edition',
@@ -88,13 +88,15 @@ class AdvertisementSeeder extends Seeder
             ],
         ];
 
+        $createdAds = [];
+
         // Create sale advertisements
-        for ($i = 0; $i < 4; $i++) {
-            Advertisement::create([
-                'title' => $saleProducts[$i]['title'],
-                'description' => $saleProducts[$i]['description'],
-                'price' => $saleProducts[$i]['price'],
-                'wear_percentage' => $saleProducts[$i]['wear_percentage'],
+        foreach ($saleProducts as $i => $product) {
+            $createdAds[] = Advertisement::create([
+                'title' => $product['title'],
+                'description' => $product['description'],
+                'price' => $product['price'],
+                'wear_percentage' => $product['wear_percentage'],
                 'business_id' => ($i < 2) ? 1 : 2,
                 'type' => Advertisement::TYPE_SALE,
                 'wear_per_day' => null,
@@ -104,13 +106,13 @@ class AdvertisementSeeder extends Seeder
         }
 
         // Create rental advertisements
-        for ($i = 0; $i < 4; $i++) {
-            Advertisement::create([
-                'title' => $rentalProducts[$i]['title'],
-                'description' => $rentalProducts[$i]['description'],
-                'price' => $rentalProducts[$i]['price'],
-                'wear_percentage' => $rentalProducts[$i]['wear_percentage'],
-                'wear_per_day' => $rentalProducts[$i]['wear_per_day'],
+        foreach ($rentalProducts as $i => $product) {
+            $createdAds[] = Advertisement::create([
+                'title' => $product['title'],
+                'description' => $product['description'],
+                'price' => $product['price'],
+                'wear_percentage' => $product['wear_percentage'],
+                'wear_per_day' => $product['wear_per_day'],
                 'business_id' => ($i < 2) ? 1 : 2,
                 'type' => Advertisement::TYPE_RENTAL,
                 'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
@@ -121,13 +123,13 @@ class AdvertisementSeeder extends Seeder
         }
 
         // Create auction advertisements
-        for ($i = 0; $i < 2; $i++) {
-            Advertisement::create([
-                'title' => $auctionProducts[$i]['title'],
-                'description' => $auctionProducts[$i]['description'],
-                'starting_price' => $auctionProducts[$i]['starting_price'],
+        foreach ($auctionProducts as $i => $product) {
+            $createdAds[] = Advertisement::create([
+                'title' => $product['title'],
+                'description' => $product['description'],
+                'price' => $product['starting_price'],
                 'current_bid' => null,
-                'wear_percentage' => $auctionProducts[$i]['wear_percentage'],
+                'wear_percentage' => $product['wear_percentage'],
                 'business_id' => 1,
                 'type' => 'auction',
                 'image_url' => 'https://picsum.photos/' . $faker->numberBetween(500, 800) . '/' . $faker->numberBetween(400, 700),
@@ -135,5 +137,12 @@ class AdvertisementSeeder extends Seeder
                 'expiry_date' => '2025-04-25',
             ]);
         }
-        }
+
+        // Create relationships between advertisements
+        $createdAds[0]->relatedAdvertisements()->attach($createdAds[2]);
+        $createdAds[2]->relatedAdvertisements()->attach($createdAds[0]);
+
+        $createdAds[4]->relatedAdvertisements()->attach($createdAds[5]);
+        $createdAds[5]->relatedAdvertisements()->attach($createdAds[4]);
+    }
 }

@@ -70,4 +70,12 @@ Route::middleware(['auth'])->group(function () {
             return view('calendar');
         })->name('calendar');
     });
+
+    Route::get('locale/{locale}', function ($locale) {
+        if (in_array($locale, ['en', 'nl'])) {
+            session()->put('locale', $locale);
+            app()->setLocale($locale);
+        }
+        return redirect()->back();
+    })->name('locale');
 });

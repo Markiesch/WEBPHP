@@ -29,18 +29,29 @@
 
                 <!-- Auth Buttons -->
                 @auth
-                    <a href="{{ route('home') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('Store') }}</a>
+                    <a href="{{ route('home') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                        @lang('navigation.store')
+                    </a>
                     @if(auth()->user()->hasRole(['private_advertiser', 'business_advertiser', 'super_admin']))
-                        <a href="{{ route('business.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('business') }}</a>
+                        <a href="{{ route('business.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                            {{ __('business') }}
+                        </a>
                     @else
-                        <a href="{{ route('purchase.history') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('purchase history') }}</a>
-                        <a href="{{ route('rental-return.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('return rental') }}</a>
-                        <a href="{{ route('rental-calendar') }}" class="uk-btn uk-btn-sm uk-btn-primary">{{ __('rental calendar') }}</a>                    @endif
+                        <a href="{{ route('purchase.history') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                            {{ __('purchase history') }}
+                        </a>
+                        <a href="{{ route('rental-return.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                            @lang('navigation.return_rental')
+                        </a>
+                        <a href="{{ route('rental-calendar') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                            @lang('navigation.rental_calendar')
+                        </a>
+                    @endif
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="uk-btn uk-btn-sm uk-btn-default">
-                            {{ __('logout') }}
+                            @lang('navigation.logout')
                         </button>
                     </form>
                 @else

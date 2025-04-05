@@ -28,11 +28,28 @@
             </div>
             <ul class="p-2 uk-nav uk-nav-primary">
                 <li>
+                    <button class="uk-button uk-button-text flex gap-2" type="button">
+                        <uk-icon width="20" height="20" icon="globe"></uk-icon>
+                        {{ strtoupper(app()->getLocale()) }}
+                        <uk-icon width="12" height="12" icon="triangle-down"></uk-icon>
+                    </button>
+                    <div uk-dropdown="mode: click; pos: bottom-right">
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <li @if(app()->getLocale() === 'nl') class="uk-active" @endif>
+                                <a href="{{ route('locale', 'nl') }}">Nederlands</a>
+                            </li>
+                            <li @if(app()->getLocale() === 'en') class="uk-active" @endif>
+                                <a href="{{ route('locale', 'en') }}">English</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="flex gap-2">
                             <uk-icon width="20" height="20" icon="log-out"></uk-icon>
-                            uitloggen
+                            @lang('navigation.logout')
                         </a>
                     </form>
                 </li>

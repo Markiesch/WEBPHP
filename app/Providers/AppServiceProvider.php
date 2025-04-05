@@ -22,4 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         View::share('availableLocales', config('languages.names'));
     }
+
+
 }
