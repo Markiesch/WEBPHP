@@ -151,6 +151,40 @@
         </div>
     </div>
 
+    <div class="uk-container py-6">
+        @if($advertisement->relatedAdvertisements->isNotEmpty())
+            <div class="uk-card uk-card-body p-6">
+                <h2 class="text-2xl font-bold mb-6">@lang('advertisement.related_items')</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($advertisement->relatedAdvertisements as $related)
+                        <a href="{{ route('advertisement', $related->id) }}"
+                           class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                            <div class="aspect-video rounded-t-xl overflow-hidden bg-gray-50">
+                                <img src="{{ asset($related->image_url) }}"
+                                     alt="{{ $related->title }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"/>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start gap-4 mb-2">
+                                    <h3 class="font-medium text-gray-900 line-clamp-1">{{ $related->title }}</h3>
+                                    <span class="uk-badge whitespace-nowrap {{ $related->type === 'sale' ? 'uk-badge-success' : 'uk-badge-warning' }}">
+                                    {{ $related->type === 'sale' ? __('Sale') : __('Rental') }}
+                                </span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $related->description }}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-red-600">&euro;{{ number_format($related->price, 2) }}</span>
+                                    <span class="text-sm text-gray-500">{{ $related->created_at->diffForHumans() }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    </div>
+
 
     <div class="uk-container py-6">
         <div class="uk-card uk-card-body p-6 grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-8">

@@ -5,6 +5,7 @@ namespace App\Http\Services\Seller;
 use App\Models\Advertisement;
 use App\Models\Business;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -186,5 +187,18 @@ class SellerAdvertisementService
         } elseif ($type === Advertisement::TYPE_RENTAL) {
             $counts['rental']++;
         }
+    }
+
+    public function updateRelatedAdvertisements(Advertisement $advertisement, array $relatedIds): void
+    {
+        $advertisement->relatedAdvertisements()->sync($relatedIds);
+    }
+
+    public function getAvailableRelatedAdvertisements(Advertisement $advertisement): Collection
+    {
+        return Advertisement::where('business_id', $advertisement->business_id)
+            ->where('id', '!=', $advertisement->id)
+            ->where('type', '!=', Advertisement::TYPE_AUCTION)
+            ->get();
     }
 }

@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('upload', [SellerAdvertisementController::class, 'processCsv'])
                 ->name('advertisements.process-csv');
 
-            //resource routes
+            // Resource routes
             Route::get('/', [SellerAdvertisementController::class, 'index'])
                 ->name('advertisements.index');
             Route::get('create', [SellerAdvertisementController::class, 'create'])
@@ -37,6 +37,12 @@ Route::middleware(['auth'])->group(function () {
                 ->name('advertisements.edit');
             Route::put('{advertisement}', [SellerAdvertisementController::class, 'update'])
                 ->name('advertisements.update');
+
+            // Related advertisements routes
+            Route::get('{advertisement}/related', [SellerAdvertisementController::class, 'editRelated'])
+                ->name('advertisements.edit-related');
+            Route::put('{advertisement}/related', [SellerAdvertisementController::class, 'updateRelated'])
+                ->name('advertisements.update-related');
         });
 
         // Business routes

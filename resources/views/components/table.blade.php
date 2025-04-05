@@ -2,7 +2,7 @@
     <thead>
     <tr>
         @foreach($headers as $key => $header)
-            <th>
+            <th @if($key === 'title') class="min-w-[300px]" @endif>
                 @if(isset($header['sortable']) && $header['sortable'])
                     <div class="flex items-center gap-2">
                         <span>{{ $header['label'] }}</span>
@@ -25,7 +25,7 @@
         @endforeach
     </tr>
     </thead>
-    <tbody>
+    <tbody class="uk-table-middle">
     {{ $slot }}
     </tbody>
 </table>

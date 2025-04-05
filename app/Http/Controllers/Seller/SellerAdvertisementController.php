@@ -155,4 +155,38 @@ class SellerAdvertisementController extends Controller
             abort(403, 'Unauthorized action.');
         }
     }
+
+    public function editRelated(Advertisement $advertisement): View
+    {
+        $this->authorize('update', $advertisement);
+
+        return view('advertisements.edit-related', [
+            'advertisement' => $advertisement,
+            'availableAdvertisements' => $this->advertisementService->getAvailableRelatedAdvertisements($advertisement),
+            'selectedIds' => $advertisement->relatedAdvertisements->pluck('id')->toArray()
+        ]);
+    }
+
+    public function updateRelated(Request $request, Advertisement $advertisement): RedirectResponse
+    {
+        try {
+            $this->authorize('update', $advertisement);
+
+            $validated = $request->validate([
+                'related_advertisements' => 'array',
+                'related_advertisements.*' => 'exists:advertisements,id'
+            ]);
+
+            $this->advertisementService->updateRelatedAdvertisements(
+                $advertisement,
+                $validated['related_advertisements'] ?? []
+            );
+
+            return redirect()
+                ->route('advertisements.show', $advertisement)
+                ->with('success', 'Related advertisements updated successfully.');
+        } catch (Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }
