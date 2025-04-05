@@ -3,154 +3,72 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contract;
 use App\Models\Business;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Exception;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ContractController extends Controller
 {
-
-    public function index(Request $request)
+    public function index(Request $request): View
     {
-        $contracts = Contract::with('business')
-            ->sortable($request)
-            ->latest()
+        $businesses = Business::query()
+            ->when($request->filled('sort_by'), function($query) use ($request) {
+                $direction = $request->input('direction', 'asc');
+                $query->orderBy($request->sort_by, $direction);
+            })
             ->paginate(10);
 
-        return view('admin.contracts.index', compact('contracts'));
+        return view('admin.contracts.index', compact('businesses'));
     }
 
-
-
-    public function showUploadForm()
+    public function generatePdf(Request $request, Business $business)
     {
-        $businesses = Business::all();
+        try {
+            $data = [
+                'name' => $business->name,
+                'email' => $business->email,
+                'description' => "This contract confirms the registration of {$business->name} in our system.",
+                'contract' => (object)[
+                    'file_path' => $business->contract_file ?? 'No file attached',
+                    'created_at' => $business->created_at ?? now()
+                ],
+                'date' => now()->format('d/m/Y'),
+                'business' => $business
+            ];
 
-        if (auth()->user()->hasRole('super_admin')) {
-            return view('admin.contracts.upload', compact('businesses'));
+            return Pdf::view('pdf.pdf', $data)
+                ->format('a4')
+                ->download("contract_{$business->id}.pdf");
+
+        } catch (Exception $e) {
+            return back()->withErrors(['error' => 'Failed to generate PDF: ' . $e->getMessage()]);
         }
-
-        return view('seller.contracts.upload', compact('businesses'));
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request, Business $business): RedirectResponse
     {
-        $request->validate([
-            'business_id' => 'required|exists:businesses,id',
-            'description' => 'nullable|string|max:1000',
-            'contract' => 'required|file|mimes:pdf|max:10240', // 10MB max
-        ]);
+        try {
+            $validated = $request->validate([
+                'contract_file' => 'required|file|mimes:pdf|max:5120',
+                'status' => 'required|in:pending,approved,rejected'
+            ]);
 
-        $file = $request->file('contract');
-        $path = $file->store('contracts');
+            $path = $request->file('contract_file')->store('contracts');
 
-        $contract = new Contract();
-        $contract->business_id = $request->business_id;
-        $contract->description = $request->description;
-        $contract->file_path = $path;
-        $contract->status = auth()->user()->hasRole('super_admin') ? $request->status : 'pending';
+            $business->update([
+                'contract_status' => $validated['status'],
+                'contract_file' => $path,
+                'contract_updated_at' => now()
+            ]);
 
-        if (auth()->user()->hasRole('super_admin')) {
-            $contract->reviewed_by = auth()->id();
-            $contract->reviewed_at = now();
+            return redirect()
+                ->route('admin.contracts.index')
+                ->with('success', 'Contract uploaded successfully.');
+        } catch (Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
         }
-
-        $contract->save();
-
-        $redirectRoute = auth()->user()->hasRole('super_admin')
-            ? 'admin.contracts.index'
-            : 'contracts.index';
-
-        return redirect()->route($redirectRoute)
-            ->with('success', __('contracts.upload_success'));
-    }
-
-    public function exportPdf($id)
-    {
-        $contract = Contract::findOrFail($id);
-        $business = $contract->business;
-
-        $data = [
-            'business' => $business,
-            'contract' => $contract,
-            'date' => now()->format('d M Y'),
-            'contract_number' => 'CNT-' . $business->id . '-' . time(),
-            'generated_by' => auth()->user()->name
-        ];
-
-        return Pdf::view('contracts.templates.export', $data)
-            ->format('a4')
-            ->download("contract_export_{$business->id}.pdf");
-    }
-
-    // Admin-only methods
-    public function review(Contract $contract)
-    {
-        $this->authorize('review-contracts');
-        return view('admin.contracts.review', compact('contract'));
-    }
-
-    public function updateStatus(Contract $contract, Request $request)
-    {
-        $this->authorize('review-contracts');
-
-        $request->validate([
-            'status' => 'required|in:approved,rejected',
-            'feedback' => 'required_if:status,rejected|nullable|string|max:1000'
-        ]);
-
-        $contract->update([
-            'status' => $request->status,
-            'feedback' => $request->feedback,
-            'reviewed_by' => auth()->id(),
-            'reviewed_at' => now()
-        ]);
-
-        return redirect()->route('admin.contracts.index')
-            ->with('success', __('contracts.status_updated'));
-    }
-
-    public function generatePdf(Business $business)
-    {
-        $this->authorize('generate-contract-pdf');
-
-        $data = [
-            'business' => $business,
-            'date' => now()->format('d M Y'),
-            'contract_number' => 'CNT-' . $business->id . '-' . time(),
-            'generated_by' => auth()->user()->name
-        ];
-
-        return Pdf::view('admin.contracts.templates.business', $data)
-            ->format('a4')
-            ->download("contract_business_{$business->id}.pdf");
-    }
-
-    public function download(Contract $contract)
-    {
-        if (!Storage::exists($contract->file_path)) {
-            return back()->with('error', __('contracts.file_not_found'));
-        }
-
-        return Storage::download(
-            $contract->file_path,
-            "contract_business_{$contract->business_id}.pdf"
-        );
-    }
-
-    public function destroy(Contract $contract)
-    {
-        $this->authorize('delete-contracts');
-
-        if (Storage::exists($contract->file_path)) {
-            Storage::delete($contract->file_path);
-        }
-
-        $contract->delete();
-
-        return redirect()->route('admin.contracts.index')
-            ->with('success', __('contracts.deleted'));
     }
 }

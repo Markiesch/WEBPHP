@@ -33,4 +33,9 @@ class Business extends Model
     {
         return $this->hasMany(BusinessReview::class);
     }
+
+    public function scopeSort($query, $sortBy = 'created_at', $direction = 'desc')
+    {
+        return $query->orderBy($sortBy, $direction);
+    }
 }
