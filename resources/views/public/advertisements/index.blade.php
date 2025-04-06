@@ -8,7 +8,7 @@
     <div class="uk-container">
         {{-- SEARCH --}}
         <div class="mb-6">
-            <form method="GET" action="{{ route('home') }}" class="uk-grid-small" uk-grid>
+            <form method="GET" action="{{ route('home') }}" class="uk-grid-small" uk-grid id="form">
                 <div class="flex gap-4 items-end">
                     <div class="grow">
                         <label class="uk-form-label" for="search">{{ __('search.by_title') }}</label>
@@ -55,7 +55,7 @@
                     @endif
 
                     <div class="uk-width-1-1 uk-margin-small-top uk-text-right border-s pl-4">
-                        <button type="submit" class="uk-btn uk-btn-primary">{{ __('search.button') }}</button>
+                        <button type="submit" id="submit" class="uk-btn uk-btn-primary">{{ __('search.button') }}</button>
                         <a href="{{ route('home') }}" class="uk-btn uk-btn-default">{{ __('search.reset') }}</a>
                     </div>
                 </div>

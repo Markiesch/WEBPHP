@@ -46,7 +46,7 @@
                                     </div>
                                     <input class="uk-input" id="password" type="password" name="password" required/>
                                 </div>
-                                <button type="submit" class="w-full uk-btn uk-btn-primary">
+                                <button type="submit" id="submit" class="w-full uk-btn uk-btn-primary">
                                     Login
                                 </button>
                                 <div
