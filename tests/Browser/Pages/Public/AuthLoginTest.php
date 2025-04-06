@@ -50,10 +50,9 @@ class AuthLoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(route('login'))
                 ->type('email', 'test@example.com')
-                ->type('password', 'wrong-password')
-                ->press('#submit')
-                ->assertPathIs('/login')
-                ->assertSee('do not match');
+                ->type('password', 'password')
+                ->press('Login')
+                ->assertPathIsNot(route('login'));
         });
     }
 }

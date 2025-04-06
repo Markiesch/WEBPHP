@@ -33,7 +33,7 @@ class RentalCalendarController extends Controller
                 ];
             });
 
-        return view('public.rental-calendar', [
+        return view('public.rental.rental-calendar', [
             'rentals' => $rentals
         ]);
     }
