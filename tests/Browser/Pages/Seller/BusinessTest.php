@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\Models\Advertisement;
 use App\Models\Business;
 use App\Models\BusinessBlock;
 use App\Models\User;
@@ -31,7 +30,7 @@ class BusinessTest extends DuskTestCase
             'url' => 'test-business'
         ]);
 
-        // Create a sample block
+        // Create a sample intro_text block
         BusinessBlock::create([
             'business_id' => $this->business->id,
             'type' => 'intro_text',
@@ -73,6 +72,69 @@ class BusinessTest extends DuskTestCase
                 ->visit(route('seller.business.index'))
                 ->assertInputValue('name', 'Test Business')
                 ->assertInputValue('url', 'test-business');
+        });
+    }
+
+    public function testAddNewBlock(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->user)
+                ->visit(route('seller.business.index'))
+                ->select('type', 'featured_ads')
+                ->press('.uk-btn-primary.flex-shrink-0')
+                ->pause(1000)
+                ->screenshot('after-add-block')
+                ->assertSee('Featured Listings')
+                ->assertPresent('.rounded-none.uk-card-body.border-b:nth-child(2)');
+        });
+    }
+
+    public function testEditBlockToggleModal(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->user)
+                ->visit(route('seller.business.index'))
+                ->click('.uk-btn-sm.uk-btn-default[data-uk-toggle]')
+                ->pause(1000)
+                ->screenshot('edit-block-modal')
+                ->assertPresent('.uk-modal-dialog')
+                ->assertPresent('input[name="content[title]"]')
+                ->assertInputValue('content[title]', 'Welcome Section');
+        });
+    }
+
+    public function testBlockOrderingButtons(): void
+    {
+        BusinessBlock::create([
+            'business_id' => $this->business->id,
+            'type' => 'featured_ads',
+            'content' => [
+                'title' => 'Featured Products',
+                'count' => 3,
+            ],
+            'order' => 2,
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->user)
+                ->visit(route('seller.business.index'))
+                ->screenshot('before-ordering')
+                ->assertSeeIn('.rounded-none.uk-card-body.border-b:nth-child(1)', 'Welcome Section')
+                ->assertSeeIn('.rounded-none.uk-card-body.border-b:nth-child(2)', 'Featured Products')
+                ->assertPresent('button[type="submit"] uk-icon[icon="move-down"]');
+        });
+    }
+
+    public function testEmptyBlocksMessage(): void
+    {
+        // Delete all blocks to test empty state
+        BusinessBlock::where('business_id', $this->business->id)->delete();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->user)
+                ->visit(route('seller.business.index'))
+                ->screenshot('empty-blocks')
+                ->assertPresent('.bg-gray-100.rounded-lg.p-8');
         });
     }
 }
