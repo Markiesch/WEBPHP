@@ -16,13 +16,13 @@ class AdvertisementController extends Controller
     {
         $data = $this->service->getAdvertisementsList($request);
 
-        return view('public/advertisements', $data);
+        return view('public/advertisements/index', $data);
     }
 
     public function advertisement(Request $request, $id): View {
         $data = $this->service->getAdvertisement($request, $id);
 
-        return view('public/advertisement', $data);
+        return view('public/advertisement/show', $data);
     }
 
     public function purchase(Request $request, $id): View
