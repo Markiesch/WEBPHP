@@ -40,7 +40,7 @@ class ContractController extends Controller
                 'business' => $business
             ];
 
-            return Pdf::view('pdf.pdf', $data)
+            return Pdf::view('layouts.pdf', $data)
                 ->format('a4')
                 ->download("contract_{$business->id}.pdf");
 
