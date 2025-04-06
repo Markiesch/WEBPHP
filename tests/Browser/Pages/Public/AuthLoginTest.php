@@ -53,7 +53,6 @@ class AuthLoginTest extends DuskTestCase
                 ->type('password', 'wrong-password')
                 ->press('#submit')
                 ->assertPathIs('/login')
-                ->screenshot("after errro")
                 ->assertSee('do not match');
         });
     }

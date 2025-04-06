@@ -34,9 +34,7 @@ class AdvertisementsIndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ad) {
             $browser->visit('/')
                 ->type('search', $ad->title)
-                ->screenshot("BEFORE SUBMIT")
                 ->press('#submit')
-                ->screenshot("AFTER SUBMIT")
                 ->assertSee($ad->title);
         });
     }
