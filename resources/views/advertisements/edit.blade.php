@@ -1,7 +1,7 @@
 ﻿@extends('layouts.app')
 
 @section('heading')
-    {{ __('Edit Advertisement') }}
+    {{ __('advertisements.edit') }}
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                 @method('PUT')
                 <div>
                     <label for="type" class="uk-form-label">
-                        {{ __('Type') }}
+                        {{ __('advertisements.type') }}
                     </label>
                     <select name="type"
                             id="type"
@@ -43,7 +43,7 @@
 
                 <div>
                     <label for="title" class="uk-form-label">
-                        {{ __('Title') }}
+                        {{ __('advertisements.title_field') }}
                     </label>
                     <input type="text"
                            name="title"
@@ -58,7 +58,7 @@
 
                 <div>
                     <label for="description" class="uk-form-label">
-                        {{ __('Description') }}
+                        {{ __('advertisements.description') }}
                     </label>
                     <textarea name="description"
                               id="description"
@@ -72,7 +72,7 @@
 
                 <div>
                     <label for="price" class="uk-form-label">
-                        {{ __('Price') }}
+                        {{ __('advertisements.price') }}
                     </label>
                     <div class="relative">
                         <span class="uk-form-icon">
@@ -94,7 +94,7 @@
 
                 <div>
                     <label for="wear_percentage" class="uk-form-label">
-                        {{ __('Wear Percentage') }}
+                        {{ __('advertisements.wear_percentage') }}
                     </label>
                     <div class="relative">
                           <span class="uk-form-icon">
@@ -118,7 +118,7 @@
                 <div class="space-y-6">
                     <div>
                         <label for="wear_per_day" class="uk-form-label">
-                            {{ __('Wear Per Day') }}
+                            {{ __('advertisements.wear_per_day') }}
                         </label>
                         <div class="relative">
                             <span class="uk-form-icon">
@@ -142,7 +142,7 @@
                     <div>
                         <label for="rental_start_date"
                                class="uk-form-label">
-                            {{ __('Start Date') }}
+                            {{ __('advertisements.start_date') }}
                         </label>
                         <input type="date"
                                name="rental_start_date"
@@ -159,7 +159,7 @@
                     <div>
                         <label for="rental_end_date"
                                class="uk-form-label">
-                            {{ __('End Date') }}
+                            {{ __('advertisements.end_date') }}
                         </label>
                         <input type="date"
                                name="rental_end_date"
@@ -176,7 +176,7 @@
 
                 <div>
                     <label for="image" class="uk-form-label">
-                        {{ __('Image') }}
+                        {{ __('advertisements.image') }}
                     </label>
                     @if($advertisement->image_url)
                         <div class="mb-2">
@@ -196,7 +196,7 @@
 
                 <div class="flex justify-end">
                     <button type="submit" class="uk-btn uk-btn-primary">
-                        {{ __('Update Advertisement') }}
+                        {{ __('advertisements.update') }}
                     </button>
                 </div>
             </form>

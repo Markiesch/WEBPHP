@@ -3,12 +3,12 @@
 @section('content')
     <x-header/>
 
-    <h1 class="text-6xl font-bold text-center py-12">Mijn Huurkalender</h1>
+    <h1 class="text-6xl font-bold text-center py-12">{{ __('rental.calendar.title') }}</h1>
 
     <div class="uk-container">
         {{-- Rented Products Overview --}}
         <div class="uk-card uk-card-default uk-card-body uk-margin-large-bottom shadow-sm rounded-lg">
-            <h3 class="text-2xl font-semibold mb-6">Mijn Gehuurde Producten</h3>
+            <h3 class="text-2xl font-semibold mb-6">{{ __('rental.calendar.my_rented_products') }}</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 @forelse($rentals as $rental)
                     <div class="p-4 bg-white rounded-lg border-2 {{ $rental->return_date ? 'border-green-200' : 'border-blue-200' }} hover:border-opacity-75 transition-colors">
@@ -18,18 +18,18 @@
                         <div class="text-sm text-gray-600 flex flex-col gap-1">
                             <div class="flex justify-between items-center">
                                 <span class="bg-blue-50 px-2 py-1 rounded">{{ $rental->rental_start->format('d/m') }}</span>
-                                <span class="text-gray-400">tot</span>
+                                <span class="text-gray-400">{{ __('rental.calendar.to') }}</span>
                                 <span class="{{ $rental->return_date ? 'bg-green-50' : 'bg-red-50' }} px-2 py-1 rounded">{{ $rental->rental_end->format('d/m/y') }}</span>
                             </div>
                             @if($rental->return_date)
                                 <div class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded text-center mt-1">
-                                    Ingeleverd op: {{ $rental->return_date->format('d/m/y') }}
+                                    {{ __('rental.calendar.returned_on') }}: {{ $rental->return_date->format('d/m/y') }}
                                 </div>
                             @endif
                         </div>
                     </div>
                 @empty
-                    <p class="text-gray-500">Geen gehuurde producten</p>
+                    <p class="text-gray-500">{{ __('rental.calendar.no_rented_products') }}</p>
                 @endforelse
             </div>
         </div>
@@ -37,7 +37,7 @@
         {{-- Calendar Grid --}}
         <div class="uk-card uk-card-default shadow-sm rounded-lg overflow-hidden">
             <div class="grid grid-cols-7 divide-x divide-y border border-gray-200">
-                @foreach(['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'] as $day)
+                @foreach([__('rental.calendar.mon'), __('rental.calendar.tue'), __('rental.calendar.wed'), __('rental.calendar.thu'), __('rental.calendar.fri'), __('rental.calendar.sat'), __('rental.calendar.sun')] as $day)
                     <div class="p-3 text-center text-sm font-semibold bg-blue-50 border-b text-blue-800">
                         {{ $day }}
                     </div>
@@ -64,7 +64,7 @@
                                         <a href="{{ route('advertisement', $rental->advertisement->id) }}" class="block truncate text-sm hover:text-blue-700">
                                             <span class="text-gray-700">{{ $rental->advertisement->title }}</span>
                                             @if($currentDay->isSameDay($rental->rental_end))
-                                                <span class="text-xs text-red-500 font-medium block">(Inleveren)</span>
+                                                <span class="text-xs text-red-500 font-medium block">({{ __('rental.calendar.return') }})</span>
                                             @endif
                                         </a>
                                     </div>
@@ -80,7 +80,7 @@
         {{-- Upcoming Return Dates --}}
         <div class="uk-margin-large-top uk-margin-large-bottom">
             <div class="uk-card uk-card-default uk-card-body shadow-sm rounded-lg">
-                <h3 class="text-2xl font-semibold mb-6 text-blue-800">Aankomende Inleverdata</h3>
+                <h3 class="text-2xl font-semibold mb-6 text-blue-800">{{ __('rental.calendar.upcoming_returns') }}</h3>
                 <div class="grid gap-3">
                     @php
                         $upcomingReturns = $rentals->filter(fn($rental) => !$rental->return_date)
@@ -94,15 +94,15 @@
                             </div>
                             <div class="flex justify-between items-center text-sm">
                                 <div class="bg-blue-50 px-3 py-1.5 rounded-full">
-                                    Start: {{ $rental->rental_start->format('d M Y') }}
+                                    {{ __('rental.calendar.start') }}: {{ $rental->rental_start->format('d M Y') }}
                                 </div>
                                 <div class="bg-red-50 px-3 py-1.5 rounded-full font-medium text-red-600">
-                                    Inleveren: {{ $rental->rental_end->format('d M Y') }}
+                                    {{ __('rental.calendar.return_on') }}: {{ $rental->rental_end->format('d M Y') }}
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <p class="text-gray-500">Geen aankomende inleverdata</p>
+                        <p class="text-gray-500">{{ __('rental.calendar.no_upcoming_returns') }}</p>
                     @endforelse
                 </div>
             </div>

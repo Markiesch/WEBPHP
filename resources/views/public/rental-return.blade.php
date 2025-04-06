@@ -3,14 +3,14 @@
 @section('content')
     <x-header/>
 
-    <h1 class="text-6xl font-bold text-center py-12">Return Rentals</h1>
+    <h1 class="text-6xl font-bold text-center py-12">{{ __('rental.return.title') }}</h1>
 
     <div class="uk-container py-8">
         <div class="uk-flex uk-flex-middle uk-margin-medium-bottom">
             <div>
                 <a href="{{ route('rental-calendar') }}" class="uk-btn uk-btn-default">
                     <span uk-icon="calendar" class="uk-margin-small-right"></span>
-                    {{ __('Calendar View') }}
+                    {{ __('rental.calendar_view') }}
                 </a>
             </div>
         </div>
@@ -41,9 +41,9 @@
                                     <span class="uk-label {{ $rental->is_overdue ? 'uk-label-danger' : 'uk-label-success' }}">
                                         <span uk-icon="{{ $rental->is_overdue ? 'warning' : 'clock' }}" class="uk-margin-small-right"></span>
                                         @if($rental->days_remaining > 0)
-                                            {{ trans_choice(':count dag|:count dagen', $rental->days_remaining) }} {{ __('remaining') }}
+                                            {{ trans_choice(':count dag|:count dagen', $rental->days_remaining) }} {{ __('rental.remaining') }}
                                         @else
-                                            {{ trans_choice(':count dag|:count dagen', abs($rental->days_remaining)) }} {{ __('overdue') }}
+                                            {{ trans_choice(':count dag|:count dagen', abs($rental->days_remaining)) }} {{ __('rental.overdue') }}
                                         @endif
                                     </span>
                                     <div class="uk-text-meta uk-margin-small-top">
@@ -57,7 +57,7 @@
                             <a href="{{ route('rental-return.create', $rental->transaction->id) }}"
                                class="uk-btn uk-btn-primary">
                                 <span uk-icon="upload" class="uk-margin-small-right"></span>
-                                {{ __('Return Now') }}
+                                {{ __('rental.return_now') }}
                             </a>
                         </div>
                     </div>
@@ -68,16 +68,16 @@
                         <div class="uk-margin">
                             <span uk-icon="info" ratio="2"></span>
                         </div>
-                        <h3 class="text-xl font-bold">{{ __('No Active Rentals') }}</h3>
-                        <p class="text-gray-500">{{ __('You currently have no products to return') }}</p>
+                        <h3 class="text-xl font-bold">{{ __('rental.no_active_rentals') }}</h3>
+                        <p class="text-gray-500">{{ __('rental.no_products_to_return') }}</p>
                         <div class="uk-margin-medium-top">
                             <a href="{{ route('home') }}" class="uk-btn uk-btn-primary uk-margin-small-right">
                                 <span uk-icon="cart" class="uk-margin-small-right"></span>
-                                {{ __('Browse Products') }}
+                                {{ __('rental.browse_products') }}
                             </a>
                             <a href="{{ route('rental-calendar') }}" class="uk-btn uk-btn-default">
                                 <span uk-icon="calendar" class="uk-margin-small-right"></span>
-                                {{ __('View Calendar') }}
+                                {{ __('rental.view_calendar') }}
                             </a>
                         </div>
                     </div>

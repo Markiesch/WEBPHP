@@ -95,9 +95,9 @@
                             {{ __('Starting Price') }}
                         </label>
                         <div class="relative">
-                <span class="uk-form-icon">
-                    <uk-icon icon="euro"></uk-icon>
-                </span>
+                        <span class="uk-form-icon">
+                            <uk-icon icon="euro"></uk-icon>
+                        </span>
                             <input type="number"
                                    name="starting_price"
                                    id="starting_price"
@@ -153,12 +153,12 @@
                 <div class="space-y-6">
                     <div>
                         <label for="wear_per_day" class="uk-form-label">
-                            {{ __('Wear Per Day') }}
+                            {{ __('Wear/Day') }}
                         </label>
                         <div class="relative">
-                            <span class="uk-form-icon">
-                                <uk-icon icon="percent"></uk-icon>
-                            </span>
+        <span class="uk-form-icon">
+            <uk-icon icon="percent"></uk-icon>
+        </span>
                             <input type="number"
                                    name="wear_per_day"
                                    id="wear_per_day"
@@ -246,3 +246,4 @@
             auctionFields.style.display = typeSelect.value === 'auction' ? 'block' : 'none';
         });
     </script>
+@endpush

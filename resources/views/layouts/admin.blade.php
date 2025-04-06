@@ -10,7 +10,7 @@
                 <ul class="uk-nav uk-nav-primary">
                     <?php
                     const links = [
-                        'contracts.index' => ['label' => 'Contracts', 'icon' => 'file-text'],
+                        'contracts.index' => ['label' => 'contracts.title', 'icon' => 'file-text'],
                     ];
                     ?>
                     @foreach (links as $route => $data)

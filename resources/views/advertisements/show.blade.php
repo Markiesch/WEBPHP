@@ -18,11 +18,11 @@
                                     $advertisement->type === 'sale' ? 'bg-blue-100 text-blue-800' :
                                     ($advertisement->type === 'auction' ? 'bg-purple-100 text-purple-800' : 'bg-yellow-100 text-yellow-800')
                                 }} rounded-full text-sm font-medium">
-                                    {{ __($advertisement->type === 'sale' ? 'For Sale' :
-                                         ($advertisement->type === 'auction' ? 'Auction' : 'For Rent')) }}
+                                    {{ __($advertisement->type === 'sale' ? 'advertisement.sale' :
+                                         ($advertisement->type === 'auction' ? 'advertisement.auction' : 'advertisement.rental')) }}
                                 </span>
                                 <span class="px-3 py-1 {{ $advertisement->wear_percentage > 50 ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800' }} rounded-full text-sm font-medium">
-                                    {{ $advertisement->wear_percentage }}% {{ __('Wear') }}
+                                    {{ $advertisement->wear_percentage }}% {{ __('advertisements.wear') }}
                                 </span>
                                 <span class="text-gray-500 text-sm">
                                     {{ __('Posted on') }} {{ $advertisement->created_at->format('F j, Y') }}
@@ -35,19 +35,19 @@
                                     <div class="space-y-4">
                                         <div class="flex items-center space-x-4 text-gray-600">
                                             <div>
-                                                <span class="block text-sm font-medium">{{ __('Start Date') }}</span>
+                                                <span class="block text-sm font-medium">{{ __('advertisements.start_date') }}</span>
                                                 <span class="text-sm">{{ $advertisement->rental_start_date->format('F j, Y') }}</span>
                                             </div>
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                             </svg>
                                             <div>
-                                                <span class="block text-sm font-medium">{{ __('End Date') }}</span>
+                                                <span class="block text-sm font-medium">{{ __('advertisements.end_date') }}</span>
                                                 <span class="text-sm">{{ $advertisement->rental_end_date->format('F j, Y') }}</span>
                                             </div>
                                         </div>
                                         <div class="flex items-center text-gray-600">
-                                            <span class="text-sm font-medium mr-2">{{ __('Wear Per Day:') }}</span>
+                                            <span class="text-sm font-medium mr-2">{{ __('advertisements.wear_per_day') }}:</span>
                                             <span class="px-3 py-1 {{ $advertisement->wear_per_day > 1 ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800' }} rounded-full text-sm font-medium">
                                                 {{ number_format($advertisement->wear_per_day, 2) }}%
                                             </span>
@@ -62,16 +62,16 @@
                                     <div class="space-y-4">
                                         <div class="flex items-center space-x-4 text-gray-600">
                                             <div>
-                                                <span class="block text-sm font-medium">{{ __('Starting Price') }}</span>
+                                                <span class="block text-sm font-medium">{{ __('advertisement.starting_price') }}</span>
                                                 <span class="text-sm">€{{ number_format($advertisement->starting_price, 2) }}</span>
                                             </div>
                                             <div>
-                                                <span class="block text-sm font-medium">{{ __('Current Bid') }}</span>
+                                                <span class="block text-sm font-medium">{{ __('advertisement.current_bid') }}</span>
                                                 <span class="text-sm">€{{ number_format($advertisement->current_bid ?? $advertisement->starting_price, 2) }}</span>
                                             </div>
                                         </div>
                                         <div class="text-gray-600">
-                                            <span class="block text-sm font-medium">{{ __('Ends At') }}</span>
+                                            <span class="block text-sm font-medium">{{ __('advertisement.ends_in') }}</span>
                                             <span class="text-sm">{{ $advertisement->auction_end_date->format('F j, Y H:i') }}</span>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="mt-8 border-t border-gray-200 pt-8">
-                        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ __('QR Code') }}</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ __('advertisements.qr_code') }}</h2>
                         <div class="flex justify-center bg-gray-50 rounded-lg p-6">
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <img src="{{ $advertisement->getQrCodeDataUri() }}"
@@ -109,7 +109,7 @@
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
-                            {{ __('Back to Advertisements') }}
+                            {{ __('seller.back') }}
                         </a>
                     </div>
                 </div>

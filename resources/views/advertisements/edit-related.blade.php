@@ -2,7 +2,7 @@
 
 @section('heading')
     <div class="flex items-center gap-2">
-        <span>{{ __('Manage Related Advertisements') }}</span>
+        <span>{{ __('advertisements.related_management') }}</span>
         <span class="uk-badge uk-badge-primary">{{ $advertisement->title }}</span>
     </div>
 @endsection
@@ -17,7 +17,7 @@
                 {{-- Related Advertisements Selection --}}
                 <div>
                     <label class="uk-form-label font-medium text-lg mb-2 block">
-                        {{ __('Select Related Advertisements') }}
+                        {{ __('advertisements.select_related') }}
                     </label>
 
                     <div class="uk-form-controls bg-gray-50 rounded-md p-4">
@@ -36,7 +36,7 @@
 
                                     <div class="flex items-center gap-3">
                                         <span class="uk-badge uk-badge-{{ $related->type === 'sale' ? 'success' : 'warning' }}">
-                                            {{ __($related->type) }}
+                                            {{ __('advertisement.'.$related->type) }}
                                         </span>
                                         <span class="text-gray-600 font-medium">
                                             €{{ number_format($related->price, 2) }}
@@ -45,7 +45,7 @@
                                 </label>
                             @empty
                                 <div class="text-center py-4 text-gray-500">
-                                    {{ __('No available advertisements found') }}
+                                    {{ __('advertisements.no_available') }}
                                 </div>
                             @endforelse
                         </div>
@@ -56,11 +56,11 @@
                 <div class="flex justify-end gap-3 pt-4 border-t">
                     <a href="{{ route('advertisements.index') }}"
                        class="uk-btn uk-btn-default hover:bg-gray-100">
-                        {{ __('Cancel') }}
+                        {{ __('cancel') }}
                     </a>
                     <button type="submit"
                             class="uk-btn uk-btn-primary hover:opacity-90">
-                        {{ __('Save Related Advertisements') }}
+                        {{ __('advertisements.save_related') }}
                     </button>
                 </div>
             </div>

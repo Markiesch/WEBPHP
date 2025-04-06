@@ -10,10 +10,10 @@
                 <ul class="uk-nav uk-nav-primary">
                     <?php
                     const links = [
-                        'business.index' => ['label' => 'Business', 'icon' => 'store'],
-                        'advertisements.index' => ['label' => 'Advertisements', 'icon' => 'megaphone'],
-                        'agenda.index' => ['label' => 'Agenda', 'icon' => 'calendar'],
-                        'api.index' => ['label' => 'API', 'icon' => 'webhook'],
+                        'business.index' => ['label' => 'business', 'icon' => 'store'],
+                        'advertisements.index' => ['label' => 'advertisements.title', 'icon' => 'megaphone'],
+                        'agenda.index' => ['label' => 'agenda.title', 'icon' => 'calendar'],
+                        'api.index' => ['label' => 'api.title', 'icon' => 'webhook'],
                     ];
                     ?>
                     @foreach (links as $route => $data)

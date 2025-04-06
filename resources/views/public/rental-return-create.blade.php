@@ -9,7 +9,7 @@
                 <span uk-icon="arrow-left"></span>
             </a>
             <div class="uk-margin-left">
-                <h1 class="uk-heading-small uk-margin-remove">{{ __('Return Product') }}</h1>
+                <h1 class="uk-heading-small uk-margin-remove">{{ __('rental.return_product') }}</h1>
                 <p class="uk-text-meta uk-margin-remove-top">{{ $transaction->advertisement->title }}</p>
             </div>
         </div>
@@ -32,39 +32,39 @@
                             @endif
 
                             <div class="uk-margin">
-                                <label class="text-sm font-medium">{{ __('Product Photo') }} <span class="text-red-600">*</span></label>
+                                <label class="text-sm font-medium">{{ __('rental.product_photo') }} <span class="text-red-600">*</span></label>
                                 <div class="uk-margin-small">
                                     <div class="uk-inline uk-width-1-1">
                                         <div class="uk-form-custom">
                                             <input type="file" name="return_photo" accept="image/*" required>
                                             <button class="uk-width-1-1 uk-button uk-button-default" type="button" tabindex="-1">
                                                 <span uk-icon="image" class="uk-margin-small-right"></span>
-                                                {{ __('Select Photo') }}
+                                                {{ __('rental.select_photo') }}
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <p class="text-sm text-gray-500">
                                     <span uk-icon="info" class="uk-margin-small-right"></span>
-                                    {{ __('Take a clear photo showing the current condition of the product') }}
+                                    {{ __('rental.take_clear_photo') }}
                                 </p>
                             </div>
 
                             <div class="uk-margin">
-                                <label class="text-sm font-medium">{{ __('Comments') }}</label>
+                                <label class="text-sm font-medium">{{ __('rental.comments') }}</label>
                                 <textarea class="uk-textarea" name="notes" rows="3"
-                                          placeholder="{{ __('Optional comments about the product condition') }}"></textarea>
+                                          placeholder="{{ __('rental.optional_comments') }}"></textarea>
                             </div>
                         </div>
 
                         <div class="p-6 bg-gray-50 rounded-b-xl border-t">
                             <div class="uk-flex uk-flex-between uk-flex-middle">
                                 <a href="{{ route('rental-return.index') }}" class="uk-btn uk-btn-default">
-                                    {{ __('Cancel') }}
+                                    {{ __('rental.cancel') }}
                                 </a>
                                 <button type="submit" class="uk-btn uk-btn-primary">
                                     <span uk-icon="check" class="uk-margin-small-right"></span>
-                                    {{ __('Return') }}
+                                    {{ __('rental.return') }}
                                 </button>
                             </div>
                         </div>
@@ -75,37 +75,37 @@
             <div>
                 <div class="bg-white rounded-xl shadow-sm">
                     <div class="p-6 bg-gray-50 rounded-t-xl border-b">
-                        <h3 class="text-xl font-bold">{{ __('Return Details') }}</h3>
+                        <h3 class="text-xl font-bold">{{ __('rental.return_details') }}</h3>
                     </div>
                     <div class="p-6">
                         <dl class="uk-description-list">
-                            <dt class="text-sm text-gray-600">{{ __('Product') }}</dt>
+                            <dt class="text-sm text-gray-600">{{ __('rental.product') }}</dt>
                             <dd class="uk-margin-small-bottom font-medium">{{ $transaction->advertisement->title }}</dd>
 
-                            <dt class="text-sm text-gray-600">{{ __('Business') }}</dt>
+                            <dt class="text-sm text-gray-600">{{ __('rental.business') }}</dt>
                             <dd class="uk-margin-small-bottom">{{ $transaction->advertisement->business->name }}</dd>
 
-                            <dt class="text-sm text-gray-600">{{ __('Rental Period') }}</dt>
+                            <dt class="text-sm text-gray-600">{{ __('rental.rental_period') }}</dt>
                             <dd class="uk-margin-small-bottom">
                                 <span uk-icon="calendar" class="uk-margin-small-right"></span>
                                 {{ $transaction->created_at->format('d M Y') }} -
                                 {{ $transaction->created_at->addDays($transaction->rental_days)->format('d M Y') }}
                             </dd>
 
-                            <dt class="text-sm text-gray-600">{{ __('Total Wear') }}</dt>
+                            <dt class="text-sm text-gray-600">{{ __('rental.total_wear') }}</dt>
                             <dd class="uk-margin-small-bottom">
                                 <span uk-icon="history" class="uk-margin-small-right"></span>
                                 {{ number_format($transaction->advertisement->wear_per_day * now()->diffInDays($transaction->created_at), 2) }}%
                                 <span class="text-sm text-gray-500">
-                                    ({{ $transaction->advertisement->wear_per_day }}% {{ __('per day') }})
+                                    ({{ $transaction->advertisement->wear_per_day }}% {{ __('rental.per_day') }})
                                 </span>
                             </dd>
 
-                            <dt class="text-sm text-gray-600">{{ __('Status') }}</dt>
+                            <dt class="text-sm text-gray-600">{{ __('rental.status') }}</dt>
                             <dd>
                                 <span class="uk-label {{ now()->isAfter($transaction->created_at->addDays($transaction->rental_days)) ? 'uk-label-danger' : 'uk-label-success' }}">
                                     <span uk-icon="{{ now()->isAfter($transaction->created_at->addDays($transaction->rental_days)) ? 'warning' : 'check' }}" class="uk-margin-small-right"></span>
-                                    {{ now()->isAfter($transaction->created_at->addDays($transaction->rental_days)) ? __('Overdue') : __('On Time') }}
+                                    {{ now()->isAfter($transaction->created_at->addDays($transaction->rental_days)) ? __('rental.overdue') : __('rental.on_time') }}
                                 </span>
                             </dd>
                         </dl>

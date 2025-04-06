@@ -1,7 +1,7 @@
 ﻿@extends('layouts.admin')
 
 @section('heading')
-    Contract Management
+    {{ __('Contract Management') }}
 @endsection
 
 @section('content')
@@ -19,8 +19,8 @@
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
         <div class="p-6 text-gray-900">
-            <h2 class="text-xl font-semibold">Business Contracts</h2>
-            <p class="text-gray-600 mt-2">Manage all business contracts from this dashboard</p>
+            <h2 class="text-xl font-semibold">{{ __('Business Contracts') }}</h2>
+            <p class="text-gray-600 mt-2">{{ __('Manage all business contracts from this dashboard') }}</p>
         </div>
     </div>
 
@@ -39,7 +39,7 @@
             <tr class="hover:bg-gray-50 transition-colors duration-200">
                 <td class="px-6 py-4 border-b border-gray-100">
                     <div class="font-medium">{{ $business->name }}</div>
-                    <div class="text-sm text-gray-500">{{ $business->email ?? 'No email provided' }}</div>
+                    <div class="text-sm text-gray-500">{{ $business->email ?? __('No email provided') }}</div>
                 </td>
                 <td class="px-6 py-4 border-b border-gray-100">
                     {{ $business->created_at->format('d/m/Y H:i') }}
@@ -50,12 +50,12 @@
                         @elseif($business->contract_status === 'rejected') bg-red-100 text-red-800
                         @else bg-yellow-100 text-yellow-800
                         @endif">
-                        {{ ucfirst($business->contract_status ?? 'pending') }}
+                        {{ __(ucfirst($business->contract_status ?? 'pending')) }}
                     </span>
 
                     @if($business->contract_status === 'rejected' && $business->contract_rejection_reason)
                         <div class="text-sm text-red-600 mt-1">
-                            Reason: {{ Str::limit($business->contract_rejection_reason, 30) }}
+                            {{ __('Reason') }}: {{ Str::limit($business->contract_rejection_reason, 30) }}
                         </div>
                     @endif
                 </td>
@@ -65,18 +65,18 @@
 
                         @if($business->contract_reviewed_at)
                             <div class="text-sm text-gray-500">
-                                Reviewed: {{ $business->contract_reviewed_at->format('d/m/Y') }}
+                                {{ __('Reviewed') }}: {{ $business->contract_reviewed_at->format('d/m/Y') }}
                             </div>
                         @endif
                     @else
-                        <span class="text-gray-500">Not updated</span>
+                        <span class="text-gray-500">{{ __('Not updated') }}</span>
                     @endif
                 </td>
                 <td class="px-6 py-4 border-b border-gray-100">
                     <div class="flex flex-wrap gap-2">
                         <a href="{{ route('admin.contracts.show', $business) }}"
                            class="uk-btn uk-btn-primary text-sm">
-                            Review
+                            {{ __('Review') }}
                         </a>
 
                         <form action="{{ route('admin.contracts.generate-pdf', $business) }}"
@@ -85,12 +85,12 @@
                             @csrf
                             <button type="submit"
                                     class="uk-btn uk-btn-secondary text-sm">
-                                Generate Contract
+                                {{ __('Generate Contract') }}
                             </button>
                         </form>
                         <a href="{{ route('admin.contracts.upload', $business) }}"
                            class="uk-btn uk-btn-secondary text-sm">
-                            Upload Signed
+                            {{ __('Upload Signed') }}
                         </a>
                     </div>
                 </td>
@@ -98,7 +98,7 @@
         @empty
             <tr>
                 <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                    No businesses found
+                    {{ __('No businesses found') }}
                 </td>
             </tr>
         @endforelse

@@ -3,7 +3,7 @@
 @section('content')
     <x-header/>
 
-    <h1 class="text-6xl font-bold text-center py-12">{{ __('my purchases') }}</h1>
+    <h1 class="text-6xl font-bold text-center py-12">{{ __('purchase_history.title') }}</h1>
 
     <div class="uk-container">
         {{-- SEARCH --}}
@@ -64,7 +64,7 @@
 
         {{-- RETURNED ITEMS --}}
         <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-4">{{ __('Returned Items') }}</h2>
+            <h2 class="text-2xl font-bold mb-4">{{ __('purchase_history.returned_items') }}</h2>
             <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
                 @php $hasReturned = false; @endphp
                 @foreach($advertisements as $ad)
@@ -76,7 +76,7 @@
                 @if(!$hasReturned)
                     <div class="uk-width-1-1">
                         <div class="uk-alert uk-alert-info">
-                            <p>{{ __('No returned items') }}</p>
+                            <p>{{ __('purchase_history.no_returned_items') }}</p>
                         </div>
                     </div>
                 @endif
@@ -85,7 +85,7 @@
 
         {{-- ACTIVE PURCHASES --}}
         <div>
-            <h2 class="text-2xl font-bold mb-4">{{ __('Active Purchases') }}</h2>
+            <h2 class="text-2xl font-bold mb-4">{{ __('purchase_history.active_purchases') }}</h2>
             <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
                 @php $hasActive = false; @endphp
                 @foreach($advertisements as $ad)
@@ -97,7 +97,7 @@
                 @if(!$hasActive)
                     <div class="uk-width-1-1">
                         <div class="uk-alert uk-alert-info">
-                            <p>{{ __('No active purchases') }}</p>
+                            <p>{{ __('purchase_history.no_active_purchases') }}</p>
                         </div>
                     </div>
                 @endif
