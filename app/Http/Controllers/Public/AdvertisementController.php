@@ -54,6 +54,6 @@ class AdvertisementController extends Controller
 
     public function purchases(Request $request): View {
         $data = $this->service->purchases($request);
-        return view("public/purchases", $data);
+        return view("public/purchases/index", $data);
     }
 }

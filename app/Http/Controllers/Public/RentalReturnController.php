@@ -32,7 +32,7 @@ class RentalReturnController extends Controller
                 ];
             });
 
-        return view('public.rental-return', [
+        return view('public.rental.rental-return', [
             'activeRentals' => $activeRentals
         ]);
     }
