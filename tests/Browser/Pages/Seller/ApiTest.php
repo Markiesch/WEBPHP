@@ -29,7 +29,7 @@ class ApiTest extends DuskTestCase
         $this->business = Business::factory()->create([
             'user_id' => $this->user->id,
             'name' => 'Test Business',
-            'contract_status' => 'approved', // Changed from 'status' to 'contract_status'
+            'contract_status' => 'approved',
         ]);
 
         // Create some advertisements
