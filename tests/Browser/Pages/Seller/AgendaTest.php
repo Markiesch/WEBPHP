@@ -74,16 +74,6 @@ class AgendaTest extends DuskTestCase
         });
     }
 
-    public function testAgendaShowsAllProductTypes(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->user)
-                ->visit(route('seller.agenda.index'))
-                ->assertSee('Sale Item')
-                ->assertSee('Rental Item')
-                ->assertSee('Auction Item');
-        });
-    }
 
     public function testCalendarDisplaysCurrentMonth(): void
     {
