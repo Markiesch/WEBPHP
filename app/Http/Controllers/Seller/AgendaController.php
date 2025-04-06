@@ -16,6 +16,6 @@ class AgendaController extends Controller
     public function index(Request $request): View
     {
         $data = $this->agendaService->getAgendaList($request->get('month'));
-        return view('seller.agenda', $data);
+        return view('seller.agenda.index', $data);
     }
 }

@@ -97,7 +97,7 @@ class SellerAdvertisementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->user)
-                ->visitRoute('advertisements.index')
+                ->visitRoute('seller.advertisements.index')
                 ->assertSee('Advertisements')
                 ->assertSee($this->saleAd->title)
                 ->assertSee($this->rentalAd->title);
@@ -108,7 +108,7 @@ class SellerAdvertisementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->user)
-                ->visitRoute('advertisements.create')
+                ->visitRoute('seller.advertisements.create')
                 ->assertSee('Create Advertisement');
         });
     }
@@ -118,7 +118,7 @@ class SellerAdvertisementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->user)
-                ->visitRoute('advertisements.show', $this->saleAd->id)
+                ->visitRoute('seller.advertisements.show', $this->saleAd->id)
                 ->assertSee($this->saleAd->title)
                 ->assertSee($this->saleAd->description)
                 ->assertSee(number_format($this->saleAd->price, 2));
@@ -129,7 +129,7 @@ class SellerAdvertisementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->user)
-                ->visitRoute('advertisements.edit', $this->saleAd->id)
+                ->visitRoute('seller.advertisements.edit', $this->saleAd->id)
                 ->assertInputValue('title', $this->saleAd->title)
                 ->assertInputValue('description', $this->saleAd->description)
                 ->assertInputValue('price', (string)$this->saleAd->price)
@@ -141,7 +141,7 @@ class SellerAdvertisementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->user)
-                ->visitRoute('advertisements.upload-csv')
+                ->visitRoute('seller.advertisements.upload-csv')
                 ->assertSee('Upload CSV');
         });
     }
@@ -150,7 +150,7 @@ class SellerAdvertisementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->user)
-                ->visitRoute('advertisements.edit-related', $this->saleAd->id)
+                ->visitRoute('seller.advertisements.edit-related', $this->saleAd->id)
                 ->assertSee('Manage Related Advertisements')
                 ->assertSee($this->rentalAd->title);
         });

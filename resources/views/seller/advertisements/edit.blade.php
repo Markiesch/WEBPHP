@@ -17,7 +17,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('advertisements.update', $advertisement) }}" method="POST"
+            <form action="{{ route('seller.advertisements.update', $advertisement) }}" method="POST"
                   enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')

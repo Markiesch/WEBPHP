@@ -13,6 +13,6 @@ class SellerAPIController extends Controller
     public function index(): View
     {
         $data = $this->service->getData();
-        return view('seller/api', $data);
+        return view('seller.api.index', $data);
     }
 }

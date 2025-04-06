@@ -26,7 +26,7 @@ class SellerAdvertisementController extends Controller
         $business = Business::where('user_id', Auth::id())->firstOrFail();
         $advertisements = $this->advertisementService->getAdvertisements($business, $request->all());
 
-        return view('advertisements.index', [
+        return view('seller.advertisements.index', [
             'advertisements' => $advertisements,
             'types' => Advertisement::getTypes()
         ]);
@@ -34,7 +34,7 @@ class SellerAdvertisementController extends Controller
 
     public function create(): View
     {
-        return view('advertisements.create', ['types' => Advertisement::getTypes()]);
+        return view('seller.advertisements.create', ['types' => Advertisement::getTypes()]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -46,7 +46,7 @@ class SellerAdvertisementController extends Controller
             $this->advertisementService->createAdvertisement($validated, $business);
 
             return redirect()
-                ->route('advertisements.index')
+                ->route('seller.advertisements.index')
                 ->with('success', 'Advertisement created successfully.');
         } catch (Exception $e) {
             return back()
@@ -57,14 +57,14 @@ class SellerAdvertisementController extends Controller
 
     public function show(Advertisement $advertisement): View
     {
-        return view('advertisements.show', compact('advertisement'));
+        return view('seller.advertisements.show', compact('advertisement'));
     }
 
     public function edit(Advertisement $advertisement): View
     {
         $this->authorize('update', $advertisement);
 
-        return view('advertisements.edit', [
+        return view('seller.advertisements.edit', [
             'advertisement' => $advertisement,
             'types' => Advertisement::getTypes()
         ]);
@@ -79,7 +79,7 @@ class SellerAdvertisementController extends Controller
             $this->advertisementService->updateAdvertisement($advertisement, $validated);
 
             return redirect()
-                ->route('advertisements.index')
+                ->route('seller.advertisements.index')
                 ->with('success', 'Advertisement updated successfully.');
         } catch (Exception $e) {
             return back()
@@ -90,7 +90,7 @@ class SellerAdvertisementController extends Controller
 
     public function uploadCsv(): View
     {
-        return view('advertisements.upload-csv');
+        return view('seller.advertisements.upload-csv');
     }
 
     public function processCsv(Request $request): RedirectResponse
@@ -105,11 +105,11 @@ class SellerAdvertisementController extends Controller
             );
 
             return redirect()
-                ->route('advertisements.index')
+                ->route('seller.advertisements.index')
                 ->with('success', "{$successCount} advertisements imported successfully.");
         } catch (Exception $e) {
             return redirect()
-                ->route('advertisements.index')
+                ->route('seller.advertisements.index')
                 ->withErrors(['error' => 'Failed to import advertisements: ' . $e->getMessage()]);
         }
     }
@@ -160,7 +160,7 @@ class SellerAdvertisementController extends Controller
     {
         $this->authorize('update', $advertisement);
 
-        return view('advertisements.edit-related', [
+        return view('seller.advertisements.edit-related', [
             'advertisement' => $advertisement,
             'availableAdvertisements' => $this->advertisementService->getAvailableRelatedAdvertisements($advertisement),
             'selectedIds' => $advertisement->relatedAdvertisements->pluck('id')->toArray()
@@ -183,7 +183,7 @@ class SellerAdvertisementController extends Controller
             );
 
             return redirect()
-                ->route('advertisements.show', $advertisement)
+                ->route('seller.advertisements.show', $advertisement)
                 ->with('success', 'Related advertisements updated successfully.');
         } catch (Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);

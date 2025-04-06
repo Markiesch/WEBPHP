@@ -66,7 +66,7 @@ Route::prefix('/')->group(function () {
     });
 
     // Auth routes
-    Route::view('/login', 'auth.login')->name('login');
+    Route::view('/login', 'public.auth.login')->name('login');
     Route::post('/login', [LoginController::class, 'submit'])->name('login.submit');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/signup', [SignupController::class, 'index'])->name('signup');

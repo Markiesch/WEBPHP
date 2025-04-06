@@ -6,10 +6,6 @@
         {{-- Business Details --}}
         <div class="mb-8">
             <h1 class="text-4xl font-bold mb-4">{{ $business->name }}</h1>
-            <div class="flex items-center gap-4 text-muted-foreground">
-                <span>Type: {{ ucfirst($business->type) }}</span>
-                <span>KvK: {{ $business->kvk_number }}</span>
-            </div>
         </div>
 
         {{-- Business Content Blocks --}}

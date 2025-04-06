@@ -9,10 +9,10 @@
         {{-- Action Buttons --}}
         <div class="flex justify-between pb-6">
             <div class="flex gap-2 items-center">
-                <a href="{{ route('advertisements.create') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                <a href="{{ route('seller.advertisements.create') }}" class="uk-btn uk-btn-sm uk-btn-primary">
                     {{ __('Create Advertisement') }}
                 </a>
-                <a href="{{ route('advertisements.upload-csv') }}" class="uk-btn uk-btn-sm uk-btn-secondary">
+                <a href="{{ route('seller.advertisements.upload-csv') }}" class="uk-btn uk-btn-sm uk-btn-secondary">
                     {{ __('Upload CSV') }}
                 </a>
             </div>
@@ -105,15 +105,15 @@
                     {{-- Actions --}}
                     <td class="flex-shrink-0 w-[15rem]">
                         <div class="flex gap-1 flex-shrink-0">
-                            <a href="{{ route('advertisements.show', $advertisement->id) }}"
+                            <a href="{{ route('seller.advertisements.show', $advertisement->id) }}"
                                class="flex-shrink-0 uk-btn uk-btn-xs uk-btn-default">
                                 {{ __('View QR') }}
                             </a>
-                            <a href="{{ route('advertisements.edit', $advertisement->id) }}"
+                            <a href="{{ route('seller.advertisements.edit', $advertisement->id) }}"
                                class="flex-shrink-0 uk-btn uk-btn-xs uk-btn-default">
                                 {{ __('Edit') }}
                             </a>
-                            <a href="{{ route('advertisements.edit-related', $advertisement->id) }}"
+                            <a href="{{ route('seller.advertisements.edit-related', $advertisement->id) }}"
                                class="flex-shrink-0 uk-btn uk-btn-xs uk-btn-secondary">
                                 {{ __('Related') }}
                             </a>

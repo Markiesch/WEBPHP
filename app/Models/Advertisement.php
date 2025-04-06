@@ -271,7 +271,7 @@ class Advertisement extends Model
         $builder = Builder::create()
             ->writer(new PngWriter())
             ->writerOptions([])
-            ->data(route('advertisements.show', $this->id))
+            ->data(route('seller.advertisements.show', $this->id))
             ->encoding(new Encoding('UTF-8'))
             ->size(300)
             ->margin(10)

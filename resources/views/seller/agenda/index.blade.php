@@ -71,7 +71,7 @@
                                         (!$isRental && !$isAuction && $currentDay->between($ad->created_at, $endDate)))
                                         <div class="mt-0.5">
                                             <div class="text-xs p-1.5 rounded border {{ $isPurchased ? 'border-red-500 bg-red-50' : ($isAuction ? 'border-purple-500 bg-purple-50' : 'border-gray-200 bg-gray-50') }}">
-                                                <a href="{{ route('advertisements.show', $ad->id) }}" class="hover:underline block truncate {{ $isPurchased ? 'text-red-600' : ($isAuction ? 'text-purple-600' : 'text-gray-700') }}">
+                                                <a href="{{ route('seller.advertisements.show', $ad->id) }}" class="hover:underline block truncate {{ $isPurchased ? 'text-red-600' : ($isAuction ? 'text-purple-600' : 'text-gray-700') }}">
                                                     <span>{{ $ad->title }}</span>
                                                     <span class="text-xs text-gray-500">(@lang('agenda.types.' . ($ad->type === 'auction' ? 'auction' : ($ad->isRental() ? 'rental' : 'sale'))))</span>
                                                 </a>

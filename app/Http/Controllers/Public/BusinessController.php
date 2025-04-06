@@ -17,7 +17,7 @@ class BusinessController extends Controller
             }])
             ->firstOrFail();
 
-        return view('public/business', [
+        return view('public.business.index', [
             'business' => $business,
             'advertisements' => $business->advertisements,
             'blocks' => $business->blocks

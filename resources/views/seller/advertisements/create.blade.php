@@ -17,7 +17,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('advertisements.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('seller.advertisements.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 <div>
                     <label for="type" class="uk-form-label">

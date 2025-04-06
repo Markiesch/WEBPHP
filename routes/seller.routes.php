@@ -20,34 +20,34 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('advertisements')->group(function () {
             Route::get('upload', [SellerAdvertisementController::class, 'uploadCsv'])
-                ->name('advertisements.upload-csv');
+                ->name('seller.advertisements.upload-csv');
             Route::post('upload', [SellerAdvertisementController::class, 'processCsv'])
-                ->name('advertisements.process-csv');
+                ->name('seller.advertisements.process-csv');
 
             // Resource routes
             Route::get('/', [SellerAdvertisementController::class, 'index'])
-                ->name('advertisements.index');
+                ->name('seller.advertisements.index');
             Route::get('create', [SellerAdvertisementController::class, 'create'])
-                ->name('advertisements.create');
+                ->name('seller.advertisements.create');
             Route::post('/', [SellerAdvertisementController::class, 'store'])
-                ->name('advertisements.store');
+                ->name('seller.advertisements.store');
             Route::get('{advertisement}', [SellerAdvertisementController::class, 'show'])
-                ->name('advertisements.show');
+                ->name('seller.advertisements.show');
             Route::get('{advertisement}/edit', [SellerAdvertisementController::class, 'edit'])
-                ->name('advertisements.edit');
+                ->name('seller.advertisements.edit');
             Route::put('{advertisement}', [SellerAdvertisementController::class, 'update'])
-                ->name('advertisements.update');
+                ->name('seller.advertisements.update');
 
             // Related advertisements routes
             Route::get('{advertisement}/related', [SellerAdvertisementController::class, 'editRelated'])
-                ->name('advertisements.edit-related');
+                ->name('seller.advertisements.edit-related');
             Route::put('{advertisement}/related', [SellerAdvertisementController::class, 'updateRelated'])
-                ->name('advertisements.update-related');
+                ->name('seller.advertisements.update-related');
         });
 
         // Business routes
         Route::prefix('business')->group(function () {
-            Route::get('/', [BusinessEditorController::class, 'index'])->name('business.index');
+            Route::get('/', [BusinessEditorController::class, 'index'])->name('seller.business.index');
 
             // Block management routes
             Route::put('blocks/{block}', [BusinessEditorController::class, 'updateBlock'])->name('business.blocks.update');
@@ -58,11 +58,11 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix("agenda")->group(function () {
-            Route::get('/', [AgendaController::class, 'index'])->name('agenda.index');
+            Route::get('/', [AgendaController::class, 'index'])->name('seller.agenda.index');
         });
 
         Route::prefix("api")->group(function () {
-            Route::get('/', [SellerAPIController::class, 'index'])->name('api.index');
+            Route::get('/', [SellerAPIController::class, 'index'])->name('seller.api.index');
         });
 
         // Rental routes

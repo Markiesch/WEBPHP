@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="uk-card uk-card-default uk-card-body max-w-4xl mx-auto">
-        <form action="{{ route('advertisements.update-related', $advertisement) }}" method="POST">
+        <form action="{{ route('seller.advertisements.update-related', $advertisement) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -54,7 +54,7 @@
 
                 {{-- Action Buttons --}}
                 <div class="flex justify-end gap-3 pt-4 border-t">
-                    <a href="{{ route('advertisements.index') }}"
+                    <a href="{{ route('seller.advertisements.index') }}"
                        class="uk-btn uk-btn-default hover:bg-gray-100">
                         {{ __('cancel') }}
                     </a>

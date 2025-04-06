@@ -20,13 +20,13 @@ class BusinessEditorController extends Controller
 
         if (!$business) {
             // Fallback if user has no business yet
-            return view('seller.business-editor', [
+            return view('seller.business.index', [
                 'business' => null,
                 'blocks' => collect([]),
             ]);
         }
 
-        return view('seller.business-editor', [
+        return view('seller.business.index', [
             'business' => $business,
             'blocks' => $business->blocks,
         ]);
@@ -50,7 +50,7 @@ class BusinessEditorController extends Controller
         }
 
         $block->update($validatedData);
-        return redirect()->route('business.index')->with('success', 'Block updated successfully');
+        return redirect()->route('seller.business.index')->with('success', 'Block updated successfully');
     }
 
     public function update(Request $request): RedirectResponse
@@ -64,7 +64,7 @@ class BusinessEditorController extends Controller
 
         $business->update($validatedData);
 
-        return redirect()->route('business.index')->with('success', 'updated successfully');
+        return redirect()->route('seller.business.index')->with('success', 'updated successfully');
     }
 
     public function updateOrder(Request $request): RedirectResponse
@@ -143,7 +143,7 @@ class BusinessEditorController extends Controller
             'order' => $maxOrder + 1,
         ]);
 
-        return redirect()->route('business.index')->with('success', 'New block added');
+        return redirect()->route('seller.business.index')->with('success', 'New block added');
     }
 
     public function deleteBlock(BusinessBlock $block): RedirectResponse
@@ -155,7 +155,7 @@ class BusinessEditorController extends Controller
 
         $block->delete();
 
-        return redirect()->route('business.index')->with('success', 'Block deleted successfully');
+        return redirect()->route('seller.business.index')->with('success', 'Block deleted successfully');
     }
 
     private function getDefaultContentForType(string $type): array

@@ -33,7 +33,7 @@
                         @lang('navigation.store')
                     </a>
                     @if(auth()->user()->hasRole(['private_advertiser', 'business_advertiser', 'super_admin']))
-                        <a href="{{ route('business.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">
+                        <a href="{{ route('seller.business.index') }}" class="uk-btn uk-btn-sm uk-btn-primary">
                             {{ __('business') }}
                         </a>
                     @else

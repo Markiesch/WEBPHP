@@ -13,7 +13,7 @@
                 </a>
             </div>
 
-            <form action="{{ route('advertisements.process-csv') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('seller.advertisements.process-csv') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="csv_file" class="block text-sm font-medium text-gray-700">{{ __('CSV File') }}</label>
