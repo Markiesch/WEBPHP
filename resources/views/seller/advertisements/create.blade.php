@@ -223,7 +223,7 @@
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="submit" class="uk-btn uk-btn-primary">
+                    <button type="submit" id="submit" class="uk-btn uk-btn-primary">
                         {{ __('Create Advertisement') }}
                     </button>
                 </div>
