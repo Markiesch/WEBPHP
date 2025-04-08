@@ -152,42 +152,14 @@
     </div>
 
     <div class="uk-container py-6">
-        @if($advertisement->relatedAdvertisements->isNotEmpty())
-            <div class="uk-card uk-card-body p-6">
-                <h2 class="text-2xl font-bold mb-6">@lang('advertisement.related_items')</h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($advertisement->relatedAdvertisements as $related)
-                        <a href="{{ route('advertisement', $related->id) }}"
-                           class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-                            <div class="aspect-video rounded-t-xl overflow-hidden bg-gray-50">
-                                <img src="{{ asset($related->image_url) }}"
-                                     alt="@lang('advertisement.image_alt', ['title' => $related->title])"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"/>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex justify-between items-start gap-4 mb-2">
-                                    <h3 class="font-medium text-gray-900 line-clamp-1">{{ $related->title }}</h3>
-                                    <span class="uk-badge whitespace-nowrap {{ $related->type === 'sale' ? 'uk-badge-success' : 'uk-badge-warning' }}">
-                                        @lang($related->type === 'sale' ? 'advertisement.sale' : 'advertisement.rental')
-                                    </span>
-                                </div>
-                                <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $related->description }}</p>
-                                <div class="flex justify-between items-center">
-                                    <span class="font-bold text-red-600">@lang('advertisement.currency_symbol'){{ number_format($related->price, 2) }}</span>
-                                    <span class="text-sm text-gray-500">{{ $related->created_at->diffForHumans() }}</span>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    </div>
-
-    <div class="uk-container py-6">
         <div class="uk-card uk-card-body p-6 grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-8">
             <div>
+                <?php
+                // Initialize reviews-related variables if they don't exist
+                $total_reviews_count = $total_reviews_count ?? 0;
+                $mean_rating = $mean_rating ?? 0;
+                $reviews_count = $reviews_count ?? [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+                ?>
                 <div class="flex gap-3 items-end pb-4">
                     <h2 class="text-6xl font-medium">{{ $mean_rating }}</h2>
                     <div>
@@ -225,7 +197,7 @@
                             </div>
 
                                 <?php
-                                $count = $reviews->where('rating', $i)->count();
+                                $count = isset($reviews) ? $reviews->where('rating', $i)->count() : 0;
                                 $percentage = $total_reviews_count == 0 ? 0 : $reviews_count[$i] / $total_reviews_count * 100;
                                 ?>
 
@@ -281,23 +253,23 @@
 
                             <select class="uk-select" id="sort" name="sort"
                                     onchange="document.getElementById('sortForm').submit()">
-                                <option value="date_desc" {{ $currentSort === 'date_desc' ? 'selected' : '' }}>
+                                <option value="date_desc" {{ ($currentSort ?? '') === 'date_desc' ? 'selected' : '' }}>
                                     @lang('advertisement.newest_first')
                                 </option>
-                                <option value="date_asc" {{ $currentSort === 'date_asc' ? 'selected' : '' }}>
+                                <option value="date_asc" {{ ($currentSort ?? '') === 'date_asc' ? 'selected' : '' }}>
                                     @lang('advertisement.oldest_first')
                                 </option>
-                                <option value="rating_asc" {{ $currentSort === 'rating_asc' ? 'selected' : '' }}>
+                                <option value="rating_asc" {{ ($currentSort ?? '') === 'rating_asc' ? 'selected' : '' }}>
                                     @lang('advertisement.rating_low_high')
                                 </option>
-                                <option value="rating_desc" {{ $currentSort === 'rating_desc' ? 'selected' : '' }}>
+                                <option value="rating_desc" {{ ($currentSort ?? '') === 'rating_desc' ? 'selected' : '' }}>
                                     @lang('advertisement.rating_high_low')
                                 </option>
                             </select>
                         </form>
                     </div>
                 </div>
-                @if($reviews->count() > 0)
+                @if(isset($reviews) && $reviews->count() > 0)
                     @foreach($reviews as $review)
                         <div class="flex justify-between pt-6">
                             <div>

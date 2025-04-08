@@ -74,7 +74,7 @@ class RentalReturnController extends Controller
         abort_if($transaction->return_date !== null, 404);
         abort_if($transaction->type !== 'rental', 404);
 
-        return view('public.rental-return-create', [
+        return view('public.rental.rental-return-create', [
             'transaction' => $transaction->load('advertisement.business')
         ]);
     }

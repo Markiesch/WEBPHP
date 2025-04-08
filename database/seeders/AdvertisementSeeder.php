@@ -38,6 +38,18 @@ class AdvertisementSeeder extends Seeder
                 'price' => 2499.00,
                 'wear_percentage' => 5,
             ],
+            [
+                'title' => 'iPad Pro 12.9" M2',
+                'description' => 'Professionele tablet met 12.9" Liquid Retina XDR display. Perfect voor grafisch ontwerp. 1TB opslag.',
+                'price' => 1899.00,
+                'wear_percentage' => 8,
+            ],
+            [
+                'title' => 'Sony A7 IV',
+                'description' => 'Full-frame 33MP hybride camera. Uitstekend voor foto en video. Inclusief 24-70mm f/2.8 lens.',
+                'price' => 2799.00,
+                'wear_percentage' => 12,
+            ]
         ];
 
         // Rental advertisements data
